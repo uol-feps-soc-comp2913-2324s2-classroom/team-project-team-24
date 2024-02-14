@@ -36,7 +36,8 @@ cd ./team-project-team-24/backend
 docker build -t gpx_app .
 
 # Run the docker container
-# You can also do this in the Docker Desktop app which is easier just make sure to set the "host port" to 5000 in the "optional settings"
+# You can also do this in the Docker Desktop app which is easier just make sure to set the "host port" 
+# to 5000 in the "optional settings"
 docker run --name gpx_app_server -p 5000:5000 -d gpx_app
 
 # Command breakdown:
