@@ -9,6 +9,17 @@ Make sure you have these installed:
 2. Node.js (Version 18.0 or higher)
 3. Python3
 
+## Starting the whole project
+The whole project can now be started with one command using docker compose:
+```bash
+docker compose up
+```
+To then close it, press `Ctrl+C`.  
+You could also use the `-d` flag to make it detached, and the in order to stop it, run:
+```bash
+docker compose down
+```
+
 ## Starting the frontend development server
 Make sure you have Node.js installed.
 ```BASH
