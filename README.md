@@ -14,7 +14,7 @@ The whole project can now be started with one command using docker compose:
 ```bash
 docker compose up
 ```
-**Use `docker compose up --build` if you have made any changes. If you don't your changes will not be shown when you run the app!!**
+**Use `docker compose up --build` if you have made any changes. If you don't your changes will not be shown when you run the app!!**  
 To then close it, press `Ctrl+C`.  
 You could also use the `-d` flag to make it detached, and the in order to stop it, run:
 ```bash
