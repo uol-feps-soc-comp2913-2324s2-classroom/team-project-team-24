@@ -1,0 +1,18 @@
+services:
+  backend: 
+    build:
+      context: backend
+      target: builder
+    # flask requires SIGINT to stop gracefully
+    # (default stop signal from Compose is SIGTERM)
+    stop_signal: SIGINT
+    ports:
+      - '5000:5000'
+      
+  frontend:
+    build:
+      target: build-stage
+      context: frontend/gpx_app_front
+    ports:
+    - 3000:3000
+      
