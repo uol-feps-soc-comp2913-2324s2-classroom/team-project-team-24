@@ -16,7 +16,7 @@ export default {
   methods: {
     async testApi(){
       try {
-        const response = await axios.get('http://localhost:5000/')
+        const response = await axios.get('http://localhost:5001/')
         this.APIResponse = response.data
         console.log(this.APIResponse)
       } catch (error) {
