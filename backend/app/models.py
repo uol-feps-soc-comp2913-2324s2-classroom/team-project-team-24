@@ -33,6 +33,10 @@ class User(db.Model):
     friendRequests = db.relationship("FriendRequest", backref="user")
     fk_membership = db.Column(db.Integer, db.ForeignKey(MembershipPlan.id))
 
+    @staticmethod
+    def authenticate(username, password):
+        return User.query.where(username=username, password=password)
+
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.Text)
