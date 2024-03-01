@@ -1,4 +1,5 @@
 from app import db
+import bcrypt
 
 class Owner(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -37,7 +38,12 @@ class User(db.Model):
 
     @staticmethod
     def authenticate(username, password):
-        return User.query.where(username=username, password=password)
+        result = User.query.filter_by(username=username).all()
+        if len(result) > 0:
+            u = result[0]
+            encode = password.encode('utf-8')
+            if bcrypt.checkpw(encode, u.password):
+                return u
 
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
