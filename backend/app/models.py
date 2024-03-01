@@ -1,5 +1,6 @@
 from app import db
 import bcrypt
+from sqlalchemy import or_
 
 class Owner(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -8,19 +9,25 @@ class Owner(db.Model):
     salt = db.Column(db.String(60))   
 
 class Friend(db.Model):
-    fk_user_1 = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
-    fk_user_2 = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
+    user_1_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
+    user_2_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
+    
+    user_1 = db.relationship("User", foreign_keys=[user_1_id])
+    user_2 = db.relationship("User", foreign_keys=[user_2_id])
 
 class FriendRequest(db.Model):
-    fk_from_user = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
-    fk_to_user = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
+    from_user_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
+    to_user_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
+    
+    from_user = db.relationship("User", foreign_keys=[from_user_id])
+    to_user = db.relationship("User", foreign_keys=[to_user_id])
 
 class MembershipPlan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), unique=True, nullable=False)
     cost = db.Column(db.Float)
     payment_regularity = db.Column(db.String(32))
-    members = db.relationship("User", backref="membershipplan")
+    members = db.relationship("User", backref="membership_plan", lazy="dynamic")
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -30,11 +37,9 @@ class User(db.Model):
     profile_picture = db.Column(db.LargeBinary)
     sex = db.Column(db.String(32))
     date_of_birth = db.Column(db.DateTime)
-    friends = db.relationship("Friend", backref="user",
-                              primaryjoin="and_(User.id==Friend.fk_user_1 or User.id==Friend.fk_user_2)")
-    friendRequests = db.relationship("FriendRequest", backref="user",
-                                     primaryjoin="and_(User.id==FriendRequest.fk_to_user)")
-    fk_membership = db.Column(db.Integer, db.ForeignKey(MembershipPlan.id))
+    membership_id = db.Column(db.Integer, db.ForeignKey("membership_plan.id"))
+    
+    membership = db.relationship("MembershipPlan", foreign_keys=[membership_id])
 
     @staticmethod
     def authenticate(username, password):
@@ -44,6 +49,22 @@ class User(db.Model):
             encode = password.encode('utf-8')
             if bcrypt.checkpw(encode, u.password):
                 return u
+            
+    def friends(self):
+        table = Friend.query.filter(or_(Friend.fk_user_1 == self.id, Friend.fk_user_2 == self.id)).all()
+        friends = []
+        for entry in table:
+            if entry.fk_user_1 == self.id:
+                friends.append(entry.user_2)
+            else:
+                friends.append(entry.user_1)
+        return friends
+    
+    def outgoint_friend_requests(self):
+        return
+    
+    def incoming_friend_request(self):
+        return
 
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
