@@ -19,8 +19,8 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-from endpoints import auth
+# from endpoints import auth
 
-app.register_blueprint(auth.bp)
+# app.register_blueprint(auth.bp)
 
 from app import views, models

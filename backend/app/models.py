@@ -29,8 +29,10 @@ class User(db.Model):
     profile_picture = db.Column(db.LargeBinary)
     sex = db.Column(db.String(32))
     date_of_birth = db.Column(db.DateTime)
-    friends = db.relationship("Friend", backref="user")
-    friendRequests = db.relationship("FriendRequest", backref="user")
+    friends = db.relationship("Friend", backref="user",
+                              primaryjoin="and_(User.id==Friend.fk_user_1 or User.id==Friend.fk_user_2)")
+    friendRequests = db.relationship("FriendRequest", backref="user",
+                                     primaryjoin="and_(User.id==FriendRequest.fk_to_user)")
     fk_membership = db.Column(db.Integer, db.ForeignKey(MembershipPlan.id))
 
     @staticmethod
