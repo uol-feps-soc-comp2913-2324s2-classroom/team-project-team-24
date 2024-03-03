@@ -7,12 +7,12 @@ services:
     # (default stop signal from Compose is SIGTERM)
     stop_signal: SIGINT
     ports:
-      - '5001:5000'
+      - '$BACKEND_PORT:5000'
       
   frontend:
     build:
       target: build-stage
-      context: cli
+      context: frontend
     ports:
-    - 3000:3000
+    - $FRONTEND_PORT:3000
       
