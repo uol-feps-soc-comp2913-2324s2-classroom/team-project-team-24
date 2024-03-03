@@ -9,6 +9,7 @@ def db_add(*args):
             db.session.add(arg)
         db.session.commit()
 
+# MANY TO MANY RELATIONSHIP TABLES
 userInGroup = db.Table('user_in_group', db.Model.metadata,
                         db.Column('user_id', db.Integer, db.ForeignKey("user.id"), primary_key=True),
                         db.Column('group_id', db.Integer, db.ForeignKey("group.id"), primary_key=True))
@@ -17,6 +18,7 @@ routeInGroup = db.Table('route_in_group', db.Model.metadata,
                         db.Column('route_id', db.Integer, db.ForeignKey("route.id"), primary_key=True),
                         db.Column('group_id', db.Integer, db.ForeignKey("group.id"), primary_key=True))
 
+# NORMAL ORM CLASSES
 class Owner(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), unique=True, nullable=False)
@@ -145,13 +147,6 @@ class User(db.Model):
             incoming_requests.add(entry.from_user)
             
         return incoming_requests
-
-
-
-
-
-            
-
 
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
