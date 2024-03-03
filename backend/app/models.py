@@ -9,6 +9,14 @@ def db_add(*args):
             db.session.add(arg)
         db.session.commit()
 
+userInGroup = db.Table('user_in_group', db.Model.metadata,
+                        db.Column('user_id', db.Integer, db.ForeignKey("user.id"), primary_key=True),
+                        db.Column('group_id', db.Integer, db.ForeignKey("group.id"), primary_key=True))
+
+routeInGroup = db.Table('route_in_group', db.Model.metadata,
+                        db.Column('route_id', db.Integer, db.ForeignKey("route.id"), primary_key=True),
+                        db.Column('group_id', db.Integer, db.ForeignKey("group.id"), primary_key=True))
+
 class Owner(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), unique=True, nullable=False)
@@ -82,6 +90,7 @@ class User(db.Model):
     membership_id = db.Column(db.Integer, db.ForeignKey("membership_plan.id"))
     
     membership = db.relationship("MembershipPlan", foreign_keys=[membership_id])
+    groups = db.relationship('Group', secondary=userInGroup, back_populates="members")
 
     @staticmethod
     def authenticate(username, password):
@@ -137,73 +146,29 @@ class User(db.Model):
             
         return incoming_requests
 
-class UserInGroup(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
-    group_id = db.Column(db.Integer, db.ForeignKey("group.id"), primary_key=True)
-    
-    user = db.relationship("User", foreign_keys=[user_id])
-    group = db.relationship("Group", foreign_keys=[group_id])
-    
-    def __init__(self, user=None, group=None):
-        """
-        Can be used to more easily define a user in a group.
-        Either the user+group ID or the user+group instance can be passed and it will set those values.
 
-        Args:
-            user (int/User, optional): The ID or instance of the user in the group. Defaults to None.
-            group (int/Group, optional): The ID or instance of the group for the user. Defaults to None.
-        """
-        if type(user) == int:
-            self.user_id = user
-            self.group_id = group
-        else:
-            self.user = user
-            self.group = group
 
-class RouteInGroup(db.Model):
-    route_id = db.Column(db.Integer, db.ForeignKey("route.id"), primary_key=True)
-    group_id = db.Column(db.Integer, db.ForeignKey("group.id"), primary_key=True)
-    
-    route = db.relationship("Route", foreign_keys=[route_id])
-    group = db.relationship("Group", foreign_keys=[group_id])
-    
-    def __init__(self, route=None, group=None):
-        """
-        Can be used to more easily define a user in a group.
-        Either the route+group ID or the route+group instance can be passed and it will set those values.
 
-        Args:
-            user (int/User, optional): The ID or instance of the user in the group. Defaults to None.
-            group (int/Group, optional): The ID or instance of the group for the user. Defaults to None.
-        """
-        if type(route) == int:
-            self.route_id = route
-            self.group_id = group
-        else:
-            self.route = route
-            self.group = group
+
+            
+
 
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.Text)
     name = db.Column(db.String(128))
     exercise_type = db.Column(db.String(64))
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     
-    user = db.relationship("User", foreign_keys=[user_id])
+    user = db.relationship('User', foreign_keys=[user_id])
+    groups = db.relationship('Group', secondary=routeInGroup, back_populates="routes")
 
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     
-    members = db.relationship('User', secondary=UserInGroup)
-    
-    def members_func(self):
-        table = UserInGroup.query.filter(FriendRequest.from_user == self).all()
-        outgoing_requests = set()
-        for entry in table:
-            outgoing_requests.add(entry.to_user)
-            
-        return outgoing_requests
+    members = db.relationship('User', secondary=userInGroup, back_populates="groups")
+    routes = db.relationship('Route', secondary=routeInGroup, back_populates="groups")
+
 
 
