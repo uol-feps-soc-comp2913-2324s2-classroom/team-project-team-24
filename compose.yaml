@@ -12,7 +12,7 @@ services:
   frontend:
     build:
       target: build-stage
-      context: frontend/gpx_app_front
+      context: cli
     ports:
     - 3000:3000
       
