@@ -3,6 +3,7 @@ import HelloWorld from "./components/HelloWorld.vue";
 import axios from "axios";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
+import UploadGPX from "./components/UploadGPX.vue";
 
 export default {
   name: "App",
@@ -31,6 +32,7 @@ export default {
     HelloWorld,
     Login,
     Register,
+    UploadGPX,
   },
 };
 </script>
@@ -43,6 +45,7 @@ export default {
 
   <button @click="testApi">Test API</button>
   <p>API Response: {{ APIResponse }}</p>
+  <UploadGPX></UploadGPX>
   <Login></Login>
   <Register></Register>
 </template>

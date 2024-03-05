@@ -20,9 +20,11 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-from app.endpoints import auth
+from app.endpoints import auth, upload
 
 app.register_blueprint(auth.bp)
+app.register_blueprint(upload.bp)
+print(app.url_map)
 jwt = JWTManager(app)
 
 from app import views, models
