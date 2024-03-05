@@ -1,8 +1,8 @@
-"""initial migration
+"""init
 
-Revision ID: ba92c7150724
+Revision ID: ffeb86b95fbd
 Revises: 
-Create Date: 2024-02-19 14:15:22.934460
+Create Date: 2024-03-03 14:37:25.690330
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ba92c7150724'
+revision = 'ffeb86b95fbd'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -47,47 +47,47 @@ def upgrade():
     sa.Column('profile_picture', sa.LargeBinary(), nullable=True),
     sa.Column('sex', sa.String(length=32), nullable=True),
     sa.Column('date_of_birth', sa.DateTime(), nullable=True),
-    sa.Column('fk_membership', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['fk_membership'], ['membership_plan.id'], ),
+    sa.Column('membership_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['membership_id'], ['membership_plan.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('username')
     )
     op.create_table('friend',
-    sa.Column('fk_user_1', sa.Integer(), nullable=False),
-    sa.Column('fk_user_2', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['fk_user_1'], ['user.id'], ),
-    sa.ForeignKeyConstraint(['fk_user_2'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('fk_user_1', 'fk_user_2')
+    sa.Column('user_1_id', sa.Integer(), nullable=False),
+    sa.Column('user_2_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['user_1_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['user_2_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('user_1_id', 'user_2_id')
     )
     op.create_table('friend_request',
-    sa.Column('fk_from_user', sa.Integer(), nullable=False),
-    sa.Column('fk_to_user', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['fk_from_user'], ['user.id'], ),
-    sa.ForeignKeyConstraint(['fk_to_user'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('fk_from_user', 'fk_to_user')
+    sa.Column('from_user_id', sa.Integer(), nullable=False),
+    sa.Column('to_user_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['from_user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['to_user_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('from_user_id', 'to_user_id')
     )
     op.create_table('route',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('data', sa.Text(), nullable=True),
     sa.Column('name', sa.String(length=128), nullable=True),
     sa.Column('exercise_type', sa.String(length=64), nullable=True),
-    sa.Column('fk_user', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['fk_user'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('id', 'fk_user')
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user_in_group',
-    sa.Column('fk_user', sa.Integer(), nullable=False),
-    sa.Column('fk_group', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['fk_group'], ['group.id'], ),
-    sa.ForeignKeyConstraint(['fk_user'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('fk_user', 'fk_group')
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('group_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['group_id'], ['group.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('user_id', 'group_id')
     )
     op.create_table('route_in_group',
-    sa.Column('fk_route', sa.Integer(), nullable=False),
-    sa.Column('fk_group', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['fk_group'], ['group.id'], ),
-    sa.ForeignKeyConstraint(['fk_route'], ['route.id'], ),
-    sa.PrimaryKeyConstraint('fk_route', 'fk_group')
+    sa.Column('route_id', sa.Integer(), nullable=False),
+    sa.Column('group_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['group_id'], ['group.id'], ),
+    sa.ForeignKeyConstraint(['route_id'], ['route.id'], ),
+    sa.PrimaryKeyConstraint('route_id', 'group_id')
     )
     # ### end Alembic commands ###
 

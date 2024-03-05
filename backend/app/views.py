@@ -12,3 +12,4 @@ def add():
     response_object = {'status': 'success'}
     response_object['addition'] = post_data['a'] + post_data['b']
     return response_object, 201
+

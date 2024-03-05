@@ -16,9 +16,10 @@ export default {
   methods: {
     async testApi(){
       try {
-        const response = await axios.get('http://localhost:5001/')
+        const response = await axios.get(`http://localhost:${process.env.VUE_APP_BACKEND_PORT}/`)
         this.APIResponse = response.data
         console.log(this.APIResponse)
+        console.log(process.env.VUE_APP_BACKEND_PORT)
       } catch (error) {
         this.APIResponse = 'Error: ' + error
         console.error(error)
