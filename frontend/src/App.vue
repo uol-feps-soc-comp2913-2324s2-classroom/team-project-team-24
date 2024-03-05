@@ -6,9 +6,6 @@ import Register from "./components/Register.vue";
 
 export default {
   name: "App",
-  components: {
-    HelloWorld,
-  },
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
@@ -31,6 +28,7 @@ export default {
     },
   },
   components: {
+    HelloWorld,
     Login,
     Register,
   },
