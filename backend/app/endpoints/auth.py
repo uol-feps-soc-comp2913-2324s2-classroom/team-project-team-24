@@ -1,8 +1,8 @@
 # endpoints/auth.py
 from flask import Blueprint
 from flask import request, jsonify
-from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies
-from models import User
+from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies, unset_jwt_cookies, jwt_required
+from app.models import User, db_add
 
 
 bp = Blueprint('auth', __name__, url_prefix="/auth")
@@ -20,7 +20,7 @@ def register():
             password=password
         )
 
-        user.add()    
+        db_add(user)  
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)
 
@@ -39,12 +39,20 @@ def login():
     password = data['password']
     user = User.authenticate(username, password)
     if user:
-        access_token = create_access_token(identity=user.user_id)
-        refresh_token = create_refresh_token(identity=user.user_id)
+        access_token = create_access_token(identity=user.id)
+        refresh_token = create_refresh_token(identity=user.id)
 
         response = jsonify()
         set_access_cookies(response, access_token)
         set_refresh_cookies(response, refresh_token)
+        print(response)
         return response, 201
     else:
         return jsonify(message="Unauthorized"), 401
+    
+@bp.route('/logout', methods=('POST',))
+@jwt_required
+def logout():
+  response = jsonify()
+  unset_jwt_cookies(response)
+  return response, 200
