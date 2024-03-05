@@ -1,33 +1,40 @@
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import axios from 'axios'
+import HelloWorld from "./components/HelloWorld.vue";
+import axios from "axios";
+import Login from "./components/Login.vue";
+import Register from "./components/Register.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    HelloWorld,
   },
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App',
-      APIResponse: ''
-    }
+      msg: "Welcome to Your Vue.js App",
+      APIResponse: "",
+    };
   },
   methods: {
-    async testApi(){
+    async testApi() {
       try {
-        const response = await axios.get(`http://localhost:${process.env.VUE_APP_BACKEND_PORT}/`)
-        this.APIResponse = response.data
-        console.log(this.APIResponse)
-        console.log(process.env.VUE_APP_BACKEND_PORT)
+        const response = await axios.get(
+          `http://localhost:${process.env.VUE_APP_BACKEND_PORT}/`
+        );
+        this.APIResponse = response.data;
+        console.log(this.APIResponse);
+        console.log(process.env.VUE_APP_BACKEND_PORT);
       } catch (error) {
-        this.APIResponse = 'Error: ' + error
-        console.error(error)
+        this.APIResponse = "Error: " + error;
+        console.error(error);
       }
-    }
-  }
-}
-
+    },
+  },
+  components: {
+    Login,
+    Register,
+  },
+};
 </script>
 
 <template>
@@ -38,8 +45,8 @@ export default {
 
   <button @click="testApi">Test API</button>
   <p>API Response: {{ APIResponse }}</p>
+  <Login></Login>
+  <Register></Register>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
