@@ -1,17 +1,17 @@
 # endpoints/upload.py
-from flask import Blueprint
+from flask import Blueprint, Response
 from flask import request
 from ..models import User, Route
 
 
-bp = Blueprint('upload', __name__, url_prefix="/upload")
+bp = Blueprint('upload', __name__)
 
-@bp.route('/', methods=('POST',))
+@bp.route('/upload', methods=('POST',))
 def upload():
     # data = request.get_json()
     # print(data)
     print("BLEEP")
-    return 204
+    return Response(status=418)
 
 # @bp.route('/register', methods=('POST',))
 # def register():

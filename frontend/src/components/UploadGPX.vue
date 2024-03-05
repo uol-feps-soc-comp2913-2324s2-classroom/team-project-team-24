@@ -49,7 +49,7 @@ const uploadData = () => {
   // formData.append("image", imagefile.files[0]);
 
 
-  axios.post("/upload")
+  axios.post(`http://localhost:${process.env.VUE_APP_BACKEND_PORT}/upload`)
     .then(
       function (response) {
         console.log(response);
