@@ -99,3 +99,15 @@ docker rm <container_id>
 docker rmi <image_id>
 ```
 Or forget about all of this and use the Docker Desktop app to manage containers and images.
+
+## Testing the frontend with cypress (End-To-End Testing)
+navigate to frontend\gpx_app_front
+```BASH
+# Run cypress
+npx cypress open
+```
+To stop it, simply ctrl + c.
+
+navigate to E2E testing > specs > frontend\gpx_app_front\cypress\frontend_test.cy.js
+you can either add to the specs for further tests, or utilise existing files.
+

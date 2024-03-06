@@ -1,44 +1,97 @@
 <template>
-    <form @submit="login">
-      <input v-model="username" placeholder="Username">
-      <input v-model="password" type="password">
-      <input type="submit" value="Submit">
-    </form>
-  </template>
-  
-  <script>
-  import { mapActions, mapGetters } from 'vuex'
-  export default {
-    data: () => ({
-      user: {
-        username: null,
-        password: null
-      }
-    }),
-    computed: {
-      ...mapGetters({
-        authUser: 'auth/user'
-      })
+  <div class="login-container">
+    <h1 class="title">Login to Your App</h1>
+    <form @submit.prevent="handleLogin"></form>
+    <div class="loginbox-in">
+      <div class="username">
+        <input
+          class="username"
+          id="username"
+          v-model="text"
+          placeholder="Enter your username"
+        />
+      </div>
+      <div class="password">
+        <input
+          class="password"
+          id="password"
+          v-model="password"
+          type="password"
+          placeholder="Enter your password"
+        />
+      </div>
+      <button type="submit">Log into your account</button>
+    </div>
+  </div>
+  <br />
+  <!-- <p>API Response: {{ APIResponse }}</p> -->
+</template>
+
+<script>
+// import axios from "axios";
+
+export default {
+  name: "LoginComponent",
+  data() {
+    return {
+      // login data
+    };
+  },
+  methods: {
+    async handleLogin() {
+      // login
     },
-    methods: {
-      ...mapActions({
-        loginUser: 'auth/loginUser'
-      }),
-      async login() {
-        await this.loginUser(this.user)
-          .then(() => {
-            if (this.authUser.authenticated) {
-              this.$router.push('/secure')
-            } else {
-              // Handle error
-              this.user = {
-                username: null,
-                password: null
-              }
-            }
-          })
-        
-      }
-    }
-  }
-  </script>
+  },
+};
+</script>
+
+<style scoped>
+.title {
+  margin-top: 5cm; 
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center; 
+}
+
+.loginbox-in {
+  height: 250px; 
+  max-width: 500px; 
+  margin: auto;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.username,
+.password {
+  margin-bottom: 15px;
+}
+
+.username input,
+.password input {
+  width: 400px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  width: 80%;
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+</style>
