@@ -3,6 +3,7 @@ import HelloWorld from "./components/HelloWorld.vue";
 import axios from "axios";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
+import MapViewer from "./components/MapViewer.vue";
 
 export default {
   name: "App",
@@ -31,6 +32,7 @@ export default {
     HelloWorld,
     Login,
     Register,
+    MapViewer,
   },
 };
 </script>
@@ -45,6 +47,7 @@ export default {
   <p>API Response: {{ APIResponse }}</p>
   <Login></Login>
   <Register></Register>
+  <MapViewer></MapViewer>
 </template>
 
 <style scoped></style>
