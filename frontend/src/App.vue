@@ -1,8 +1,5 @@
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
 import axios from "axios";
-import Login from "./components/Login.vue";
-import Register from "./components/Register.vue";
 
 export default {
   name: "App",
@@ -13,38 +10,16 @@ export default {
     };
   },
   methods: {
-    async testApi() {
-      try {
-        const response = await axios.get(
-          `http://localhost:${process.env.VUE_APP_BACKEND_PORT}/`
-        );
-        this.APIResponse = response.data;
-        console.log(this.APIResponse);
-        console.log(process.env.VUE_APP_BACKEND_PORT);
-      } catch (error) {
-        this.APIResponse = "Error: " + error;
-        console.error(error);
-      }
-    },
+
   },
   components: {
-    HelloWorld,
-    Login,
-    Register,
+
   },
 };
 </script>
 
 <template>
-  <div>
-    <p>{{ msg }}</p>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
-
-  <button @click="testApi">Test API</button>
-  <p>API Response: {{ APIResponse }}</p>
-  <Login></Login>
-  <Register></Register>
+<router-view/>
 </template>
 
 <style scoped></style>
