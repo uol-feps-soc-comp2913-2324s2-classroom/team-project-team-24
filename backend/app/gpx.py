@@ -42,19 +42,5 @@ class GPX:
         return map_html
 
     
-    def get_moving_data(self):
-        return self.gpx.get_moving_data()
-
-
-
-    
-
-# Be careful of waypoint2.gpx - it has a LOT of waypoints and runs very fucking slow
-# Only uncomment one of these at a time - they stop the program when opened
-
-# display_waypoints('waypoint1.gpx', 14).show_in_browser()
-# display_track('track1.gpx', 14).show_in_browser()
-# display_track('track2.gpx', 10).show_in_browser()
-g = GPX('track1.gpx')
-# g.display(13).show_in_browser()
-print(g.get_moving_data())
+    #def get_moving_data(self):
+        #return self.gpx.get_moving_data()
