@@ -9,10 +9,9 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
-    
     defaults:
       run:
-        working-directory: ./frontend
+        working-directory: ./frontend/
         
     steps:
       - name: Checkout
