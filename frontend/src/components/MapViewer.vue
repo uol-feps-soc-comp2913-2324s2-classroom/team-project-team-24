@@ -16,7 +16,7 @@
     },
     async mounted() {
       try {
-        const response = await axios.get(`http://localhost:${process.env.VUE_APP_BACKEND_PORT}/api/map`);
+        const response = await axios.get(`http://localhost:${process.env.VUE_APP_BACKEND_PORT}/core/map`);
         const mapHtml = response.data;
         const blob = new Blob([mapHtml], { type: 'text/html' });
         this.mapUrl = URL.createObjectURL(blob);
