@@ -1,25 +1,31 @@
 <script>
-import axios from "axios";
+
+import sideNav from './components/sideNav.vue';
 
 export default {
-  name: "App",
-  data() {
-    return {
-      msg: "Welcome to Your Vue.js App",
-      APIResponse: "",
-    };
-  },
-  methods: {
+    name: "App",
+    data() {
+        return {
 
-  },
-  components: {
+        };
+    },
+    methods: {
 
-  },
+    },
+    components: {
+        sideNav,
+    },
 };
 </script>
 
 <template>
-<router-view/>
+
+<div class="main" id="mainElement">
+    <sideNav />
+    <div class="content">
+        <router-view />
+    </div>
+</div>
 </template>
 
 <style scoped></style>

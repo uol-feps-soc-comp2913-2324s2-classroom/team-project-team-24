@@ -1,0 +1,68 @@
+:root{
+    --l0-color: #F2F2F7;
+    --l1-color: #FFFFFF;
+    --text-color: #000000;
+    --app-green: #1ED760;
+    --unselected-color: #646464;
+    --selected-color: #000000;
+    --border-radius: 10px;
+    --font-size: 16px;
+    --font-family: 'Roboto', sans-serif;
+    --scrollbar-background: #e6e6e6;
+    --scrollbar-thumb: #b9ffa8;
+}
+
+body{
+    margin:7px !important;
+    padding: 0 !important;
+    font-family: var(--font-family) !important;
+    background-color: var(--l0-color) !important;
+    color: var(--text-color) !important;
+}
+
+.main{
+    
+}
+
+.sideNav{
+    width: 5rem;
+    height: 100vh;
+    position: fixed;
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
+}
+
+.navList{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.margined{
+    margin-left: 5rem !important;
+}
+::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-background);
+    border: solid 20px transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border: solid 50px transparent;
+    border-radius: 0.25rem;
+}
+
+.content{
+    margin-left: 5rem !important;
+    padding: 1rem;
+    background-color: var(--l1-color) !important;
+    border-radius: var(--border-radius);
+    position: fixed;
+    height: 100vh;
+    overflow: auto;
+}

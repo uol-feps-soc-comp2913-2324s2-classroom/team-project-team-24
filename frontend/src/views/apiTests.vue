@@ -1,5 +1,4 @@
 <script>
-import HelloWorld from "./HelloWorld.vue";
 import axios from "axios";
 import Login from "./Login.vue";
 import Register from "./Register.vue";
@@ -28,7 +27,6 @@ export default {
     },
   },
   components: {
-    HelloWorld,
     Login,
     Register,
   },
@@ -39,8 +37,6 @@ export default {
   <div>
     <p>{{ msg }}</p>
   </div>
-  <HelloWorld msg="Vite + Vue" />
-
   <button @click="testApi">Test API</button>
   <p>API Response: {{ APIResponse }}</p>
   <Login></Login>

@@ -1,16 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import App from "../App.vue";
-import Login from "../components/Login.vue";
-import Register from "../components/Register.vue";
-import apiTests from "../components/apiTests.vue";
+//import App from "../App.vue";
+import Login from "../views/Login.vue";
+import Register from "../views/Register.vue";
+import apiTests from "../views/apiTests.vue";
+import ActivityCenter from "../views/ActivityCenter.vue";
+import Community from "../views/Community.vue";
+import Membership from "../views/Membership.vue";
+import MyAccount from "../views/MyAccount.vue";
+import MyTrail from "../views/MyTrail.vue";
 
 const routes = [
-    {
-        path: "/",
-        name: "App",
-        component: App,
-    },
     {
         path: "/login",
         name: "Login",
@@ -25,6 +25,31 @@ const routes = [
         path: "/apitest",
         name: "API Tests",
         component: apiTests,
+    },
+    {
+        path: "/activitycenter",
+        name: "Activity",
+        component: ActivityCenter,
+    },
+    {
+        path: "/community",
+        name: "Community",
+        component: Community,
+    },
+    {
+        path: "/membership",
+        name: "Membership",
+        component: Membership,
+    },
+    {
+        path: "/myaccount",
+        name: "Account",
+        component: MyAccount,
+    },
+    {
+        path: "/mytrail",
+        name: "MyTrail",
+        component: MyTrail,
     },
 ]
 
