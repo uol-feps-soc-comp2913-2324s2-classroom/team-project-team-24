@@ -3,48 +3,11 @@ from app.models import *
 from app import app, db
 import bcrypt
 import string, random
+from app.db_functions import get_random_string, create_user, delete_all, delete_user, db_add
 
 """
 CURRENTLY TESTS HAVE NO EDGE CASES/ERROR CHECKING!
 """
-
-# ----------------------------------------------------------------
-# Useful functions NOT TESTS
-def hash_pwd(password):
-    encode = password.encode('utf-8')
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(encode, salt)
-
-def create_user(username, password):
-    u = User()
-    u.username = username
-    u.password = hash_pwd(password)
-    
-    with app.app_context():
-        db.session.add(u)
-        db.session.commit()
-        
-    return u
-
-def delete_all(c):
-    with app.app_context():
-        for user in c.query.all():
-            db.session.delete(user)
-        db.session.commit()
-
-def delete_user(username, password):
-    with app.app_context():
-        result = User.query.filter_by(username=username).all()
-        if len(result) > 0:
-            u = result[0]
-            encode = password.encode('utf-8')
-            if bcrypt.checkpw(encode, u.password):
-                db.session.delete(u)
-        db.session.commit()
-    
-def get_random_string(n):
-    letters = string.ascii_letters
-    return ''.join(random.choice(letters) for x in range(n))
 
 # ----------------------------------------------------------------
 # TESTS START
