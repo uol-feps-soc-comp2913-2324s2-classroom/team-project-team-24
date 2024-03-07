@@ -23,6 +23,10 @@ migrate = Migrate(app, db)
 from app.endpoints import auth
 
 app.register_blueprint(auth.bp)
+
+from app.endpoints import core
+app.register_blueprint(core.bp)
+
 jwt = JWTManager(app)
 
 from app import views, models

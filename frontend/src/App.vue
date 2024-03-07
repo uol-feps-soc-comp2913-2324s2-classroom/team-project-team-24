@@ -1,5 +1,4 @@
 <script>
-
 import sideNav from './components/sideNav.vue';
 
 export default {
@@ -15,11 +14,14 @@ export default {
     components: {
         sideNav,
     },
+  },
+  components: {
+  
+  },
 };
 </script>
 
 <template>
-
 <div class="main" id="mainElement">
     <div class="navPanel">
         <sideNav />
