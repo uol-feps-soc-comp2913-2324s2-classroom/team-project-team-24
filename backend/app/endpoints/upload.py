@@ -3,7 +3,7 @@ from flask import Blueprint, Response
 from flask import request
 import gpxpy
 from app import db, app
-from tests.test_db import create_user
+from app.db_functions import create_user, get_routes_by_user_id
 from app.models import User, Route
 
 bp = Blueprint('upload', __name__)
@@ -19,7 +19,19 @@ def upload():
     route_name = request.form["routeName"]
     # route name is optional, generate default name if empty
     if route_name == "":
-        route_name = "My route"
+        # get existing user routes
+        routes = get_routes_by_user_id(user_id)
+
+        valid_name_found = False
+        i = 1
+        while valid_name_found == False:
+            valid_name_found = True
+            for route in routes:
+                if route.name == f"My route #{i}":
+                    valid_name_found = False
+                    i += 1
+
+        route_name = f"My route #{i}"
 
     exercise_type = request.form["exerciseType"]
     if exercise_type == "":

@@ -44,3 +44,15 @@ def delete_user(username, password):
 def get_random_string(n):
     letters = string.ascii_letters
     return ''.join(random.choice(letters) for x in range(n))
+
+def get_routes_by_user_id(id: int) -> list:
+    """
+    Get all routes belonging to a certain user
+    Args:
+        id (int): User ID
+
+    Returns:
+        (list): list of Routes
+    """
+
+    return Route.query.filter_by(user_id=id)
