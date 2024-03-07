@@ -17,7 +17,9 @@ export default {
 </script>
 
 <template>
-<p>My trail page</p>
+  <div class="myTrailsPageContainer">
+    <h1>My Trails Page</h1>
+  </div>
 </template>
 
 <style scoped></style>
