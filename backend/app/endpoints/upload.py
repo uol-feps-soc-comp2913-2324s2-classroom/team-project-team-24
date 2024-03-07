@@ -32,6 +32,14 @@ def upload():
                     i += 1
 
         route_name = f"My route #{i}"
+    else:
+        # check that user hasn't already used this name
+        # get existing user routes
+        routes = get_routes_by_user_id(user_id)
+
+        for route in routes:
+            if route.name == route_name:
+                return Response("Route name already used", 400)
 
     exercise_type = request.form["exerciseType"]
     if exercise_type == "":

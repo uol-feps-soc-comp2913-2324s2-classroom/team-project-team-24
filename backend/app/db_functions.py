@@ -40,7 +40,7 @@ def delete_user(username, password):
             if bcrypt.checkpw(encode, u.password):
                 db.session.delete(u)
         db.session.commit()
-    
+
 def get_random_string(n):
     letters = string.ascii_letters
     return ''.join(random.choice(letters) for x in range(n))
