@@ -1,53 +1,31 @@
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-import axios from "axios";
-import Login from "./components/Login.vue";
-import Register from "./components/Register.vue";
-import MapViewer from "./components/MapViewer.vue";
+import sideNav from './components/sideNav.vue';
 
 export default {
-  name: "App",
-  data() {
-    return {
-      msg: "Welcome to Your Vue.js App",
-      APIResponse: "",
-    };
-  },
-  methods: {
-    async testApi() {
-      try {
-        const response = await axios.get(
-          `http://localhost:${process.env.VUE_APP_BACKEND_PORT}/`
-        );
-        this.APIResponse = response.data;
-        console.log(this.APIResponse);
-        console.log(process.env.VUE_APP_BACKEND_PORT);
-      } catch (error) {
-        this.APIResponse = "Error: " + error;
-        console.error(error);
-      }
+    name: "App",
+    data() {
+        return {
+
+        };
     },
-  },
-  components: {
-    HelloWorld,
-    Login,
-    Register,
-    MapViewer,
-  },
+    methods: {
+
+    },
+    components: {
+        sideNav,
+    },
 };
 </script>
 
 <template>
-  <div>
-    <p>{{ msg }}</p>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
-
-  <button @click="testApi">Test API</button>
-  <p>API Response: {{ APIResponse }}</p>
-  <Login></Login>
-  <Register></Register>
-  <MapViewer></MapViewer>
+<div class="main" id="mainElement">
+    <div class="navPanel">
+        <sideNav />
+    </div>
+    <div class="content">
+        <router-view />
+    </div>
+</div>
 </template>
 
 <style scoped></style>
