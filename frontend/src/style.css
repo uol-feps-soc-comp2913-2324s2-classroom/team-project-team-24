@@ -1,0 +1,175 @@
+:root{
+    --l0-color: #F2F2F7;
+    --l1-color: #FFFFFF;
+    --text-color: #000000;
+    --app-green: #1ED760;
+    --unselected-color: #646464;
+    --selected-color: #000000;
+    --border-radius: 10px;
+    --font-size: 16px;
+    --font-family: 'Roboto', sans-serif;
+    --scrollbar-background: #e6e6e6;
+    --scrollbar-thumb: #b9ffa8;
+    --transition-speed: 100ms;
+}
+
+body{
+    padding: 7px !important;
+    font-family: var(--font-family) !important;
+    background-color: var(--l0-color) !important;
+    color: var(--text-color) !important;
+}
+
+.main{
+    display: grid;
+    grid-template-columns: 1fr 19fr;
+    gap: 7px;
+}
+
+.sideNav{
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
+    height: 98vh;
+    max-width: 5rem;
+    transition: max-width 0.2s ease-in-out;
+}
+
+.navList{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.navLogo{
+    padding: 0.2rem;
+}
+
+.logoText{
+    font-weight: bold;
+    color: var(--text-color)
+}
+
+.navItemLogo{
+    padding: 1rem 0 1rem 0;
+}
+
+
+.navIcons{
+    padding: 1rem;
+}
+
+.navItem{
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.navItem:last-child{
+    margin-top: auto;
+    margin-bottom: 0;
+    padding: 0.6rem 0 0.6rem 0;
+}
+
+.navItem:last-child:hover{
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.navLink{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    padding: 0.5rem;
+    text-decoration: none !important;
+    color: var(--unselected-color);
+}
+
+.navLink:hover{
+
+}
+
+.navItemLinkContainer:hover{
+    background-color: #eeeeee;
+}
+
+.navText{
+    display: none;
+    text-decoration: none !important;
+    margin-left: 1rem;
+    white-space: nowrap;
+}
+
+.router-link-active .navText{
+    color: var(--selected-color);
+    font-weight: bold;
+}
+
+.sideNav:hover{
+    width: 13rem;
+    max-width: 14rem;
+    z-index: 1;
+}
+
+.sideNav:hover .navText{
+    display: block;
+    text-decoration: none !important;
+}
+
+::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-background);
+    border: solid 20px transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border: solid 50px transparent;
+    border-radius: 0.25rem;
+}
+
+.content{
+    height: 98vh;
+    overflow-y: auto;
+}
+
+.communityPageContainer {
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+    height: 100%;
+}
+
+.activityCenterPageContainer {
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+    height: 100%;
+}
+
+.membershipPageContainer {
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+    height: 100%;
+}
+
+.myTrailsPageContainer {
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+    height: 100%;
+}
+
+.myAccountPageContainer {
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+    height: 100%;
+}

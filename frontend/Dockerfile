@@ -2,8 +2,14 @@
 FROM node:lts-alpine AS build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --global serve
-RUN npm install
+
+# Use the cache to avoid downloading the dependencies again
+RUN --mount=type=cache,target=/root/.cache/npm \ 
+    npm install --global serve
+
+# Also use the cache to avoid downloading the dependencies again
+RUN --mount=type=cache,target=/root/.cache/npm \ 
+    npm install
 
 COPY . /app
 
