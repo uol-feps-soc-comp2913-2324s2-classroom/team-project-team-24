@@ -138,4 +138,5 @@ body{
     background-color: var(--l1-color) !important;
     border-radius: var(--border-radius);
     height: 98vh;
+    overflow-y: auto;
 }
