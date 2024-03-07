@@ -2,13 +2,6 @@ from app import db, app
 import bcrypt
 from sqlalchemy import or_
 
-# THIS DOESN'T BELONG HERE BUT IDK WHERE TO PUT IT
-def db_add(*args):
-    with app.app_context():
-        for arg in args:
-            db.session.add(arg)
-        db.session.commit()
-
 # MANY TO MANY RELATIONSHIP TABLES
 userInGroup = db.Table('user_in_group', db.Model.metadata,
                         db.Column('user_id', db.Integer, db.ForeignKey("user.id"), primary_key=True),
