@@ -1,6 +1,7 @@
 # endpoints/upload.py
 from flask import Blueprint, Response
 from flask import request
+import gpxpy
 from app import db, app
 from tests.test_db import create_user
 from app.models import User, Route
@@ -32,6 +33,15 @@ def upload():
 
     if len(gpx_data) == 0:
         return Response("Invalid file", 400)
+    
+    # check file is appropriate gpx type
+    try:
+        gpx = gpxpy.parse(gpx_data)
+
+        if len(gpx.tracks) == 0:
+            return Response("Invalid file contents", 400)
+    except gpxpy.gpx.GPXXMLSyntaxException:
+        return Response("Invalid file type", 400)
 
     # save route data to db
     route = Route(data=gpx_data, name=route_name, exercise_type=exercise_type, user_id=user_id)
