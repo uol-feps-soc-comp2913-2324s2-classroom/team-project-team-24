@@ -44,12 +44,16 @@ const handleFileUpload = event => {
 const uploadData = () => {
   console.log('Uploading data...');
   // Here you would typically handle the file upload to your backend
-  // var formData = new FormData();
-  // var imagefile = document.querySelector('#file');
-  // formData.append("image", imagefile.files[0]);
+  var formData = new FormData();
+  formData.append("file", selectedFile.value);
+  formData.append("routeName", routeName.value);
+  formData.append("exerciseType", exerciseType.value);
+  console.log(formData);
 
-
-  axios.post(`http://localhost:${process.env.VUE_APP_BACKEND_PORT}/upload`)
+  axios.post(`http://localhost:${process.env.VUE_APP_BACKEND_PORT}/upload`, formData,
+    {
+      headers: {'Content-Type': 'multipart/form-data'}
+    })
     .then(
       function (response) {
         console.log(response);
