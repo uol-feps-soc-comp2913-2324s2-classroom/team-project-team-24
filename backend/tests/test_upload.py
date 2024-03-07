@@ -6,7 +6,7 @@ from app.db_functions import *
 def test_successful_upload(client):
     delete_all(Route)
 
-    with open("../example_data/track1.gpx", "rb") as file:
+    with open("example_data/track1.gpx", "rb") as file:
         # doesn't yet use user authentication, relies on test user
         response = client.post('/upload', 
                                 data={'file': (file, "track1.gpx"), 'routeName': 'test_route', 'exerciseType': 'test_exercise'})
@@ -23,7 +23,7 @@ def test_no_file_upload(client):
 def test_invalid_file_upload(client):
     delete_all(Route)
 
-    with open("../example_data/waypoint1.gpx", "rb") as file:
+    with open("example_data/waypoint1.gpx", "rb") as file:
         # doesn't yet use user authentication, relies on test user
         response = client.post('/upload', 
                                 data={'file': (file, "track1.gpx"), 'routeName': 'test_route', 'exerciseType': 'test_exercise'})
@@ -33,12 +33,12 @@ def test_invalid_file_upload(client):
 def test_duplicate_route_name(client):
     delete_all(Route)
 
-    with open("../example_data/track1.gpx", "rb") as file:
+    with open("example_data/track1.gpx", "rb") as file:
         # doesn't yet use user authentication, relies on test user
         response = client.post('/upload', 
                                 data={'file': (file, "track1.gpx"), 'routeName': 'test_route', 'exerciseType': 'test_exercise'})
     
-    with open("../example_data/track1.gpx", "rb") as file:
+    with open("example_data/track1.gpx", "rb") as file:
         response = client.post('/upload', 
                                 data={'file': (file, "track1.gpx"), 'routeName': 'test_route', 'exerciseType': 'test_exercise'})
         assert response.status_code == 400
@@ -47,7 +47,7 @@ def test_duplicate_route_name(client):
 def test_empty_route_name(client):
     delete_all(Route)
 
-    with open("../example_data/track1.gpx", "rb") as file:
+    with open("example_data/track1.gpx", "rb") as file:
         # doesn't yet use user authentication, relies on test user
         response = client.post('/upload', 
                                 data={'file': (file, "track1.gpx"), 'routeName': '', 'exerciseType': 'test_exercise'})
