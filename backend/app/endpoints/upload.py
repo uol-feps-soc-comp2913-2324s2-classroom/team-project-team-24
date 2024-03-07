@@ -1,9 +1,9 @@
 # endpoints/upload.py
 from flask import Blueprint, Response
 from flask import request
-from app.models import User, Route
 from app import db, app
 from tests.test_db import create_user
+from app.models import User, Route
 
 bp = Blueprint('upload', __name__)
 
