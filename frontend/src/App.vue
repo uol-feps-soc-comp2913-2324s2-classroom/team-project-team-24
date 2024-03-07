@@ -14,10 +14,6 @@ export default {
     components: {
         sideNav,
     },
-  },
-  components: {
-  
-  },
 };
 </script>
 
