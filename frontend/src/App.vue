@@ -21,7 +21,9 @@ export default {
 <template>
 
 <div class="main" id="mainElement">
-    <sideNav />
+    <div class="navPanel">
+        <sideNav />
+    </div>
     <div class="content">
         <router-view />
     </div>

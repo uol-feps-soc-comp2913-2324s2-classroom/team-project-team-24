@@ -10,38 +10,115 @@
     --font-family: 'Roboto', sans-serif;
     --scrollbar-background: #e6e6e6;
     --scrollbar-thumb: #b9ffa8;
+    --transition-speed: 100ms;
 }
 
 body{
-    margin:7px !important;
-    padding: 0 !important;
+    padding: 7px !important;
     font-family: var(--font-family) !important;
     background-color: var(--l0-color) !important;
     color: var(--text-color) !important;
 }
 
 .main{
-    
+    display: grid;
+    grid-template-columns: 1fr 19fr;
+    gap: 7px;
 }
 
 .sideNav{
-    width: 5rem;
-    height: 100vh;
-    position: fixed;
     background-color: var(--l1-color);
     border-radius: var(--border-radius);
+    height: 98vh;
+    max-width: 5rem;
+    transition: max-width 0.2s ease-in-out;
 }
 
 .navList{
+    padding: 0;
+    margin: 0;
     list-style: none;
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
 }
 
-.margined{
-    margin-left: 5rem !important;
+.navLogo{
+    padding: 0.2rem;
 }
+
+.logoText{
+    font-weight: bold;
+    color: var(--text-color)
+}
+
+.navItemLogo{
+    padding: 1rem 0 1rem 0;
+}
+
+
+.navIcons{
+    padding: 1rem;
+}
+
+.navItem{
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.navItem:last-child{
+    margin-top: auto;
+    margin-bottom: 0;
+    padding: 0.6rem 0 0.6rem 0;
+}
+
+.navItem:last-child:hover{
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.navLink{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    padding: 0.5rem;
+    text-decoration: none !important;
+    color: var(--unselected-color);
+}
+
+.navLink:hover{
+
+}
+
+.navItemLinkContainer:hover{
+    background-color: #eeeeee;
+}
+
+.navText{
+    display: none;
+    text-decoration: none !important;
+    margin-left: 1rem;
+    white-space: nowrap;
+}
+
+.router-link-active .navText{
+    color: var(--selected-color);
+    font-weight: bold;
+}
+
+.sideNav:hover{
+    width: 13rem;
+    max-width: 14rem;
+    z-index: 1;
+}
+
+.sideNav:hover .navText{
+    display: block;
+    text-decoration: none !important;
+}
+
 ::-webkit-scrollbar {
     width: 0.5rem;
 }
@@ -58,11 +135,7 @@ body{
 }
 
 .content{
-    margin-left: 5rem !important;
-    padding: 1rem;
     background-color: var(--l1-color) !important;
     border-radius: var(--border-radius);
-    position: fixed;
-    height: 100vh;
-    overflow: auto;
+    height: 98vh;
 }
