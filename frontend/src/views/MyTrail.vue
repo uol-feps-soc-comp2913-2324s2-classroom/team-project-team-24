@@ -1,5 +1,5 @@
 <script>
-
+import UploadGPX from '@/components/UploadGPX.vue';
 export default {
   name: "MyTrails",
   data() {
@@ -11,7 +11,7 @@ export default {
 
   },
   components: {
-
+    UploadGPX
   },
 };
 </script>
@@ -19,7 +19,7 @@ export default {
 <template>
   <div class="myTrailsPageContainer">
     <h1>My Trails Page</h1>
+    <UploadGPX />
   </div>
 </template>
-
 <style scoped></style>
