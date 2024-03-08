@@ -17,7 +17,9 @@ export default {
 </script>
 
 <template>
-<p>Activity Center Page</p>
+  <div class="activityCenterPageContainer">
+    <h1>Activity Center Page</h1>
+  </div>
 </template>
 
 <style scoped></style>

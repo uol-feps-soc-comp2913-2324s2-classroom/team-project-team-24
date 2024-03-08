@@ -1,5 +1,4 @@
 <script>
-
 import sideNav from './components/sideNav.vue';
 
 export default {
@@ -19,9 +18,10 @@ export default {
 </script>
 
 <template>
-
 <div class="main" id="mainElement">
-    <sideNav />
+    <div class="navPanel">
+        <sideNav />
+    </div>
     <div class="content">
         <router-view />
     </div>

@@ -17,7 +17,11 @@ export default {
 </script>
 
 <template>
-<p>Community Page</p>
+  <div class="communityPageContainer">
+    <h1>Community Page</h1>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>

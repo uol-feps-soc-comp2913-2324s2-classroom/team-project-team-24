@@ -2,7 +2,8 @@
 from flask import Blueprint
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies, unset_jwt_cookies, jwt_required
-from app.models import User, db_add
+from app.models import User
+from ..db_functions import db_add
 
 
 bp = Blueprint('auth', __name__, url_prefix="/auth")

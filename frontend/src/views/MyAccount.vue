@@ -17,7 +17,9 @@ export default {
 </script>
 
 <template>
-<p>My account page</p>
+  <div class="myAccountPageContainer">
+    <h1>My Account Page</h1>
+  </div>
 </template>
 
 <style scoped></style>

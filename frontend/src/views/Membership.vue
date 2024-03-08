@@ -17,7 +17,9 @@ export default {
 </script>
 
 <template>
-<p>Membership page</p>
+  <div class="membershipPageContainer">
+    <h1>Membership Page</h1>
+  </div>
 </template>
 
 <style scoped></style>
