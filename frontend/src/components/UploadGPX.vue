@@ -22,8 +22,6 @@ export default {
     <div class="mx-auto" style="max-width: 50%;">
       <!-- File upload input is now required, only gpx files can be accepted -->
       <input type="file" @change="handleFileUpload" class="form-control" accept=".gpx" />
-      <!-- Warning text if no file is selected -->
-      <div v-if="!selectedFile" class="text-danger mt-2">File upload required</div>
       <input type="text" placeholder="Enter the name of your route" v-model="routeName" class="form-control mt-2" />
       <!-- Warning for duplicate name -->
       <div v-if="isDuplicateName" class="text-danger mt-2">Duplicate name detected. Please choose a different name.</div>
@@ -37,7 +35,7 @@ export default {
       </select>
       <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
         <!-- Button disabled logic checks if routeName has content and file is uploaded -->
-        <button @click="uploadData" class="btn btn-primary" :disabled="!selectedFile || isDuplicateName || routeName.length === 0">Upload</button>
+        <button @click="uploadData" class="btn btn-primary" :disabled="!selectedFile || isDuplicateName">Upload</button>
 
       </div>
     </div>
