@@ -1,13 +1,13 @@
 <template>
   <div class="login-container">
     <h1 class="title">Login to Your App</h1>
-    <form @submit.prevent="handleLogin"></form>
+    <form>
     <div class="loginbox-in">
       <div class="username">
         <input
           class="username"
           id="username"
-          v-model="text"
+          v-model="username"
           placeholder="Enter your username"
         />
       </div>
@@ -20,8 +20,9 @@
           placeholder="Enter your password"
         />
       </div>
-      <button type="submit">Log into your account</button>
+      <button type="submit" @click.prevent="onSubmit">Login</button>
     </div>
+  </form>
   </div>
   <br />
   <!-- <p>API Response: {{ APIResponse }}</p> -->
@@ -34,13 +35,22 @@ export default {
   name: "LoginComponent",
   data() {
     return {
-      // login data
+      username: '',
+      password: '',
+      invalidCredentials: false
     };
   },
   methods: {
-    async handleLogin() {
-      // login
-    },
+    onSubmit() {
+      let formData = {
+					username: this.username,
+					password: this.password,
+				}
+
+				this.$store.dispatch('auth/login', formData).then(() => {
+					this.$router.push('/activitycenter');
+				});
+    }
   },
 };
 </script>

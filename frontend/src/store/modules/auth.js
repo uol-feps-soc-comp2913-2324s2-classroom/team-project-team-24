@@ -1,51 +1,71 @@
-import { authService } from '@/api'
-
-const namespaced = true;
+import axios from 'axios'
+import router from '@/router'
 
 const state = {
-  user: {},
-  isLoggedIn: false
-};
-
-const getters = {
-  isLoggedIn: state => state.isLoggedIn,
-  user: state => state.user
-};
-
-const actions = {
-  async registerUser({ dispatch }, user) {
-    await authService.post('/register', user)
-    await dispatch('fetchUser')
-  },
-  async loginUser({ dispatch }, user) {
-    await authService.post('/login', user)
-    await dispatch('fetchUser')
-  },
-  async fetchUser({ commit }) {
-    await authService.get('/user')
-      .then(({ data }) => commit('setUser', data))
-  },
-  async logoutUser({ commit }) {
-    await authService.post('/logout');
-    commit('logoutUserState');
-  }
+	username: null,
+	token: null,
 };
 
 const mutations = {
-  setUser(state, user) {
-    state.isLoggedIn = true;
-    state.user = user;
-  },
-  logoutUserState(state) {
-    state.isLoggedIn = false;
-    state.user = {};
-  }
+	authUser(state, userData) {
+		state.username = userData.username;
+		state.token = userData.token;
+	},
+	clearAuthData(state) {
+		state.username = null;
+		state.token = null;
+	},
+};
+
+const getters = {
+	isAuthenticated(state) {
+		return state.token !== null;
+	},
+};
+
+const actions = {
+	login: ({commit}, authData) => {
+		axios.post('/auth/login', {
+			username: authData.username,
+			password: authData.password,
+		}).then(response => {
+			let success = response.data.success;
+
+			if (success === true) {
+				commit('authUser', { username: authData.username, token: response.data.token });
+				localStorage.setItem('token', response.data.token);
+				localStorage.setItem('username', authData.username);
+				router.replace('activitycenter');
+			} 
+			else {
+				console.log('Login error');
+			}
+		}).catch(error => {
+			console.log(error);
+		})
+	},
+	autoLogin({commit}) {
+		let token = localStorage.getItem('token');
+		let username = localStorage.getItem('username');
+
+		if (!token || !username) {
+			return;
+		}
+
+		commit('authUser', { username: username, token: token });
+	},
+	logout: ({commit}) => {
+		commit('clearAuthData');
+		localStorage.removeItem('username');
+		localStorage.removeItem('token');
+		router.replace('login');
+	},
 };
 
 export default {
-  namespaced,
-  state,
-  getters,
-  actions,
-  mutations
-};
+	namespaced: true,
+	state,
+	mutations,
+	getters,
+	actions,
+}

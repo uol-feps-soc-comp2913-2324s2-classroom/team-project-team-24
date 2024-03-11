@@ -3,6 +3,9 @@ import sideNav from './components/sideNav.vue';
 
 export default {
     name: "App",
+    created() {
+      this.$store.dispatch('auth/autoLogin');  
+    },
     data() {
         return {
 

@@ -8,7 +8,11 @@ export default {
     };
   },
   methods: {
-
+    onSubmit() {
+      this.$store.dispatch('auth/logout').then(() => {
+        this.$router.push('/login');
+      });
+    }
   },
   components: {
 
@@ -19,6 +23,7 @@ export default {
 <template>
   <div class="membershipPageContainer">
     <h1>Membership Page</h1>
+    <button type="submit" @click.prevent="onSubmit">Logout</button>
   </div>
 </template>
 
