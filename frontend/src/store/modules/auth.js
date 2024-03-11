@@ -24,7 +24,7 @@ const getters = {
 };
 
 const actions = {
-	login: ({commit}, authData) => {
+	login: ({ commit }, authData) => {
 		axios.post('/auth/login', {
 			username: authData.username,
 			password: authData.password,
@@ -36,7 +36,7 @@ const actions = {
 				localStorage.setItem('token', response.data.token);
 				localStorage.setItem('username', authData.username);
 				router.replace('activitycenter');
-			} 
+			}
 			else {
 				console.log('Login error');
 			}
@@ -44,7 +44,7 @@ const actions = {
 			console.log(error);
 		})
 	},
-	autoLogin({commit}) {
+	autoLogin({ commit }) {
 		let token = localStorage.getItem('token');
 		let username = localStorage.getItem('username');
 
@@ -54,7 +54,7 @@ const actions = {
 
 		commit('authUser', { username: username, token: token });
 	},
-	logout: ({commit}) => {
+	logout: ({ commit }) => {
 		commit('clearAuthData');
 		localStorage.removeItem('username');
 		localStorage.removeItem('token');

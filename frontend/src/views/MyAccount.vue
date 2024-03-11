@@ -1,25 +1,25 @@
 <script>
 
 export default {
-  name: "MyAccount",
-  data() {
-    return {
+    name: "MyAccount",
+    data() {
+        return {
 
-    };
-  },
-  methods: {
+        };
+    },
+    methods: {
 
-  },
-  components: {
+    },
+    components: {
 
-  },
+    },
 };
 </script>
 
 <template>
-  <div class="myAccountPageContainer">
-    <h1>My Account Page</h1>
-  </div>
+    <div class="myAccountPageContainer">
+        <h1>My Account Page</h1>
+    </div>
 </template>
 
 <style scoped></style>

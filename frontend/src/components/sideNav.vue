@@ -1,62 +1,62 @@
 <script>
 
 export default {
-  name: "SideNav",
-  data() {
-    return {
+    name: "SideNav",
+    data() {
+        return {
 
-    };
-  },
-  methods: {
+        };
+    },
+    methods: {
 
-  },
-  components: {
+    },
+    components: {
 
-  },
+    },
 };
 </script>
 
 <template>
-<nav class="sideNav">
-    <ul class="navList">
-        <li class="navItem navItemLogo">
-            <router-link to="/" class="navLink">
-                <img src="../assets/Logo.svg" alt="Trails Icon" class="navLogo">
-                <span class="navText logoText">Walkley</span>
-            </router-link>
-        </li>
-        <li class="navItem navItemLinkContainer navItemBoldOnSelect">
-            <router-link :to="{ name: 'MyTrail'}" class="navLink">
-                <img src="../assets/tracks_icon.svg" alt="Trails Icon" class="navIcons">
-                <span class="navText">My Trails</span>
-            </router-link>
-        </li>
-        <li class="navItem navItemLinkContainer navItemBoldOnSelect">
-            <router-link :to="{ name: 'Activity'}" class="navLink">
-                <img src="../assets/activity_icon.svg" alt="Trails Icon" class="navIcons">
-                <span class="navText">Activity</span>
-            </router-link>
-        </li>
-        <li class="navItem navItemLinkContainer navItemBoldOnSelect">
-            <router-link :to="{ name: 'Community'}" class="navLink">
-                <img src="../assets/community_icon.svg" alt="Community Icon" class="navIcons">
-                <span class="navText">Community</span>
-            </router-link>
-        </li>
-        <li class="navItem navItemLinkContainer navItemBoldOnSelect">
-            <router-link :to="{ name: 'Membership'}" class="navLink">
-                <img src="../assets/membership_icon.svg" alt="Membership Icon" class="navIcons">
-                <span class="navText">Membership</span>
-            </router-link>
-        </li>
-        <li class="navItem navItemLinkContainer navItemBoldOnSelect">
-            <router-link :to="{ name: 'Account'}" class="navLink">
-                <img src="../assets/community_icon.svg" alt="Membership Icon" class="navIcons">
-                <span class="navText">My Account</span>
-            </router-link>
-        </li>
-    </ul>
-</nav>
+    <nav class="sideNav">
+        <ul class="navList">
+            <li class="navItem navItemLogo">
+                <router-link to="/" class="navLink">
+                    <img src="../assets/Logo.svg" alt="Trails Icon" class="navLogo">
+                    <span class="navText logoText">Walkley</span>
+                </router-link>
+            </li>
+            <li class="navItem navItemLinkContainer navItemBoldOnSelect">
+                <router-link :to="{ name: 'MyTrail' }" class="navLink">
+                    <img src="../assets/tracks_icon.svg" alt="Trails Icon" class="navIcons">
+                    <span class="navText">My Trails</span>
+                </router-link>
+            </li>
+            <li class="navItem navItemLinkContainer navItemBoldOnSelect">
+                <router-link :to="{ name: 'Activity' }" class="navLink">
+                    <img src="../assets/activity_icon.svg" alt="Trails Icon" class="navIcons">
+                    <span class="navText">Activity</span>
+                </router-link>
+            </li>
+            <li class="navItem navItemLinkContainer navItemBoldOnSelect">
+                <router-link :to="{ name: 'Community' }" class="navLink">
+                    <img src="../assets/community_icon.svg" alt="Community Icon" class="navIcons">
+                    <span class="navText">Community</span>
+                </router-link>
+            </li>
+            <li class="navItem navItemLinkContainer navItemBoldOnSelect">
+                <router-link :to="{ name: 'Membership' }" class="navLink">
+                    <img src="../assets/membership_icon.svg" alt="Membership Icon" class="navIcons">
+                    <span class="navText">Membership</span>
+                </router-link>
+            </li>
+            <li class="navItem navItemLinkContainer navItemBoldOnSelect">
+                <router-link :to="{ name: 'Account' }" class="navLink">
+                    <img src="../assets/community_icon.svg" alt="Membership Icon" class="navIcons">
+                    <span class="navText">My Account</span>
+                </router-link>
+            </li>
+        </ul>
+    </nav>
 </template>
 
 <style scoped></style>

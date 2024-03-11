@@ -31,7 +31,7 @@ const routes = [
         path: "/activitycenter",
         name: "Activity",
         component: ActivityCenter,
-        meta: { requiresAuth: true}
+        meta: { requiresAuth: true }
     },
     {
         path: "/community",
@@ -61,37 +61,37 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-	let token = localStorage.getItem('token');
-	let requireAuth = to.matched.some(record => record.meta.requiresAuth);
+    let token = localStorage.getItem('token');
+    let requireAuth = to.matched.some(record => record.meta.requiresAuth);
 
-	if (!requireAuth) {
-		next();
-	}
+    if (!requireAuth) {
+        next();
+    }
 
-	if (requireAuth && !token) {
-		next('/login');
-	}
+    if (requireAuth && !token) {
+        next('/login');
+    }
 
-	if (to.path === '/login') {
-		if (token) {
-			axiosAuth.post('/auth/verify-token').then(() => {
-				next('/activitycenter');
-			}).catch(() => {
-				next();
-			});
-		}
-		else {
-			next();
-		}
-	}
+    if (to.path === '/login') {
+        if (token) {
+            axiosAuth.post('/auth/verify-token').then(() => {
+                next('/activitycenter');
+            }).catch(() => {
+                next();
+            });
+        }
+        else {
+            next();
+        }
+    }
 
-	if (requireAuth && token) {
-		axiosAuth.post('/auth/verify-token').then(() => {
-			next();
-		}).catch(() => {
-			next('/login');
-		})
-	}
+    if (requireAuth && token) {
+        axiosAuth.post('/auth/verify-token').then(() => {
+            next();
+        }).catch(() => {
+            next('/login');
+        })
+    }
 });
 
 export default router

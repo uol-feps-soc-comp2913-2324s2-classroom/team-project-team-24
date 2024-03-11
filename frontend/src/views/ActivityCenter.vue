@@ -1,25 +1,25 @@
 <script>
 
 export default {
-  name: "ActivityCenter",
-  data() {
-    return {
+    name: "ActivityCenter",
+    data() {
+        return {
 
-    };
-  },
-  methods: {
+        };
+    },
+    methods: {
 
-  },
-  components: {
+    },
+    components: {
 
-  },
+    },
 };
 </script>
 
 <template>
-  <div class="activityCenterPageContainer">
-    <h1>Activity Center Page</h1>
-  </div>
+    <div class="activityCenterPageContainer">
+        <h1>Activity Center Page</h1>
+    </div>
 </template>
 
 <style scoped></style>

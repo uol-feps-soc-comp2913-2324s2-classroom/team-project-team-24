@@ -1,27 +1,25 @@
 <script>
 
 export default {
-  name: "CommunityCenter",
-  data() {
-    return {
+    name: "CommunityCenter",
+    data() {
+        return {
 
-    };
-  },
-  methods: {
+        };
+    },
+    methods: {
 
-  },
-  components: {
+    },
+    components: {
 
-  },
+    },
 };
 </script>
 
 <template>
-  <div class="communityPageContainer">
-    <h1>Community Page</h1>
-  </div>
+    <div class="communityPageContainer">
+        <h1>Community Page</h1>
+    </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
