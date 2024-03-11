@@ -1,7 +1,8 @@
 <script>
-import axios from "axios";
+// import axios from "axios";
 import Login from "./Login.vue";
 import Register from "./Register.vue";
+import axiosAuth from "@/api/axios-auth"
 
 export default {
   name: "API Test",
@@ -14,8 +15,8 @@ export default {
   methods: {
     async testApi() {
       try {
-        const response = await axios.get(
-          `http://localhost:${process.env.VUE_APP_BACKEND_PORT}/`
+        const response = await axiosAuth.get(
+          `/`
         );
         this.APIResponse = response.data;
         console.log(this.APIResponse);
