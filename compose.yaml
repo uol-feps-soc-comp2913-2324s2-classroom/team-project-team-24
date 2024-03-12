@@ -7,7 +7,7 @@ services:
         # (default stop signal from Compose is SIGTERM)
         stop_signal: SIGINT
         ports:
-            - '$VUE_APP_BACKEND_PORT:5000'
+            - '$BACKEND_PORT:5000'
 
     frontend:
         build:
