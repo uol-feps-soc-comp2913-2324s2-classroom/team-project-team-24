@@ -1,5 +1,5 @@
 <script>
-import sideNav from './components/sideNav.vue';
+import sideNavComponent from './components/sideNav.vue';
 
 export default {
     name: "App",
@@ -15,7 +15,7 @@ export default {
 
     },
     components: {
-        sideNav,
+        sideNavComponent,
     },
 };
 </script>
@@ -23,7 +23,7 @@ export default {
 <template>
     <div class="main" id="mainElement">
         <div class="navPanel">
-            <sideNav />
+            <sideNavComponent />
         </div>
         <div class="content">
             <router-view />
