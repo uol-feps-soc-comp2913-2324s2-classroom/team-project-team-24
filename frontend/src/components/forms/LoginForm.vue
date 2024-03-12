@@ -1,13 +1,13 @@
 <template>
     <form>
         <div class="inner-container">
-            <div class="text-input">
-                <input id="username" v-model="username" placeholder="Enter your username" />
+            <div class="form-field">
+                <input class="text-input" id="username" v-model="username" placeholder="Enter your username" />
             </div>
-            <div class="text-input">
-                <input id="password" v-model="password" type="password" placeholder="Enter your password" />
+            <div class="form-field">
+                <input class="text-input" id="password" v-model="password" type="password" placeholder="Enter your password" />
             </div>
-            <button type="submit" @click.prevent="onSubmit">Login</button>
+            <button class="submit-button" type="submit" @click.prevent="onSubmit">Login</button>
         </div>
     </form>
 </template>

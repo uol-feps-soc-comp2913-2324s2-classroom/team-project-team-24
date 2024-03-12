@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-//import App from "../App.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import apiTests from "../views/apiTests.vue";
@@ -9,7 +8,8 @@ import Community from "../views/Community.vue";
 import Membership from "../views/Membership.vue";
 import MyAccount from "../views/MyAccount.vue";
 import MyTrail from "../views/MyTrail.vue";
-import axiosAuth from "@/api/axios-auth"
+import MyGroup from "@/views/Group.vue";
+import axiosAuth from "@/api/axios-auth";
 
 const routes = [
     {
@@ -43,6 +43,12 @@ const routes = [
         path: "/membership",
         name: "Membership",
         component: Membership,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: "/group",
+        name: "Group",
+        component: MyGroup,
         meta: { requiresAuth: true },
     },
     {

@@ -7,11 +7,12 @@
     border-radius: 5px;
 }
 
-.text-input {
+.form-field {
     margin-bottom: 15px;
 }
 
-.text-input input {
+.text-input {
+    width: 100%;
     width: 400px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -19,8 +20,9 @@
     margin-bottom: 15px;
 }
 
-button {
+.submit-button {
     width: 80%;
+    max-width: 400px;
     padding: 10px 20px;
     border: none;
     background-color: #007bff;
@@ -29,6 +31,6 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.submit-button:hover {
     background-color: #0056b3;
 }
