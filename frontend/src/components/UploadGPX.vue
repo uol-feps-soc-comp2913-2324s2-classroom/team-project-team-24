@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 export default {
-    name: 'UploadGPX',
+    name: 'UploadGPXComponent',
     props: {
         msg: String
     },

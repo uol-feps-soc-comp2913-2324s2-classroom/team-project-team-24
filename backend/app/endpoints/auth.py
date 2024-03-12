@@ -3,7 +3,7 @@ from flask import Blueprint
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies, unset_jwt_cookies, jwt_required, get_current_user
 from app.models import User
-from ..db_functions import db_add
+from app.db_functions import create_user
 from app import app
 
 
@@ -17,18 +17,11 @@ def register():
 
     user = User.query.filter_by(username=username).first()
     if user is None:
-        user = User(
-            username=username,
-            password=password
-        )
-
-        db_add(user)  
+        create_user(username, password)
+        user = User.authenticate(username=username, password=password)
         access_token = create_access_token(identity=user.id)
-        refresh_token = create_refresh_token(identity=user.id)
 
-        response = jsonify()
-        set_access_cookies(response, access_token)
-        set_refresh_cookies(response, refresh_token)
+        response = jsonify({'success': True, 'token': access_token})
 
         return response, 201
     else:
@@ -40,12 +33,10 @@ def login():
     username = data['username']
     password = data['password']
     user = User.authenticate(username, password)
-    print(user, username, password)
     if user:
         access_token = create_access_token(identity=user.id)
 
         response = jsonify({'success': True, 'token': access_token})
-        print(response)
         return response, 201
     else:
         return jsonify(message="Unauthorized"), 401

@@ -18,11 +18,7 @@ def create_user(username, password):
     u = User()
     u.username = username
     u.password = hash_pwd(password)
-    
-    with app.app_context():
-        db.session.add(u)
-        db.session.commit()
-        
+    db_add(u)
     return u
 
 def delete_all(c):

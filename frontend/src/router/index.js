@@ -31,27 +31,31 @@ const routes = [
         path: "/activitycenter",
         name: "Activity",
         component: ActivityCenter,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true },
     },
     {
         path: "/community",
         name: "Community",
         component: Community,
+        meta: { requiresAuth: true },
     },
     {
         path: "/membership",
         name: "Membership",
         component: Membership,
+        meta: { requiresAuth: true },
     },
     {
         path: "/myaccount",
         name: "Account",
         component: MyAccount,
+        meta: { requiresAuth: true },
     },
     {
         path: "/mytrail",
         name: "MyTrail",
         component: MyTrail,
+        meta: { requiresAuth: true },
     },
 ]
 

@@ -1,7 +1,7 @@
 <script>
 
 export default {
-    name: "SideNav",
+    name: "SideNavComponent",
     data() {
         return {
 

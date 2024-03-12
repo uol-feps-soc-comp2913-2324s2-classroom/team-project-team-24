@@ -19,10 +19,8 @@
 </template>
 
 <script>
-// import axios from "axios";
-
 export default {
-    name: "LoginComponent",
+    name: "LoginView",
     data() {
         return {
             username: '',

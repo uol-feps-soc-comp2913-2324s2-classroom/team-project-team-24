@@ -1,6 +1,7 @@
 from app import db, app
 import bcrypt
 from sqlalchemy import or_
+from app.db_functions import hash_pwd
 
 # MANY TO MANY RELATIONSHIP TABLES
 userInGroup = db.Table('user_in_group', db.Model.metadata,
@@ -86,6 +87,10 @@ class User(db.Model):
     
     membership = db.relationship("MembershipPlan", foreign_keys=[membership_id])
     groups = db.relationship('Group', secondary=userInGroup, back_populates="members")
+    
+    def __init__(self, username, password):
+        self.username = username
+        self.password = hash_pwd(password)
 
     @staticmethod
     def authenticate(username, password):

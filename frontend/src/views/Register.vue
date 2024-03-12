@@ -1,9 +1,6 @@
 <script>
-/* eslint-disable */
-import axios from "axios";
-
 export default {
-    name: "Register",
+    name: "RegisterView",
     data() {
         return {
             username: "",
@@ -18,16 +15,15 @@ export default {
                 alert("Passwords do not match.");
                 return;
             }
-            try {
-                const response = await axios.post("/api/register", {
-                    username: this.username,
-                    email: this.email,
-                    password: this.password,
-                });
-            } catch (error) {
-                console.error("Registration error:", error);
-                // Handle errors here
+            
+            let formData = {
+                username: this.username,
+                password: this.password,
             }
+
+            this.$store.dispatch('auth/register', formData).then(() => {
+                this.$router.push('/activitycenter');
+            });
         },
     },
 };

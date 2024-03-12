@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axiosAuth from "@/api/axios-auth"
 
 export default {
-    name: 'MapViewer',
+    name: 'MapViewerComponent',
     data() {
         return {
             mapUrl: null,
@@ -16,7 +16,7 @@ export default {
     },
     async mounted() {
         try {
-            const response = await axios.get(`http://localhost:${process.env.VUE_APP_BACKEND_PORT}/core/map`);
+            const response = await axiosAuth.get(`/core/map`);
             const mapHtml = response.data;
             const blob = new Blob([mapHtml], { type: 'text/html' });
             this.mapUrl = URL.createObjectURL(blob);
