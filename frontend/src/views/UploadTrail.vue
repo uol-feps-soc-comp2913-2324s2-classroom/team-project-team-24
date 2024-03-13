@@ -1,27 +1,25 @@
 <script>
-import UploadTrailFormComponent from "@/components/forms/UploadTrailForm.vue";
-
+import UploadGPX from '@/components/UploadGPX.vue';
 export default {
-    name: "UploadTrail",
-    data() {
-        return {
+  name: "MyTrails",
+  data() {
+    return {
 
-        };
-    },
-    methods: {
+    };
+  },
+  methods: {
 
-    },
-    components: {
-        UploadTrailFormComponent,
-    },
+  },
+  components: {
+    UploadGPX
+  },
 };
 </script>
 
 <template>
-    <div class="myAccountPageContainer">
-        <h1>Upload your new trail</h1>
-        <UploadTrailFormComponent />
-    </div>
+  <div class="myTrailsPageContainer">
+    <h1>Upload your new trail</h1>
+    <UploadGPX />
+  </div>
 </template>
-
 <style scoped></style>
