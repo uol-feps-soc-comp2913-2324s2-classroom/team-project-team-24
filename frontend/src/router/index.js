@@ -8,6 +8,7 @@ import Community from "../views/Community.vue";
 import Membership from "../views/Membership.vue";
 import MyAccount from "../views/MyAccount.vue";
 import MyTrail from "../views/MyTrail.vue";
+import StylingGuide from "../views/StylingGuide.vue";
 import MyGroup from "@/views/Group.vue";
 import ResetPassword from "@/views/ResetPassword.vue";
 import UploadTrail from "@/views/UploadTrail.vue";
@@ -75,6 +76,12 @@ const routes = [
         path: "/resetpassword",
         name: "ResetPassword",
         component: ResetPassword,
+    },
+    {
+        path: "/stylingguide",
+        name: "StylingGuide",
+        component: StylingGuide,
+        meta: { requiresAuth: true },
     },
 ]
 

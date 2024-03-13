@@ -3,9 +3,12 @@
     --l1-color: #FFFFFF;
     --text-color: #000000;
     --app-green: #1ED760;
+    --tertiary-green: #00B03F;
     --unselected-color: #646464;
     --selected-color: #000000;
-    --border-radius: 10px;
+    --border-color: #000000;
+    --danger-color: #FC2B2B;
+    --border-radius: 20px;
     --font-size: 16px;
     --font-family: 'Roboto', sans-serif;
     --scrollbar-background: #e6e6e6;
@@ -172,4 +175,66 @@ body{
     border-radius: var(--border-radius);
     width: 100%;
     height: 100%;
+}
+
+.stylingGuideContainer {
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+    height: 100%;
+}
+
+
+/* Standardised button styling */
+.btn {
+    font-family: var(--font-family);
+    transition: all var(--transition-speed) ease-in-out;
+    border-radius: var(--border-radius);
+    width: 100%; /* Full width */
+    max-width: 400px; /* Limit width to 400px */
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Primary button styles */
+.btn-primary {
+    background-color: var(--app-green);
+    color: var(--l1-color);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #18b44b;
+}
+
+/* Secondary button styles */
+.btn-secondary {
+    background-color: var(--l1-color);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--l0-color);
+    color: var(--text-color);
+}
+
+.btn-tertiary {
+    background-color: var(--tertiary-green);
+    color: var(--l1-color);
+    border: none;
+}
+
+.btn-tertiary:hover {
+    background-color: #018c32;
+    color: var(--l1-color);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: var(--text-color);
+}
+.btn-secondary:hover {
+    background-color: var(#b82929);
+    color: var(--text-color);
 }

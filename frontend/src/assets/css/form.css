@@ -13,24 +13,25 @@
 
 .text-input {
     width: 100%;
-    width: 400px;
+    max-width: 400px; /* Limit width to 400px */
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid var(--border-color); /* Use variable for border color */
+    border-radius: var(--border-radius); /* Use variable for border radius */
     margin-bottom: 15px;
 }
 
 .submit-button {
-    width: 80%;
-    max-width: 400px;
+    width: 100%; /* Full width */
+    max-width: 400px; /* Limit width to 400px */
     padding: 10px 20px;
     border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 4px;
+    background-color: var(--app-green); /* Use variable for background color */
+    color: var(--l1-color); /* Use variable for text color */
+    border-radius: var(--border-radius); /* Use variable for border radius */
     cursor: pointer;
+    transition: background-color var(--transition-speed) ease-in-out; /* Include transition */
 }
 
 .submit-button:hover {
-    background-color: #0056b3;
+    background-color: #18b44b; /* Change background color on hover */
 }
