@@ -12,7 +12,7 @@ class GPX:
         Args:
             filename (str): The name of the file to be parsed.
         '''
-        gpx_file_path = os.path.abspath('../app/example_data/'+filename)  #example_data is now in backend directory to load it into docker image.
+        gpx_file_path = os.path.abspath('./example_data/'+filename)  #example_data is now in backend directory to load it into docker image.
         #TODO: remove example_data once upload functionality is implemented properly
         gpx_file = open(gpx_file_path, 'r')
         self.gpx = gpxpy.parse(gpx_file)
