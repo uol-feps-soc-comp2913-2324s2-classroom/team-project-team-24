@@ -25,5 +25,4 @@ export default {
         <TrailInfoComponent />
     </div>
 </template>
-
 <style scoped></style>
