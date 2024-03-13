@@ -31,4 +31,4 @@ print(app.url_map)
 jwt = JWTManager(app)
 
 from app import views, models
-print([x.username for x models.User.query.all()])
+print([x.username for x in models.User.query.all()])
