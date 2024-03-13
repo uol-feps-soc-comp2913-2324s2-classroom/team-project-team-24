@@ -26,9 +26,9 @@ export default {
                 </router-link>
             </li>
             <li class="navItem navItemLinkContainer navItemBoldOnSelect">
-                <router-link :to="{ name: 'MyTrail' }" class="navLink">
+                <router-link :to="{ name: 'UploadTrail' }" class="navLink">
                     <img src="../assets/tracks_icon.svg" alt="Trails Icon" class="navIcons">
-                    <span class="navText">My Trails</span>
+                    <span class="navText">Upload Trail</span>
                 </router-link>
             </li>
             <li class="navItem navItemLinkContainer navItemBoldOnSelect">

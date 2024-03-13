@@ -1,5 +1,5 @@
 <script>
-
+import AccountDetailsComponent from "@/components/AccountDetails.vue";
 export default {
     name: "MyAccount",
     data() {
@@ -8,10 +8,14 @@ export default {
         };
     },
     methods: {
-
+        accountLogout() {
+            this.$store.dispatch('auth/logout').then(() => {
+                this.$router.push('/login');
+            });
+        }
     },
     components: {
-
+        AccountDetailsComponent,
     },
 };
 </script>
@@ -19,6 +23,8 @@ export default {
 <template>
     <div class="myAccountPageContainer">
         <h1>My Account Page</h1>
+        <AccountDetailsComponent />
+        <button type="submit" @click.prevent="accountLogout">Logout</button>
     </div>
 </template>
 

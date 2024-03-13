@@ -9,6 +9,8 @@ import Membership from "../views/Membership.vue";
 import MyAccount from "../views/MyAccount.vue";
 import MyTrail from "../views/MyTrail.vue";
 import MyGroup from "@/views/Group.vue";
+import ResetPassword from "@/views/ResetPassword.vue";
+import UploadTrail from "@/views/UploadTrail.vue";
 import axiosAuth from "@/api/axios-auth";
 
 const routes = [
@@ -62,6 +64,17 @@ const routes = [
         name: "MyTrail",
         component: MyTrail,
         meta: { requiresAuth: true },
+    },
+    {
+        path: "/uploadtrail",
+        name: "UploadTrail",
+        component: UploadTrail,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: "/resetpassword",
+        name: "ResetPassword",
+        component: ResetPassword,
     },
 ]
 
