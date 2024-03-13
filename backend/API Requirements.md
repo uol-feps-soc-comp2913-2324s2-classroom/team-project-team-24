@@ -1,6 +1,10 @@
 # Activity Centre
 ### Overall trail stats:
+Get the overall trail stats for a given user
 ```python
+# Recieve data:
+user_id = request.get_json()["userID"]
+
 # Send data:
 return jsonify({
     # Total time spent doing activities in a period of time (try to make the time easily variable)
@@ -13,8 +17,12 @@ return jsonify({
 ```
 
 ## List of all trails
-### Get IDs
+### Get Trail ids
+Get all the trail ids for a given user id
 ```python
+# Recieve data:
+user_id = request.get_json()["userID"]
+
 # Send data:
 return jsonify({
     # List of trail IDs
