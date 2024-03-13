@@ -1,8 +1,10 @@
 from app import app
 from flask import render_template, url_for, redirect, flash, request
+from flask_jwt_extended import jwt_required
 
 
 @app.route('/', methods=['GET'])
+@jwt_required()
 def home():
     return 'Greetings from the API!'
 
