@@ -1,5 +1,5 @@
 <script>
-import axios from 'axios'
+import axiosAuth from "@/api/axios-auth";
 
 export default {
     name: 'UploadGPXComponent',
@@ -78,7 +78,7 @@ const uploadData = () => {
     formData.append("exerciseType", exerciseType.value);
     console.log(formData);
 
-    axios.post(`http://localhost:${process.env.VUE_APP_BACKEND_PORT}/upload`, formData,
+    axiosAuth.post(`upload`, formData,
         {
             headers: { 'Content-Type': 'multipart/form-data' }
         })
