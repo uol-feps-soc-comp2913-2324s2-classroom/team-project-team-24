@@ -1,25 +1,28 @@
 <script>
-import UploadGPX from '@/components/UploadGPX.vue';
+import MapViewerComponent from "@/components/MapViewer.vue";
+import TrailInfoComponent from "@/components/TrailInfo.vue";
+
 export default {
-  name: "MyTrails",
-  data() {
-    return {
+    name: "MyTrails",
+    data() {
+        return {
+            trailName: this.$route.query.trailName,
+        };
+    },
+    methods: {
 
-    };
-  },
-  methods: {
-
-  },
-  components: {
-    UploadGPX
-  },
+    },
+    components: {
+        MapViewerComponent,
+        TrailInfoComponent,
+    },
 };
 </script>
 
 <template>
-  <div class="myTrailsPageContainer">
-    <h1>My Trails Page</h1>
-    <UploadGPX />
-  </div>
+    <div class="myTrailsPageContainer">
+        <MapViewerComponent />
+        <TrailInfoComponent />
+    </div>
 </template>
 <style scoped></style>

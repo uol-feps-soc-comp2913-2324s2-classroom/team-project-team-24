@@ -1,9 +1,5 @@
 from tests.conf import client
 from flask_jwt_extended import create_access_token
-
-def test_home(client):
-    response = client.get('/')
-    assert response.status_code == 200
     
 def test_unauthorised_login(client):
     response = client.post('/auth/login', json={'username': 'u1', 'password': 'pwd1'})

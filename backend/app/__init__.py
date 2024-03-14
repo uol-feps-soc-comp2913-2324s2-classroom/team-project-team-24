@@ -27,6 +27,8 @@ app.register_blueprint(upload.bp)
 app.register_blueprint(core.bp)
 print(app.url_map)
 
+
 jwt = JWTManager(app)
 
 from app import views, models
+print([x.username for x in models.User.query.all()])
