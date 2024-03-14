@@ -19,7 +19,7 @@ def register():
     if user is None:
         create_user(username, password)
         user = User.authenticate(username=username, password=password)
-        access_token = create_access_token(identity=user.id)
+        access_token = create_access_token(identity=user)
 
         response = jsonify({'success': True, 'token': access_token})
 
@@ -34,7 +34,7 @@ def login():
     password = data['password']
     user = User.authenticate(username, password)
     if user:
-        access_token = create_access_token(identity=user.id)
+        access_token = create_access_token(identity=user)
 
         response = jsonify({'success': True, 'token': access_token})
         return response, 201
