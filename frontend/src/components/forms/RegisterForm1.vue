@@ -22,9 +22,9 @@ export default {
                 password: this.password,
             }
 
-            // this.$store.dispatch('auth/register', formData).then(() => {
-            //     this.$router.push('/activitycenter');
-            // });
+            this.$store.dispatch('auth/register', formData).then(() => {
+                this.$router.push('/activitycenter');
+            });
             console.log(formData);
             this.$parent.form1Submit();
         },
