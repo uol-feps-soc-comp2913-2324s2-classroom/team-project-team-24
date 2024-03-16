@@ -1,5 +1,5 @@
 <template>
-    <div style="display:flex;">
+    <div>
         <img src="proflie_photo">
         <div>
             <h2>{{ name }}</h2>
@@ -41,3 +41,6 @@ export default {
 };
 </script>
 
+<style scoped>
+
+</style>
