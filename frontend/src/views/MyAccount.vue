@@ -21,11 +21,16 @@ export default {
 </script>
 
 <template>
-    <div class="myAccountPageContainer">
-        <h1>My Account Page</h1>
+    <div class="myAccountPageContainer p-5 d-flex flex-column" overflowScroll>
+        <h1>My Account</h1>
         <AccountDetailsComponent />
         <button type="submit" @click.prevent="accountLogout">Logout</button>
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.myAccountPageContainer {
+    width: 100%;
+    height: 100%;
+}
+</style>
