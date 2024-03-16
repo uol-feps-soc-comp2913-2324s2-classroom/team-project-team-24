@@ -21,19 +21,19 @@ export default {
         <ul class="navList">
             <li class="navItem navItemLogo">
                 <router-link to="/" class="navLink">
-                    <img src="../assets/Logo.svg" alt="Trails Icon" class="navLogo">
+                    <img src="../assets/Logo.svg" alt="Logo" class="navLogo">
                     <span class="navText logoText">Walkley</span>
                 </router-link>
             </li>
             <li class="navItem navItemLinkContainer navItemBoldOnSelect">
                 <router-link :to="{ name: 'UploadTrail' }" class="navLink">
-                    <img src="../assets/tracks_icon.svg" alt="Trails Icon" class="navIcons">
+                    <img src="../assets/tracks_icon.svg" alt="Trail Icon" class="navIcons">
                     <span class="navText">Upload Trail</span>
                 </router-link>
             </li>
             <li class="navItem navItemLinkContainer navItemBoldOnSelect">
                 <router-link :to="{ name: 'Activity' }" class="navLink">
-                    <img src="../assets/activity_icon.svg" alt="Trails Icon" class="navIcons">
+                    <img src="../assets/activity_icon.svg" alt="Activity Icon" class="navIcons">
                     <span class="navText">Activity</span>
                 </router-link>
             </li>
@@ -51,7 +51,7 @@ export default {
             </li>
             <li class="navItem navItemLinkContainer navItemBoldOnSelect">
                 <router-link :to="{ name: 'Account' }" class="navLink">
-                    <img src="../assets/community_icon.svg" alt="Membership Icon" class="navIcons">
+                    <img src="../assets/community_icon.svg" alt="Account Icon" class="navIcons">
                     <span class="navText">My Account</span>
                 </router-link>
             </li>
