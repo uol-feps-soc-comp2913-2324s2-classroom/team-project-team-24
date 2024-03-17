@@ -37,6 +37,10 @@ const routes = [
     component: Register,
   },
   {
+    path: "/",
+    redirect: "/activitycenter",
+  },
+  {
     path: "/apitest",
     name: "API Tests",
     component: apiTests,
