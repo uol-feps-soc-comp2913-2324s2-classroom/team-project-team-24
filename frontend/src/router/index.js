@@ -88,6 +88,17 @@ const routes = [
     name: "ResetPassword",
     component: ResetPassword,
   },
+  {
+    path: "/stylingguide",
+    name: "StylingGuide",
+    component: StylingGuide,
+    meta: { requiresAuth: authRequired },
+  },
+// We should probably have a 404 page
+//   {
+//     path: "/:catchAll(.*)",
+//     redirect: "/activitycenter",
+//   },
 ];
 
 const router = createRouter({
