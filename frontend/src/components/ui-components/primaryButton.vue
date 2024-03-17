@@ -27,10 +27,14 @@ button {
     border: 3px solid var(--app-green);
     font-weight: bold;
     color: white;
-    padding: 0.4rem 1.5rem;
+    padding-top: var(--button-padding-vertical);
+    padding-bottom: var(--button-padding-vertical);
+    padding-left: var(--button-padding-horizontal);
+    padding-right: var(--button-padding-horizontal);
+    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+    display: inline;
     transition: background-color 0.2s, border-color 0.2s;
     cursor: pointer;
     border-radius: 99999px;

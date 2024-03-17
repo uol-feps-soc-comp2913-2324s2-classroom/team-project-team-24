@@ -29,7 +29,11 @@ button {
     border-width: 3px;
     font-weight: bold;
     color: var(--danger-color);
-    padding: 0.4rem 1.5rem;
+    padding-top: var(--button-padding-vertical);
+    padding-bottom: var(--button-padding-vertical);
+    padding-left: var(--button-padding-horizontal);
+    padding-right: var(--button-padding-horizontal);
+    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
     display: inline-block;
