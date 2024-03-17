@@ -1,6 +1,7 @@
 # endpoints/upload.py
 from flask import Blueprint, Response
 from flask import request
+from flask_jwt_extended import get_current_user, jwt_required
 import gpxpy
 from app import db, app
 from app.db_functions import create_user, get_routes_by_user_id
@@ -9,12 +10,9 @@ from app.models import User, Route
 bp = Blueprint('upload', __name__)
 
 @bp.route('/upload', methods=('POST',))
+@jwt_required()
 def upload():
-    # test user, will need to be replaced with actual authentication
-    if User.query.filter_by(username="test_user").first() is None:
-        create_user("test_user", "pwd")
-
-    user_id = User.query.filter_by(username="test_user").first().id
+    user_id = get_current_user().id
 
     route_name = request.form["routeName"]
     # route name is optional, generate default name if empty

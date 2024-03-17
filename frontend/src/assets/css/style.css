@@ -12,7 +12,7 @@
     --danger-color: #da2626;
     --danger-color-hover: #b82929;
     --danger-color-active: #a31f1f;
-    --border-radius: 20px;
+    --border-radius: 0.8rem;
     --font-size: 16px;
     --font-family: 'Roboto', sans-serif;
     --scrollbar-background: #e6e6e6;
@@ -30,24 +30,31 @@
 }
 
 body{
-    padding: 7px !important;
     font-family: var(--font-family) !important;
     background-color: var(--l0-color) !important;
     color: var(--text-color) !important;
 }
 
 .main{
-    display: grid;
-    grid-template-columns: 1fr 19fr;
-    gap: 7px;
+    display: flex;
+    flex-direction: row;
+}
+
+.navSpacer{
+    width: 6rem;
 }
 
 .sideNav{
+    margin-left: 0.5rem;
+    height: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
     background-color: var(--l1-color);
     border-radius: var(--border-radius);
-    height: 98vh;
-    max-width: 5rem;
-    transition: max-width 0.2s ease-in-out;
+    width: 5rem;
+    font-size: var(--font-size);
+    transition: width var(--transition-speed);
 }
 
 .navList{
@@ -151,8 +158,9 @@ body{
 }
 
 .content{
-    height: 98vh;
-    overflow-y: auto;
+    height: 100vh;
+    width: 100%;
+    overflow-y: scroll;
 }
 
 .communityPageContainer {
@@ -251,4 +259,7 @@ body{
 .btn-secondary:hover {
     background-color: var(#b82929);
     color: var(--text-color);
+
+.overflowScroll{
+    overflow-y: scroll;
 }
