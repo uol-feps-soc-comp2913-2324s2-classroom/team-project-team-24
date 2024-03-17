@@ -39,6 +39,12 @@
         },
         "rules": {}
     },
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "semi": false,
+        "singleQuote": true
+    },
     "browserslist": [
         "> 1%",
         "last 2 versions",

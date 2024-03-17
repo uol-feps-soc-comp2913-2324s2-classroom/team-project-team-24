@@ -3,35 +3,58 @@
     --l1-color: #FFFFFF;
     --text-color: #000000;
     --app-green: #1ED760;
+    --app-green-hover: #1DB954;
+    --app-green-pressed: #1AA34A;
+    --tertiary-green: #00B03F;
     --unselected-color: #646464;
     --selected-color: #000000;
-    --border-radius: 10px;
+    --border-color: #000000;
+    --danger-color: #da2626;
+    --danger-color-hover: #b82929;
+    --danger-color-active: #a31f1f;
+    --border-radius: 0.8rem;
     --font-size: 16px;
     --font-family: 'Roboto', sans-serif;
     --scrollbar-background: #e6e6e6;
     --scrollbar-thumb: #b9ffa8;
     --transition-speed: 100ms;
+    --secondary-button-offBlack: #383838;
+    --secondary-button-offBlack-active: #1b1b1b;
+    --tertiary-button-grey: #dbdbdb;
+    --tertiary-button-grey-hover: #c2c2c2;
+    --tertiary-button-grey-active: #adadad;
+}
+
+@media screen and (max-width: 600px){
+    /* Mobile */
 }
 
 body{
-    padding: 7px !important;
     font-family: var(--font-family) !important;
     background-color: var(--l0-color) !important;
     color: var(--text-color) !important;
 }
 
 .main{
-    display: grid;
-    grid-template-columns: 1fr 19fr;
-    gap: 7px;
+    display: flex;
+    flex-direction: row;
+}
+
+.navSpacer{
+    width: 6rem;
 }
 
 .sideNav{
+    margin-left: 0.5rem;
+    height: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
     background-color: var(--l1-color);
     border-radius: var(--border-radius);
-    height: 98vh;
-    max-width: 5rem;
-    transition: max-width 0.2s ease-in-out;
+    width: 5rem;
+    font-size: var(--font-size);
+    transition: width var(--transition-speed);
 }
 
 .navList{
@@ -88,10 +111,6 @@ body{
     color: var(--unselected-color);
 }
 
-.navLink:hover{
-
-}
-
 .navItemLinkContainer:hover{
     background-color: #eeeeee;
 }
@@ -135,8 +154,9 @@ body{
 }
 
 .content{
-    height: 98vh;
-    overflow-y: auto;
+    height: 100vh;
+    width: 100%;
+    overflow-y: scroll;
 }
 
 .communityPageContainer {
@@ -172,4 +192,72 @@ body{
     border-radius: var(--border-radius);
     width: 100%;
     height: 100%;
+}
+
+.stylingGuideContainer {
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+
+/* Standardised button styling */
+.btn {
+    font-family: var(--font-family);
+    transition: all var(--transition-speed) ease-in-out;
+    border-radius: var(--border-radius);
+    width: 100%; /* Full width */
+    max-width: 400px; /* Limit width to 400px */
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Primary button styles */
+.btn-primary {
+    background-color: var(--app-green);
+    color: var(--l1-color);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #18b44b;
+}
+
+/* Secondary button styles */
+.btn-secondary {
+    background-color: var(--l1-color);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--l0-color);
+    color: var(--text-color);
+}
+
+.btn-tertiary {
+    background-color: var(--tertiary-green);
+    color: var(--l1-color);
+    border: none;
+}
+
+.btn-tertiary:hover {
+    background-color: #018c32;
+    color: var(--l1-color);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: var(--text-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(#b82929);
+    color: var(--text-color);
+}
+
+.overflowScroll{
+    overflow-y: scroll;
 }
