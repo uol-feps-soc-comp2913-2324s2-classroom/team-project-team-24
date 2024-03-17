@@ -111,10 +111,6 @@ body{
     color: var(--unselected-color);
 }
 
-.navLink:hover{
-
-}
-
 .navItemLinkContainer:hover{
     background-color: #eeeeee;
 }
