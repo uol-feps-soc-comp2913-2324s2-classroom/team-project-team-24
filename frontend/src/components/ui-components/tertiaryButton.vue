@@ -1,6 +1,6 @@
 <script>
 export default {
-    name: 'primaryButton',
+    name: 'tertiaryButton',
     props: {
         onClick: {
             type: Function,
@@ -23,26 +23,28 @@ export default {
 
 <style scoped>
 button {
-    background-color: var(--app-green);
-    border: 3px solid var(--app-green);
+    background-color: var(--tertiary-button-grey);
+    border-style: solid;
+    border-color: var(--tertiary-button-grey);
+    border-width: 3px;
     font-weight: bold;
-    color: white;
+    color: var(--secondary-button-offBlack);
     padding: 0.4rem 1.5rem;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    transition: background-color 0.2s, border-color 0.2s;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
     cursor: pointer;
     border-radius: 99999px;
 }
 
 button:hover {
-    background-color: var(--app-green-hover);
-    border-color: var(--app-green-hover);
+    background-color: var(--tertiary-button-grey-hover);
+    border-color: var(--tertiary-button-grey-hover);
 }
 
 button:active {
-    background-color: var(--app-green-pressed);
-    border-color: var(--app-green-pressed);
+    background-color: var(--tertiary-button-grey-active);
+    border-color: var(--tertiary-button-grey-active);
 }
 </style>

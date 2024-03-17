@@ -1,4 +1,10 @@
 <script>
+import dangerButton from './ui-components/dangerButton.vue';
+import primaryButton from './ui-components/primaryButton.vue';
+import secondaryButton from './ui-components/secondaryButton.vue';
+import tertiaryButton from './ui-components/tertiaryButton.vue';
+import dangerButtonOutline from './ui-components/dangerButtonOutline.vue';
+import textInputQuiet from './ui-components/textInputQuiet.vue';
 
 export default {
     name: 'styleGuideComponent',
@@ -9,47 +15,56 @@ export default {
         return {
             count: 0
         }
+    },
+    methods: {
+        increment() {
+            this.count++;
+        }
+    },
+    components: {
+        primaryButton,
+        secondaryButton,
+        tertiaryButton,
+        dangerButton,
+        dangerButtonOutline,
+        textInputQuiet,
     }
 }
 
 </script>
 
 <template>
-    <div class="stylingGuideContainer">
+    <div class="stylingGuideContainer p-5">
         <h1> Style Guide (owner's page)</h1>
         <h2> Button styling</h2>
+        <p>Count {{count}}</p>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="button-container text-center">
                         <div class="row justify-content-center">
                             <div class="col-md-12">
-                                <button class="btn btn-primary">Primary Button</button>
+                                <primaryButton :on-click="this.increment">Action name</primaryButton>
                             </div>
                         </div>
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-12">
-                                <button class="btn btn-secondary">Secondary Button</button>
+                                <secondaryButton :on-click="this.increment">Action name</secondaryButton>
                             </div>
                         </div>
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-12">
-                                <button class="btn btn-tertiary">Tertiary Button</button>
+                                <tertiaryButton :on-click="this.increment">Action name</tertiaryButton>
                             </div>
                         </div>
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-12">
-                                <button class="btn btn-success">Success Button</button>
+                                <dangerButton :on-click="this.increment">Action name</dangerButton>
                             </div>
                         </div>
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-12">
-                                <button class="btn btn-danger">Danger Button</button>
-                            </div>
-                        </div>
-                        <div class="row mt-3 justify-content-center">
-                            <div class="col-md-12">
-                                <button class="btn btn-info">Info Button</button>
+                                <dangerButtonOutline :on-click="this.increment">Action name</dangerButtonOutline>
                             </div>
                         </div>
                     </div>
@@ -60,12 +75,11 @@ export default {
         <div class="form-container">
             <form>
                 <div class="form-field">
-                    <input type="text" class="text-input" placeholder="Enter your name">
+                    <textInputQuiet form-label="Name"></textInputQuiet>
                 </div>
                 <div class="form-field">
-                    <input type="email" class="text-input" placeholder="Enter your email">
+                    <textInputQuiet form-label="Email" type="email"></textInputQuiet>
                 </div>
-                <button type="submit" class="submit-button">Submit</button>
             </form>
         </div>
 

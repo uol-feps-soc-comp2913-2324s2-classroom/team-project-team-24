@@ -3,17 +3,30 @@
     --l1-color: #FFFFFF;
     --text-color: #000000;
     --app-green: #1ED760;
+    --app-green-hover: #1DB954;
+    --app-green-pressed: #1AA34A;
     --tertiary-green: #00B03F;
     --unselected-color: #646464;
     --selected-color: #000000;
     --border-color: #000000;
-    --danger-color: #FC2B2B;
+    --danger-color: #da2626;
+    --danger-color-hover: #b82929;
+    --danger-color-active: #a31f1f;
     --border-radius: 20px;
     --font-size: 16px;
     --font-family: 'Roboto', sans-serif;
     --scrollbar-background: #e6e6e6;
     --scrollbar-thumb: #b9ffa8;
     --transition-speed: 100ms;
+    --secondary-button-offBlack: #383838;
+    --secondary-button-offBlack-active: #1b1b1b;
+    --tertiary-button-grey: #dbdbdb;
+    --tertiary-button-grey-hover: #c2c2c2;
+    --tertiary-button-grey-active: #adadad;
+}
+
+@media screen and (max-width: 600px){
+    /* Mobile */
 }
 
 body{
@@ -182,6 +195,7 @@ body{
     border-radius: var(--border-radius);
     width: 100%;
     height: 100%;
+    overflow-y: scroll;
 }
 
 
