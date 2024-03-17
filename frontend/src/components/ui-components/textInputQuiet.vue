@@ -1,10 +1,3 @@
-<template>
-    <div>
-        <p>{{ formLabel }}</p>
-        <input :type="type" v-model="inputValue" @input="handleInput" :placeholder="placeHolder"/>
-    </div>
-</template>
-
 <script>
 export default {
     name: 'TextInputQuiet',
@@ -20,6 +13,10 @@ export default {
         type: {
             type: String,
             default: 'text'
+        },
+        width: {
+            type: String,
+            default: 'auto'
         }
     },
     data() {
@@ -35,17 +32,28 @@ export default {
 };
 </script>
 
+<template>
+        <p>{{ formLabel }}</p>
+        <input :style="{ width: width }" :type="type" v-model="inputValue" @input="handleInput" :placeholder="placeHolder"/>
+</template>
+
 <style scoped>
 p {
     margin: 0;
     font-size: 13px;
-    color: #666666
+    color: #666666;
 }
+
 input {
     margin: 0;
     border-width: 0 0 2px 0;
     border-style: solid;
     border-color: #c0c0c0;
+}
+
+input:hover {
+    border-color: #a2a2a2;
+
 }
 
 input:focus {

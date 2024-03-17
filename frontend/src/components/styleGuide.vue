@@ -86,13 +86,17 @@ export default {
             </div>
     </div>
         <h2> Form styling </h2>
-        <div class="form-container">
-            <form>
-                <div class="form-field">
+        <div class="form-container d-flex flex-column">
+            <form class="form-container">
+                <div class="form-input">
+                    <!-- Default width value for text input is auto -->
                     <textInputQuiet form-label="Name"></textInputQuiet>
                 </div>
-                <div class="form-field">
-                    <textInputQuiet form-label="Email" type="email"></textInputQuiet>
+                <div class="form-input">
+                    <textInputQuiet width="50%" form-label="Last name"></textInputQuiet>
+                </div>
+                <div class="form-input">
+                    <textInputQuiet width="100%" form-label="Email" type="email"></textInputQuiet>
                 </div>
             </form>
         </div>
@@ -102,17 +106,13 @@ export default {
 
 </template>
 
-<script setup>
-
-</script>
-
 <style scoped>
-    .form-container {
-        display: flex;
-        justify-content: center; /* Horizontally center the content */
-    }
-    form {
-        width: 100%; /* Make sure the form takes the full width of the container */
-        max-width: 400px; /* Limit the maximum width of the form */
-    }
+.form-container {
+    border: none;
+}
+
+.form-input{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
 </style>
