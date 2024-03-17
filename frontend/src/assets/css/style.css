@@ -5,6 +5,7 @@
     --app-green: #1ED760;
     --app-green-hover: #1DB954;
     --app-green-pressed: #1AA34A;
+    --action-blue: #0067d5;
     --tertiary-green: #00B03F;
     --unselected-color: #646464;
     --selected-color: #000000;
@@ -20,9 +21,15 @@
     --transition-speed: 100ms;
     --secondary-button-offBlack: #383838;
     --secondary-button-offBlack-active: #1b1b1b;
-    --tertiary-button-grey: #dbdbdb;
-    --tertiary-button-grey-hover: #c2c2c2;
-    --tertiary-button-grey-active: #adadad;
+    --tertiary-button-grey: #ebebeb;
+    --tertiary-button-grey-hover: #dcdcdc;
+    --tertiary-button-grey-active: #c4c4c4;
+    --button-padding-vertical: 0.25rem;
+    --button-padding-horizontal: 1rem;
+
+    /* Used in My Accounts Table*/
+    --table-border-width: 1px;
+    --table-border-color: #cacaca;
 }
 
 @media screen and (max-width: 600px){
@@ -41,7 +48,7 @@ body{
 }
 
 .navSpacer{
-    width: 6rem;
+    width: 6.5rem;
 }
 
 .sideNav{
@@ -259,5 +266,5 @@ body{
 }
 
 .overflowScroll{
-    overflow-y: scroll;
+    overflow-y: scroll !important;
 }

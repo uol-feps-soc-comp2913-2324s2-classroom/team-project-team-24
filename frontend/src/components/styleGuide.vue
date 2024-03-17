@@ -4,6 +4,8 @@ import primaryButton from './ui-components/primaryButton.vue';
 import secondaryButton from './ui-components/secondaryButton.vue';
 import tertiaryButton from './ui-components/tertiaryButton.vue';
 import dangerButtonOutline from './ui-components/dangerButtonOutline.vue';
+import quietButton from './ui-components/quietButton.vue';
+import textButton from './ui-components/textButton.vue';
 import textInputQuiet from './ui-components/textInputQuiet.vue';
 
 export default {
@@ -27,6 +29,8 @@ export default {
         tertiaryButton,
         dangerButton,
         dangerButtonOutline,
+        quietButton,
+        textButton,
         textInputQuiet,
     }
 }
@@ -65,6 +69,16 @@ export default {
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-12">
                                 <dangerButtonOutline :on-click="this.increment">Action name</dangerButtonOutline>
+                            </div>
+                        </div>
+                        <div class="row mt-3 justify-content-center">
+                            <div class="col-md-12">
+                                <quietButton :on-click="this.increment">Action name</quietButton>
+                            </div>
+                        </div>
+                        <div class="row mt-3 justify-content-center">
+                            <div class="col-md-12">
+                                <textButton :on-click="this.increment">Action name</textButton>
                             </div>
                         </div>
                     </div>
