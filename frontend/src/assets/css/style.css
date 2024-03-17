@@ -256,9 +256,11 @@ body{
     background-color: var(--danger-color);
     color: var(--text-color);
 }
+
 .btn-secondary:hover {
     background-color: var(#b82929);
     color: var(--text-color);
+}
 
 .overflowScroll{
     overflow-y: scroll;
