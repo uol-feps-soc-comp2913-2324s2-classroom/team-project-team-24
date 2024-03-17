@@ -1,17 +1,18 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router'
 
-import Login from "../views/Login.vue";
-import Register from "../views/Register.vue";
-import apiTests from "../views/apiTests.vue";
-import ActivityCenter from "../views/ActivityCenter.vue";
-import Community from "../views/Community.vue";
-import Membership from "../views/Membership.vue";
-import MyAccount from "../views/MyAccount.vue";
-import MyTrail from "../views/MyTrail.vue";
-import MyGroup from "@/views/Group.vue";
-import ResetPassword from "@/views/ResetPassword.vue";
-import UploadTrail from "@/views/UploadTrail.vue";
-import axiosAuth from "@/api/axios-auth";
+import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
+import apiTests from '../views/apiTests.vue'
+import ActivityCenter from '../views/ActivityCenter.vue'
+import Community from '../views/Community.vue'
+import Membership from '../views/Membership.vue'
+import MyAccount from '../views/MyAccount.vue'
+import MyTrail from '../views/MyTrail.vue'
+import StylingGuide from '../views/StylingGuide.vue'
+import MyGroup from '@/views/Group.vue'
+import ResetPassword from '@/views/ResetPassword.vue'
+import UploadTrail from '@/views/UploadTrail.vue'
+import axiosAuth from '@/api/axios-auth'
 
 // Defines a variable using environment variables to disable
 // logins for development purposes.
@@ -87,6 +88,17 @@ const routes = [
     name: "ResetPassword",
     component: ResetPassword,
   },
+  {
+    path: "/stylingguide",
+    name: "StylingGuide",
+    component: StylingGuide,
+    meta: { requiresAuth: authRequired },
+  },
+// We should probably have a 404 page
+//   {
+//     path: "/:catchAll(.*)",
+//     redirect: "/activitycenter",
+//   },
 ];
 
 const router = createRouter({
