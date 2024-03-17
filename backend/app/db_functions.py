@@ -2,6 +2,7 @@ from app.models import *
 from app import app, db
 import bcrypt
 import string, random
+from flask_jwt_extended import create_access_token
 
 def db_add(*args):
     with app.app_context():
@@ -20,6 +21,22 @@ def create_user(username, password):
     u.password = hash_pwd(password)
     db_add(u)
     return u
+
+def create_route_from_file(file_path, name, exercise_type, user_id):
+    # ensure user ID is valid
+    if User.query.filter_by(id=user_id).first() == None:
+        return None
+
+    # ensure user doesn't already have a route with this name
+    for route in Route.query.filter_by(user_id=user_id):
+        if route.name == name:
+            return None
+
+    with open(file_path, "r") as file:
+        db_add(Route(data=file.read(), name=name, exercise_type=exercise_type, user_id=user_id))
+
+    # return route ID
+    return Route.query.filter_by(user_id=user_id, name=name).first().id
 
 def delete_all(c):
     with app.app_context():
@@ -52,3 +69,15 @@ def get_routes_by_user_id(id: int) -> list:
     """
 
     return Route.query.filter_by(user_id=id)
+
+def get_test_user_headers(username, password):
+    if User.query.filter_by(username=username).first() == None:
+        create_user(username, password)
+    
+    test_user = User.query.filter_by(username=username).first()
+    access_token = create_access_token(identity=test_user)
+    headers = {
+        'Authorization': 'Bearer {}'.format(access_token)
+    }
+
+    return headers
