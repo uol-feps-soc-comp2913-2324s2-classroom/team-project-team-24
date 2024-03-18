@@ -93,7 +93,7 @@ def test_send_friend_request_success(client):
     response = client.post("/send_friend_request", data={"receiveUserID": user_2.id}, headers=headers)
     assert response.status_code == 200
     assert user_1 in user_2.incoming_friend_requests() and len(user_2.incoming_friend_requests()) == 1
-    assert user_2 in user_1.outgoint_friend_requests() and len(user_1.outgoint_friend_requests()) == 1
+    assert user_2 in user_1.outgoing_friend_requests() and len(user_1.outgoing_friend_requests()) == 1
 
 def test_send_friend_request_duplicate(client):
     delete_all(FriendRequest)

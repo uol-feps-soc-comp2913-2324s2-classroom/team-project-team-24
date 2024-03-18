@@ -112,7 +112,7 @@ def create_friendship(user1_id: int, user2_id: int):
 
 def check_for_friend_request(from_id: int, to_id: int):
     to_user = User.query.filter_by(id=to_id).first()
-    return to_user in User.query.filter_by(id=from_id).first().outgoint_friend_requests()
+    return to_user in User.query.filter_by(id=from_id).first().outgoing_friend_requests()
 
 def create_friend_request(from_id: int, to_id: int):
     # check if friendship already exists
