@@ -124,3 +124,48 @@ def remove_friend_request(user1_id: int, user2_id: int):
 def accept_friend_request(user1_id: int, user2_id: int):
     create_friendship(user1_id, user2_id)
     remove_friend_request(user1_id, user2_id)
+
+def check_for_user_in_group(user_id: int, group_id: int):
+    group = Group.query.filter_by(id=group_id).first()
+    user = User.query.filter_by(id=user_id).first()
+    return user in group.members
+
+def add_user_to_group(user_id: int, group_id: int):
+    if not check_for_user_in_group(user_id, group_id):
+        group = Group.query.filter_by(id=group_id).first()
+        user = User.query.filter_by(id=user_id).first()
+        group.members.append(user)
+
+def create_new_group(user_id: int, name: str):
+    group = Group(name=name)
+    db.session.add(group)
+    db.session.commit()
+
+    add_user_to_group(user_id, Group.query.filter_by(name=name).first().id)
+    return group.id
+
+def delete_group(group_id: int):
+    Group.query.filter_by(id=group_id).delete()
+    db.session.commit()
+
+def reset_groups():
+    for group in Group.query.all():
+        delete_group(group.id)
+
+def get_user_group_ids(user_id: int) -> list:
+    user = User.query.filter_by(id=user_id).first()
+
+    groups = []
+    for group in user.groups:
+        groups.append(group.id)
+
+    return groups
+
+def get_user_group_names(user_id: int) -> list:
+    user = User.query.filter_by(id=user_id).first()
+
+    groups = []
+    for group in user.groups:
+        groups.append(group.name)
+
+    return groups
