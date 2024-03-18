@@ -17,8 +17,7 @@ export default {
 </script>
 
 <template>
-  <div class="myTrailsPageContainer">
-    <h1>Upload your new trail</h1>
+  <div class="myTrailsPageContainer p-5">
     <UploadGPX />
   </div>
 </template>

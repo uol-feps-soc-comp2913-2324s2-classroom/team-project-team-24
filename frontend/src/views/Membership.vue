@@ -23,9 +23,9 @@ export default {
             ],
             // adjust the colours of each col
             membershipColors: [
-                "#073617", // Red background
-                "#14903F", // Blue background
-                "#0A481F", // Green background
+                "#073617",
+                "#14903F",
+                "#0A481F",
                 // Add more colors as needed
             ],
         };
@@ -42,7 +42,6 @@ export default {
 </script>
 
 <template>
-
     <div class="membershipPageContainer" >
         <div class="page-heading-container">
             <h1>Membership</h1>

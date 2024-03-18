@@ -70,7 +70,7 @@ const routes = [
         path: "/uploadtrail",
         name: "UploadTrail",
         component: UploadTrail,
-        meta: { requiresAuth: true },
+        // meta: { requiresAuth: true },
     },
     {
         path: "/resetpassword",

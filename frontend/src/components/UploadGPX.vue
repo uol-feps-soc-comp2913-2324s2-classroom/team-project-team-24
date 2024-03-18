@@ -1,5 +1,6 @@
 <script>
 import axiosAuth from "@/api/axios-auth";
+import primaryButton from './ui-components/primaryButton.vue';
 
 export default {
     name: 'UploadGPXComponent',
@@ -16,7 +17,7 @@ export default {
 </script>
 
 <template>
-    <div class="upload-gpx-container">
+    <div class="upload-gpx-container p-5">
         <h1>Begin your new trail</h1>
         <!-- Wrapper div for fields, with Bootstrap classes for width and centering -->
         <div class="mx-auto" style="max-width: 50%;">
@@ -37,8 +38,8 @@ export default {
             </select>
             <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
                 <!-- Button disabled logic checks if routeName has content and file is uploaded -->
-                <button @click="uploadData" class="btn btn-primary"
-                    :disabled="!selectedFile || isDuplicateName">Upload</button>
+                <primaryButton @click="uploadData"
+                    :disabled="!selectedFile || isDuplicateName">Upload</primaryButton>
 
             </div>
         </div>
