@@ -6,13 +6,14 @@
         </ul>
         <div class="option-details">
             <h4>{{ membership.price }}</h4>
-            <button class="btn btn-primary" @click="buyMembership">Buy Now</button>
+            <primaryButton  :on-click="this.increment" @click="buyMembership">Buy Now</primaryButton>
         </div>
     </div>
 </template>
 
 <script>
-import '@/assets/css/style.css';
+import primaryButton from './ui-components/primaryButton.vue';
+
 export default {
     name: "MembershipOptionComponent",
     props: {
@@ -37,6 +38,9 @@ export default {
         }
 
     },
+    components: {
+        primaryButton,
+    }
 };
 </script>
 
@@ -49,8 +53,8 @@ export default {
 .membership-option h3,
 .membership-option h4,
 .membership-option ul {
-    margin: 10px 0; /* Add margin between elements */
-    color: white; /* Set text color to white */
+    margin: 10px 0;
+    color: white;
 }
 
 .membership-option button {
@@ -59,13 +63,13 @@ export default {
 
 .option-details {
   display: flex;
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Center align horizontally */
-  margin-top: 4rem; /* Adjust as needed */
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem; 
 }
 
 .option-details h4 {
-  margin: 0; /* Remove default margin */
+  margin: 0;
 }
 
 

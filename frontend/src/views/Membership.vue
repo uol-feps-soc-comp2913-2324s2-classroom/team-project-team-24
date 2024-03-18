@@ -1,6 +1,5 @@
 <script>
 import MembershipOptionComponent from "@/components/MembershipOption.vue";
-import '@/assets/css/style.css';
 export default {
     name: "MembershipCenter" ,
     data() {
@@ -8,25 +7,25 @@ export default {
             membershipOptions: [
                 {
                     regularity: "Weekly",
-                    points: ["point1", "point2", "point3"],
-                    price: "7/week"
+                    points: ["Access to all features", "Pay weekly", "Cancel anytime"],
+                    price: "£7/week"
                 },
                 {
                     regularity: "Monthly",
-                    points: ["point1", "point2", "point3"],
-                    price: "6.66/week"
+                    points: ["Access to all features", "Pay monthly", "Cancel anytime"],
+                    price: "£6.66/week"
                 },
                 {
                     regularity: "Yearly",
-                    points: ["point1", "point2", "point4"],
-                    price: "5/week"
+                    points: ["Access to all features", "Pay yearly", "Cancel anytime"],
+                    price: "£5/week"
                 },
             ],
             // adjust the colours of each col
             membershipColors: [
-                "#006992", // Red background
-                "#27476E", // Blue background
-                "#001D4A", // Green background
+                "#073617", // Red background
+                "#14903F", // Blue background
+                "#0A481F", // Green background
                 // Add more colors as needed
             ],
         };
@@ -46,7 +45,7 @@ export default {
 
     <div class="membershipPageContainer" >
         <div class="page-heading-container">
-            <h1>Membership Page</h1>
+            <h1>Membership</h1>
         </div>
         <div class="membership-options-container">
             <MembershipOptionComponent v-for="(membership, x) in membershipOptions" 
@@ -59,6 +58,7 @@ export default {
 </template>
 
 <style scoped>
+@import "@/assets/css/style.css";
 .membershipPageContainer {
   display: flex;
   flex-direction: column;
@@ -83,6 +83,7 @@ export default {
   margin-bottom: 20px; /* Add bottom margin */
   display: flex; /* Enable flexbox layout for option content */
   flex-direction: column; /* Stack regularity and details vertically */
+  border-radius: 0.8rem;
 }
 
 
