@@ -2,7 +2,7 @@
 from flask import Blueprint, Response, request, jsonify
 from flask_jwt_extended import get_current_user, jwt_required
 from app import db, app
-from app.db_functions import db_delete, get_routes_by_user_id
+from app.db_functions import get_routes_by_user_id
 from app.gpx_functions import *
 from app.models import User, Route
 import gpxpy
@@ -26,7 +26,7 @@ def get_overall_stats():
     # get trails from user ID
     trails = get_routes_by_user_id(user_id)
 
-    durations = [trail.get_duration() for trail in trails]
+    durations = [get_duration(gpxpy.parse(trail.data)) for trail in trails]
     totalDuration = sum(durations)
     totalDuration_h = int(totalDuration / 3600)
     totalDuration_m = int((totalDuration % 3600) / 60)
@@ -129,6 +129,7 @@ def delete_trail():
         return jsonify({"error": "Invalid trail ID"}), 400
 
     # delete route from database
-    db_delete(route)
+    Route.query.filter_by(id=trail_id).delete()
+    db.session.commit()
 
     return Response(f"Route {trail_id} successfully deleted", 200)

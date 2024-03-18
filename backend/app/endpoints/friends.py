@@ -74,5 +74,10 @@ def send_friend_request():
     if check_for_friend_request(user_id, to_id):
         return jsonify({"error": "Friend request already exists"}), 400
 
-    create_friend_request(user_id, to_id)
+    # if the user is sending a friend request to a user who sent them a friend request,
+    # automatically make them friends instead, and remove both requests
+    if check_for_friend_request(to_id, user_id):
+        accept_friend_request(user_id, to_id)
+    else:
+        create_friend_request(user_id, to_id)
     return Response("Friend request created", 200)

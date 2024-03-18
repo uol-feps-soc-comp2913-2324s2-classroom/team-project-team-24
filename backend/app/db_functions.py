@@ -10,12 +10,6 @@ def db_add(*args):
             db.session.add(arg)
         db.session.commit()
 
-def db_delete(*args):
-    with app.app_context():
-        for arg in args:
-            db.session.delete(arg)
-        db.session.commit()
-
 def hash_pwd(password):
     encode = password.encode('utf-8')
     salt = bcrypt.gensalt()
@@ -119,3 +113,14 @@ def create_friend_request(from_id: int, to_id: int):
     if not check_for_friend_request(from_id, to_id):
         # create new friendship
         db_add(FriendRequest(from_user=from_id, to_user=to_id))
+
+def remove_friend_request(user1_id: int, user2_id: int):
+    if check_for_friend_request(user1_id, user2_id):
+        FriendRequest.query.filter_by(from_user_id=user1_id, to_user_id=user2_id).delete()
+    if check_for_friend_request(user2_id, user1_id):
+        FriendRequest.query.filter_by(from_user_id=user2_id, to_user_id=user1_id).delete()
+    db.session.commit()
+
+def accept_friend_request(user1_id: int, user2_id: int):
+    create_friendship(user1_id, user2_id)
+    remove_friend_request(user1_id, user2_id)

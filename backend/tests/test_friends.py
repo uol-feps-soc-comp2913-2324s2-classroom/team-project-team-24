@@ -95,6 +95,26 @@ def test_send_friend_request_success(client):
     assert user_1 in user_2.incoming_friend_requests() and len(user_2.incoming_friend_requests()) == 1
     assert user_2 in user_1.outgoing_friend_requests() and len(user_1.outgoing_friend_requests()) == 1
 
+def test_send_friend_request_auto_add(client):
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(User)
+
+    headers = get_test_user_headers("u1", "pwd")
+    user_1 = User.query.filter_by(username="u1").first()
+    create_user("u2", "pwd")
+    user_2 = User.query.filter_by(username="u2").first()
+
+    create_friend_request(user_2.id, user_1.id)
+
+    response = client.post("/send_friend_request", data={"receiveUserID": user_2.id}, headers=headers)
+    assert response.status_code == 200
+    assert len(user_1.outgoing_friend_requests()) == 0
+    assert len(user_2.outgoing_friend_requests()) == 0
+    assert len(user_1.incoming_friend_requests()) == 0
+    assert len(user_2.incoming_friend_requests()) == 0
+    assert check_for_friendship(user_1.id, user_2.id)
+
 def test_send_friend_request_duplicate(client):
     delete_all(FriendRequest)
     delete_all(Friend)
