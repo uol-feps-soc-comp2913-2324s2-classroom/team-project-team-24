@@ -56,16 +56,6 @@ def delete_all(c):
             db.session.delete(user)
         db.session.commit()
 
-def delete_user(username, password):
-    with app.app_context():
-        result = User.query.filter_by(username=username).all()
-        if len(result) > 0:
-            u = result[0]
-            encode = password.encode('utf-8')
-            if bcrypt.checkpw(encode, u.password):
-                db.session.delete(u)
-        db.session.commit()
-
 def get_random_string(n):
     letters = string.ascii_letters
     return ''.join(random.choice(letters) for x in range(n))
@@ -102,7 +92,8 @@ def create_friendship(user1_id: int, user2_id: int):
     # check if friendship already exists
     if not check_for_friendship(user1_id, user2_id):
         # create new friendship
-        db_add(Friend(user1_id, user2_id))
+        db.session.add(Friend(user1_id, user2_id))
+        db.session.commit()
 
 def check_for_friend_request(from_id: int, to_id: int):
     to_user = User.query.filter_by(id=to_id).first()
@@ -112,7 +103,8 @@ def create_friend_request(from_id: int, to_id: int):
     # check if friendship already exists
     if not check_for_friend_request(from_id, to_id):
         # create new friendship
-        db_add(FriendRequest(from_user=from_id, to_user=to_id))
+        db.session.add(FriendRequest(from_user=from_id, to_user=to_id))
+        db.session.commit()
 
 def remove_friend_request(user1_id: int, user2_id: int):
     if check_for_friend_request(user1_id, user2_id):
@@ -126,15 +118,32 @@ def accept_friend_request(user1_id: int, user2_id: int):
     remove_friend_request(user1_id, user2_id)
 
 def check_for_user_in_group(user_id: int, group_id: int):
-    group = Group.query.filter_by(id=group_id).first()
-    user = User.query.filter_by(id=user_id).first()
-    return user in group.members
+    return db.session.query(userInGroup).filter_by(user_id=user_id, group_id=group_id).first() is not None
+
+def check_for_route_in_group(route_id: int, group_id: int):
+    return db.session.query(routeInGroup).filter_by(route_id=route_id, group_id=group_id).first() is not None
 
 def add_user_to_group(user_id: int, group_id: int):
     if not check_for_user_in_group(user_id, group_id):
         group = Group.query.filter_by(id=group_id).first()
         user = User.query.filter_by(id=user_id).first()
         group.members.append(user)
+
+def remove_user_from_group(user_id: int, group_id: int):
+    if check_for_user_in_group(user_id, group_id):
+        group = Group.query.filter_by(id=group_id).first()
+        user = User.query.filter_by(id=user_id).first()
+        if user in group.members:
+            group.members.remove(user)
+
+def add_route_to_group(route_id: int, group_id: int):
+    # ensure route owner is in the group
+    if check_for_user_in_group(Route.query.filter_by(id=route_id).first().user_id, group_id):
+        if not check_for_route_in_group(route_id, group_id):
+            group = Group.query.filter_by(id=group_id).first()
+            route = Route.query.filter_by(id=route_id).first()
+            group.routes.append(route)
+            db.session.commit()
 
 def create_new_group(user_id: int, name: str):
     group = Group(name=name)
@@ -148,9 +157,26 @@ def delete_group(group_id: int):
     Group.query.filter_by(id=group_id).delete()
     db.session.commit()
 
+def delete_user(user_id: int):
+    User.query.filter_by(id=user_id).delete()
+    db.session.commit()
+
+def delete_route(route_id: int):
+    Route.query.filter_by(id=route_id).delete()
+    db.session.commit()
+
 def reset_groups():
+    db.session.query(routeInGroup).delete()
+    db.session.query(userInGroup).delete()
+    db.session.commit()
+    for route in Route.query.all():
+        delete_route(route.id)
     for group in Group.query.all():
         delete_group(group.id)
+    Friend.query.delete()
+    db.session.commit()
+    for user in User.query.all():
+        delete_user(user.id)
 
 def get_user_group_ids(user_id: int) -> list:
     user = User.query.filter_by(id=user_id).first()

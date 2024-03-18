@@ -20,9 +20,8 @@ def test_get_friends_success(client):
 
     response = client.get("/get_friends", headers=headers)
     assert response.status_code == 200
-    assert len(user_1.friends()) == 2
-    assert len(user_2.friends()) == 1
-    assert len(user_3.friends()) == 1
+    assert len(response.json["friends"]) == 2
+    assert {user_2.id, user_3.id} == {response.json["friends"][0]["id"], response.json["friends"][1]["id"]}
 
 def test_get_friends_empty(client):
     delete_all(Friend)
@@ -33,7 +32,7 @@ def test_get_friends_empty(client):
 
     response = client.get("/get_friends", headers=headers)
     assert response.status_code == 200
-    assert len(user.friends()) == 0
+    assert len(response.json["friends"]) == 0
 
 def test_add_friend_success(client):
     delete_all(Friend)
@@ -166,3 +165,149 @@ def test_send_friend_request_invalid_id(client):
     response = client.post("/send_friend_request", data={"receiveUserID": -1}, headers=headers)
     assert response.status_code == 400
     assert b"Invalid ID" in response.data
+
+def test_accept_friend_request_success(client):
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(User)
+
+    headers = get_test_user_headers("u1", "pwd")
+    user_1 = User.query.filter_by(username="u1").first()
+    create_user("u2", "pwd")
+    user_2 = User.query.filter_by(username="u2").first()
+    create_friend_request(user_2.id, user_1.id)
+    assert check_for_friend_request(user_2.id, user_1.id)
+    assert not check_for_friendship(user_1.id, user_2.id)
+
+    response = client.post("/accept_friend_request", data={"fromUserID": user_2.id}, headers=headers)
+    assert response.status_code == 200
+    assert not check_for_friend_request(user_2.id, user_1.id)
+    assert check_for_friendship(user_1.id, user_2.id)
+
+def test_accept_friend_request_invalid_id(client):
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(User)
+
+    headers = get_test_user_headers("u1", "pwd")
+
+    response = client.post("/accept_friend_request", data={"fromUserID": -1}, headers=headers)
+    assert response.status_code == 400
+    assert b"Invalid ID" in response.data
+
+def test_accept_friend_request_missing_id(client):
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(User)
+
+    headers = get_test_user_headers("u1", "pwd")
+
+    response = client.post("/accept_friend_request", data={}, headers=headers)
+    assert response.status_code == 400
+    assert b"Missing ID" in response.data
+
+def test_accept_friend_request_not_sent(client):
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(User)
+
+    headers = get_test_user_headers("u1", "pwd")
+    user_1 = User.query.filter_by(username="u1").first()
+    create_user("u2", "pwd")
+    user_2 = User.query.filter_by(username="u2").first()
+    assert not check_for_friend_request(user_2.id, user_1.id)
+    assert not check_for_friendship(user_1.id, user_2.id)
+
+    response = client.post("/accept_friend_request", data={"fromUserID": user_2.id}, headers=headers)
+    assert response.status_code == 400
+    assert b"Friend request does not exist" in response.data
+    assert not check_for_friend_request(user_2.id, user_1.id)
+    assert not check_for_friendship(user_1.id, user_2.id)
+
+def test_accept_friend_request_already_friends(client):
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(User)
+
+    headers = get_test_user_headers("u1", "pwd")
+    user_1 = User.query.filter_by(username="u1").first()
+    create_user("u2", "pwd")
+    user_2 = User.query.filter_by(username="u2").first()
+    create_friendship(user_1.id, user_2.id)
+
+    response = client.post("/accept_friend_request", data={"fromUserID": user_2.id}, headers=headers)
+    assert response.status_code == 400
+    assert b"Users are already friends" in response.data
+
+def test_reject_friend_request_success(client):
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(User)
+
+    headers = get_test_user_headers("u1", "pwd")
+    user_1 = User.query.filter_by(username="u1").first()
+    create_user("u2", "pwd")
+    user_2 = User.query.filter_by(username="u2").first()
+    create_friend_request(user_2.id, user_1.id)
+    assert check_for_friend_request(user_2.id, user_1.id)
+    assert not check_for_friendship(user_1.id, user_2.id)
+
+    response = client.post("/reject_friend_request", data={"fromUserID": user_2.id}, headers=headers)
+    assert response.status_code == 200
+    assert not check_for_friend_request(user_2.id, user_1.id)
+    assert not check_for_friendship(user_1.id, user_2.id)
+
+def test_reject_friend_request_invalid_id(client):
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(User)
+
+    headers = get_test_user_headers("u1", "pwd")
+
+    response = client.post("/reject_friend_request", data={"fromUserID": -1}, headers=headers)
+    assert response.status_code == 400
+    assert b"Invalid ID" in response.data
+
+def test_reject_friend_request_missing_id(client):
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(User)
+
+    headers = get_test_user_headers("u1", "pwd")
+
+    response = client.post("/reject_friend_request", data={}, headers=headers)
+    assert response.status_code == 400
+    assert b"Missing ID" in response.data
+
+def test_reject_friend_request_not_sent(client):
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(User)
+
+    headers = get_test_user_headers("u1", "pwd")
+    user_1 = User.query.filter_by(username="u1").first()
+    create_user("u2", "pwd")
+    user_2 = User.query.filter_by(username="u2").first()
+    assert not check_for_friend_request(user_2.id, user_1.id)
+    assert not check_for_friendship(user_1.id, user_2.id)
+
+    response = client.post("/reject_friend_request", data={"fromUserID": user_2.id}, headers=headers)
+    assert response.status_code == 400
+    assert b"Friend request does not exist" in response.data
+    assert not check_for_friend_request(user_2.id, user_1.id)
+    assert not check_for_friendship(user_1.id, user_2.id)
+
+def test_reject_friend_request_already_friends(client):
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(User)
+
+    headers = get_test_user_headers("u1", "pwd")
+    user_1 = User.query.filter_by(username="u1").first()
+    create_user("u2", "pwd")
+    user_2 = User.query.filter_by(username="u2").first()
+    create_friendship(user_1.id, user_2.id)
+
+    response = client.post("/reject_friend_request", data={"fromUserID": user_2.id}, headers=headers)
+    assert response.status_code == 400
+    assert b"Users are already friends" in response.data

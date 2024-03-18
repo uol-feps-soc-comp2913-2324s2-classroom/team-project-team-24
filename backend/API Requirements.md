@@ -153,8 +153,7 @@ group_id = request.get_json()["groupID"]
 
 # Send data:
 return jsonify({
-    # I don't actually know how multiple routes are getting sent to the map item
-    # Shrey, if you could figure this out and let me know
+    trails = [1, 2, 3] # Route IDs
 })
 ```
 
@@ -197,12 +196,6 @@ Add the given route to the given group and return the new map data
 data = request.get_json()
 trail_id = data["trailID"]
 group_id = data["groupID"]
-
-# Send data:
-return jsonify({
-    # I don't actually know how multiple routes are getting sent to the map item
-    # Shrey, if you could figure this out and let me know
-})
 ```
 
 ### Add friend to group
@@ -212,11 +205,6 @@ Add the given friend to the given group and send the new list of group memebers.
 data = request.get_json()
 user_id = data["userID"]
 group_id = data["groupID"]
-
-# Send data:
-return jsonify({
-    # The same list of members as for get members, but with the new member
-})
 ```
 
 # Membership

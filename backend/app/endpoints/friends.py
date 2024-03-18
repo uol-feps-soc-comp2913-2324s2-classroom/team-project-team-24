@@ -30,11 +30,11 @@ def get_friends():
     friends_info = []
     for friend_id in user_friends:
         friend = User.query.filter_by(id=friend_id).first()
-        friends_info += {
+        friends_info.append({
             "id": friend_id,
             "name": friend.username,
             "profilePhoto": friend.profile_picture
-        }
+        })
 
     return jsonify({"friends": friends_info})
 
@@ -81,3 +81,45 @@ def send_friend_request():
     else:
         create_friend_request(user_id, to_id)
     return Response("Friend request created", 200)
+
+@bp.route('/accept_friend_request', methods=['POST'])
+@jwt_required()
+def accept_friend_request_route():
+    user_id = get_current_user().id
+    from_id = request.form.get("fromUserID")
+
+    if from_id == None:
+        return jsonify({"error": "Missing ID"}), 400
+    
+    if User.query.filter_by(id=from_id).first() == None:
+        return jsonify({"error": "Invalid ID"}), 400
+
+    if check_for_friendship(user_id, from_id):
+        return jsonify({"error": "Users are already friends"}), 400
+
+    if not check_for_friend_request(from_id, user_id):
+        return jsonify({"error": "Friend request does not exist"}), 400
+
+    accept_friend_request(user_id, from_id)
+    return Response("Friend request accepted", 200)
+
+@bp.route('/reject_friend_request', methods=['POST'])
+@jwt_required()
+def reject_friend_request_route():
+    user_id = get_current_user().id
+    from_id = request.form.get("fromUserID")
+
+    if from_id == None:
+        return jsonify({"error": "Missing ID"}), 400
+    
+    if User.query.filter_by(id=from_id).first() == None:
+        return jsonify({"error": "Invalid ID"}), 400
+
+    if check_for_friendship(user_id, from_id):
+        return jsonify({"error": "Users are already friends"}), 400
+
+    if not check_for_friend_request(from_id, user_id):
+        return jsonify({"error": "Friend request does not exist"}), 400
+
+    remove_friend_request(user_id, from_id)
+    return Response("Friend request rejected", 200)
