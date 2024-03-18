@@ -18,7 +18,7 @@ export default {
 
 <template>
     <div class="upload-gpx-container p-5">
-        <h1>Begin your new trail</h1>
+        <h1>Upload your new trail</h1>
         <!-- Wrapper div for fields, with Bootstrap classes for width and centering -->
         <div class="mx-auto" style="max-width: 50%;">
             <!-- File upload input is now required, only gpx files can be accepted -->
