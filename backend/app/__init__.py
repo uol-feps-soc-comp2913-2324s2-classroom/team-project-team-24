@@ -20,12 +20,13 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-from app.endpoints import auth, upload, core, trails
+from app.endpoints import auth, upload, core, trails, friends
 
 app.register_blueprint(auth.bp)
 app.register_blueprint(upload.bp)
 app.register_blueprint(core.bp)
 app.register_blueprint(trails.bp)
+app.register_blueprint(friends.bp)
 print(app.url_map)
 
 

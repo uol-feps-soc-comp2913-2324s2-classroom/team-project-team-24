@@ -2,7 +2,7 @@
 from flask import Blueprint, Response, request, jsonify
 from flask_jwt_extended import get_current_user, jwt_required
 from app import db, app
-from app.db_functions import get_routes_by_user_id
+from app.db_functions import db_delete, get_routes_by_user_id
 from app.gpx_functions import *
 from app.models import User, Route
 import gpxpy
@@ -91,6 +91,9 @@ def get_trail_data():
 
     # get route
     route = Route.query.filter_by(id=trail_id).first()
+    
+    if route.data == None:
+        return jsonify({"error": "Invalid trail data"}), 400
 
     gpx = gpxpy.parse(route.data)
     duration = get_duration(gpx)
@@ -110,3 +113,22 @@ def get_trail_data():
         "calories": 0,
         "gpx": route.data,
     })
+
+@bp.route('/delete_trail', methods=['POST'])
+@jwt_required()
+def delete_trail():
+    # delete a trail from the database
+
+    # recieve user ID and trail ID
+    user_id = get_current_user().id
+    trail_id = request.form["trailID"]
+
+    # ensure route ID is valid
+    route = Route.query.filter_by(id=trail_id).first()
+    if route == None or route.user_id != user_id:
+        return jsonify({"error": "Invalid trail ID"}), 400
+
+    # delete route from database
+    db_delete(route)
+
+    return Response(f"Route {trail_id} successfully deleted", 200)

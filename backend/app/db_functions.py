@@ -10,6 +10,12 @@ def db_add(*args):
             db.session.add(arg)
         db.session.commit()
 
+def db_delete(*args):
+    with app.app_context():
+        for arg in args:
+            db.session.delete(arg)
+        db.session.commit()
+
 def hash_pwd(password):
     encode = password.encode('utf-8')
     salt = bcrypt.gensalt()
@@ -23,6 +29,18 @@ def create_user(username, password):
     return u
 
 def create_route_from_file(file_path, name, exercise_type, user_id):
+    """
+    Create a new route
+    Args:
+        file_path (str): location of the .gpx file on disk
+        name (str): name of the route
+        exercise_type (str): exercise type of the route
+        user_id (int): user to register the route to
+
+    Returns:
+        (int): new route ID
+    """
+
     # ensure user ID is valid
     if User.query.filter_by(id=user_id).first() == None:
         return None
@@ -81,3 +99,23 @@ def get_test_user_headers(username, password):
     }
 
     return headers
+
+def check_for_friendship(user_id: int, friend_id: int):
+    friend = User.query.filter_by(id=friend_id).first()
+    return friend in User.query.filter_by(id=user_id).first().friends()
+
+def create_friendship(user1_id: int, user2_id: int):
+    # check if friendship already exists
+    if not check_for_friendship(user1_id, user2_id):
+        # create new friendship
+        db_add(Friend(user1_id, user2_id))
+
+def check_for_friend_request(from_id: int, to_id: int):
+    to_user = User.query.filter_by(id=to_id).first()
+    return to_user in User.query.filter_by(id=from_id).first().outgoint_friend_requests()
+
+def create_friend_request(from_id: int, to_id: int):
+    # check if friendship already exists
+    if not check_for_friend_request(from_id, to_id):
+        # create new friendship
+        db_add(FriendRequest(from_user=from_id, to_user=to_id))
