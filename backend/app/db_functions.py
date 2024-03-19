@@ -207,3 +207,20 @@ def set_user_membership_plan(user_id: int, membership_id: int):
     user = User.query.filter_by(id=user_id).first()
     user.membership_id = membership_id
     db.session.commit()
+
+def delete_user_membership(user_id: int):
+    user = User.query.filter_by(id=user_id).first()
+    user.membership_id = None
+    db.session.commit()
+
+def get_membership_price(membership_id: int):
+    return MembershipPlan.query.filter_by(id=membership_id).first().cost
+
+def get_user_membership_id(user_id: int):
+    user = User.query.filter_by(id=user_id).first()
+    return user.membership_id
+
+def cancel_user_membership(user_id: int):
+    user = User.query.filter_by(id=user_id).first()
+    user.membership_id = None
+    db.session.commit()

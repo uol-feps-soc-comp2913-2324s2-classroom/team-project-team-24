@@ -56,3 +56,16 @@ def get_membership_options():
     return jsonify({
         "membershipOptions": membershipOptions
     })
+
+@bp.route('/cancel_membership', methods=['POST'])
+@jwt_required()
+def cancel_membership():
+    # recieve user
+    user = get_current_user()
+
+    # ensure that user is a member
+    if get_user_membership_id(user.id) == None or get_membership_price(user.id) == 0:
+        return jsonify({"error": "User is not a member"}), 400
+
+    delete_user_membership(user.id)
+    return Response("Cancelled user membership", 200)
