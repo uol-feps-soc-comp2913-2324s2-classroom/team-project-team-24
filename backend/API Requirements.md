@@ -219,15 +219,15 @@ user_id = request.get_json()["userID"]
 return jsonify({
     "membershipOptions": [
         {
+            "name": "Plan 1",
             "regularity": "Weekly",
-            "points": ["point1", "point2"],     # The benefits of the membership
-            "price": "(pounds - i can't type the symbol) 7/week",
+            "price": 7,
             "isCurrentPlan": True   # Is true if it is the given user's plan
         },
         {
+            "name": "Plan 2",
             "regularity": "Monthly",
-            "points": ["point1", "point2", "point3"],
-            "price": "(pounds - i can't type the symbol) 6.6/week",
+            "price": 6.6,
             "isCurrentPlan": False
         },
     ]

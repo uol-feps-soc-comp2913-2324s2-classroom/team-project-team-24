@@ -195,3 +195,15 @@ def get_user_group_names(user_id: int) -> list:
         groups.append(group.name)
 
     return groups
+
+def create_membership_plan(name: str, regularity: str, price: float):
+    membership = MembershipPlan(name=name, payment_regularity=regularity, cost=price)
+    db.session.add(membership)
+    db.session.commit()
+
+    return membership.id
+
+def set_user_membership_plan(user_id: int, membership_id: int):
+    user = User.query.filter_by(id=user_id).first()
+    user.membership_id = membership_id
+    db.session.commit()
