@@ -248,7 +248,6 @@ return jsonify({
     "membershipTier": "",
     "gender": "",
     "age": 12,
-    "email": "x@gmail.com",
     "paymentRegularity": "Monthly"
 })
 ```

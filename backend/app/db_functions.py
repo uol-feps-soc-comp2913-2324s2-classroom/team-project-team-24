@@ -3,6 +3,7 @@ from app import app, db
 import bcrypt
 import string, random
 from flask_jwt_extended import create_access_token
+import datetime
 
 def db_add(*args):
     with app.app_context():
@@ -224,3 +225,11 @@ def cancel_user_membership(user_id: int):
     user = User.query.filter_by(id=user_id).first()
     user.membership_id = None
     db.session.commit()
+
+def get_age_from_date_of_birth(date_of_birth: datetime):
+    if date_of_birth is None:
+        return None
+
+    today = datetime.date.today()
+    birthday = date_of_birth.date()
+    return int((today - birthday).days / 365.2425)
