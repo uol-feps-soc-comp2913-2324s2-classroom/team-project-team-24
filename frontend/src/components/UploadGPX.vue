@@ -11,7 +11,7 @@ export default {
         return {
             count: 0
         }
-    }
+    },
 }
 
 </script>
@@ -36,12 +36,27 @@ export default {
                 <option>Biking</option>
                 <option>Hiking</option>
             </select>
+            
             <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
                 <!-- Button disabled logic checks if routeName has content and file is uploaded -->
                 <primaryButton @click="uploadData"
                     :disabled="!selectedFile || isDuplicateName">Upload</primaryButton>
 
             </div>
+        </div>
+        <div class="form-container d-flex flex-column">
+            <form class="form-container">
+                <div class="form-input">
+                    <!-- Default width value for text input is auto -->
+                    <textInputQuiet form-label="Name"></textInputQuiet>
+                </div>
+                <div class="form-input">
+                    <textInputQuiet width="50%" form-label="Last name"></textInputQuiet>
+                </div>
+                <div class="form-input">
+                    <textInputQuiet width="100%" form-label="Email" type="email"></textInputQuiet>
+                </div>
+            </form>
         </div>
     </div>
 </template>

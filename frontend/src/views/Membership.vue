@@ -7,18 +7,18 @@ export default {
             membershipOptions: [
                 {
                     regularity: "Weekly",
-                    points: ["Access to all features", "Pay weekly", "Cancel anytime"],
-                    price: "£7/week"
+
+                    price: "£1/week"
                 },
                 {
                     regularity: "Monthly",
-                    points: ["Access to all features", "Pay monthly", "Cancel anytime"],
-                    price: "£6.66/week"
+
+                    price: "£3/month"
                 },
                 {
                     regularity: "Yearly",
-                    points: ["Access to all features", "Pay yearly", "Cancel anytime"],
-                    price: "£5/week"
+
+                    price: "£10/year"
                 },
             ],
             // adjust the colours of each col
@@ -46,6 +46,7 @@ export default {
         <div class="page-heading-container">
             <h1>Membership</h1>
         </div>
+        <p> To get access to Walkley, please choose your payment subscription option</p>
         <div class="membership-options-container">
             <MembershipOptionComponent v-for="(membership, x) in membershipOptions" 
             :key="x" v-bind:membership="membership" 
@@ -62,7 +63,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center; /* Center align horizontally */
-  /* justify-content: center; Center align vertically */
   padding: 20px; /* Add padding around the container */
 }
 

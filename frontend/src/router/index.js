@@ -46,7 +46,7 @@ const routes = [
         path: "/membership",
         name: "Membership",
         component: Membership,
-        // meta: { requiresAuth: true },
+        meta: { requiresAuth: true },
     },
     {
         path: "/group",
@@ -70,7 +70,7 @@ const routes = [
         path: "/uploadtrail",
         name: "UploadTrail",
         component: UploadTrail,
-        // meta: { requiresAuth: true },
+        meta: { requiresAuth: true },
     },
     {
         path: "/resetpassword",
@@ -81,7 +81,7 @@ const routes = [
         path: "/stylingguide",
         name: "StylingGuide",
         component: StylingGuide,
-        // meta: { requiresAuth: true },
+        meta: { requiresAuth: true },
     },
 ]
 
