@@ -23,3 +23,34 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+// cypress/support/commands.js
+Cypress.Commands.add('login', () => {
+    // Caching session when logging in via page visit
+    cy.session('user-login', () => {
+        cy.visit('http://localhost:3000/login');
+        cy.get('#username').type('u1'); // Assuming '#username' is the selector for the username input field
+        cy.get('#password').type('pwd'); // Assuming '#password' is the selector for the password input field
+        cy.get('form').submit();
+        // cy.url().should('include', '/activitycenter');
+    });
+    // Caching session when logging in via API
+    cy.session('api-login', () => {
+        cy.request({
+        method: 'POST',
+        url: 'http://localhost:3000/login',
+        body: { username: 'u1', password: 'pwd' }, // Use the actual username and password values
+        }).then(({ body }) => {
+        window.localStorage.setItem('token', body.token)
+        
+      }).then(response => {
+        expect(response.body).to.have.property('token');
+      });
+        // }).then(response => {
+        // expect(response.status).to.eq(200);
+        // expect(response.body).to.have.property('token');
+        // window.localStorage.setItem('token', response.body.token);
+        // });
+    });
+  });
+  
