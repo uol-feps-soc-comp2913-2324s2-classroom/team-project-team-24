@@ -1,4 +1,28 @@
 // cypress/integration/uploadTrail.spec.js
+describe('Login Page', () => {
+  it('should have JavaScript enabled', () => {
+    // Cache the login session
+    cy.session('login', () => {
+      cy.visit('http://localhost:3000/login'); // Replace '/login' with the URL of your login page
+
+      // Type into the username input field
+      cy.get('#username') // Assuming '#username' is the selector for the username input field
+        .type('u1')
+        .should('have.value', 'u1'); // Verify that the input value is set correctly
+
+      // Type into the password input field
+      cy.get('#password') // Assuming '#password' is the selector for the password input field
+        .type('pwd')
+        .should('have.value', 'pwd'); // Verify that the input value is set correctly
+
+      // Submit the form
+      cy.get('form').submit();
+
+      // Verify that the page navigates to the expected URL after form submission
+      cy.url().should('include', '/activitycenter'); // Replace '/dashboard' with the expected URL after successful login
+    });
+  });
+});
 
 describe('UploadTrail Page', () => {
   beforeEach(() => {
