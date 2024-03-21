@@ -7,14 +7,7 @@ from app.db_functions import *
 def test_successful_upload(client):
     delete_all(Route)    
     
-    if User.query.filter_by(username='uploadtest').first() == None:
-        create_user('uploadtest', 'pwd')
-    
-    test_user = User.query.filter_by(username='uploadtest').first()
-    access_token = create_access_token(identity=test_user)
-    headers = {
-        'Authorization': 'Bearer {}'.format(access_token)
-    }
+    headers = get_test_user_headers('u1', 'pwd')
 
     with open("example_data/track1.gpx", "rb") as file:
         response = client.post('/upload', headers=headers,
@@ -25,15 +18,7 @@ def test_successful_upload(client):
 def test_no_file_upload(client):
     delete_all(Route)
 
-    if User.query.filter_by(username='uploadtest').first() == None:
-        create_user('uploadtest', 'pwd')
-
-    test_user = User.query.filter_by(username='uploadtest').first()
-    access_token = create_access_token(identity=test_user)
-    headers = {
-        'Authorization': 'Bearer {}'.format(access_token)
-    }
-
+    headers = get_test_user_headers('u1', 'pwd')
     response = client.post('/upload', headers=headers,
                             data={'routeName': 'test_route', 'exerciseType': 'test_exercise'})
     assert response.status_code == 400
@@ -43,14 +28,7 @@ def test_no_file_upload(client):
 def test_invalid_file_upload(client):
     delete_all(Route)
 
-    if User.query.filter_by(username='uploadtest').first() == None:
-        create_user('uploadtest', 'pwd')
-
-    test_user = User.query.filter_by(username='uploadtest').first()
-    access_token = create_access_token(identity=test_user)
-    headers = {
-        'Authorization': 'Bearer {}'.format(access_token)
-    }
+    headers = get_test_user_headers('u1', 'pwd')
 
     with open("example_data/waypoint1.gpx", "rb") as file:
         response = client.post('/upload', headers=headers,
@@ -62,14 +40,7 @@ def test_invalid_file_upload(client):
 def test_duplicate_route_name(client):
     delete_all(Route)
 
-    if User.query.filter_by(username='uploadtest').first() == None:
-        create_user('uploadtest', 'pwd')
-
-    test_user = User.query.filter_by(username='uploadtest').first()
-    access_token = create_access_token(identity=test_user)
-    headers = {
-        'Authorization': 'Bearer {}'.format(access_token)
-    }
+    headers = get_test_user_headers('u1', 'pwd')
 
     with open("example_data/track1.gpx", "rb") as file:
         response = client.post('/upload', headers=headers,
@@ -85,14 +56,7 @@ def test_duplicate_route_name(client):
 def test_empty_route_name(client):
     delete_all(Route)
 
-    if User.query.filter_by(username='uploadtest').first() == None:
-        create_user('uploadtest', 'pwd')
-
-    test_user = User.query.filter_by(username='uploadtest').first()
-    access_token = create_access_token(identity=test_user)
-    headers = {
-        'Authorization': 'Bearer {}'.format(access_token)
-    }
+    headers = get_test_user_headers('u1', 'pwd')
 
     with open("example_data/track1.gpx", "rb") as file:
         response = client.post('/upload', headers=headers,
@@ -100,7 +64,8 @@ def test_empty_route_name(client):
 
         assert response.status_code == 200
 
-    routes = get_routes_by_user_id(test_user.id)
+    test_user_id = User.query.filter_by(username='u1').first().id
+    routes = get_routes_by_user_id(test_user_id)
 
     # assume this is the only route, as they were deleteed
     assert routes[0].name == "My route #1"
