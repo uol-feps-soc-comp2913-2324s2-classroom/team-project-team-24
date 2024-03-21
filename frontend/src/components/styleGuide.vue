@@ -4,6 +4,8 @@ import primaryButton from './ui-components/primaryButton.vue';
 import secondaryButton from './ui-components/secondaryButton.vue';
 import tertiaryButton from './ui-components/tertiaryButton.vue';
 import dangerButtonOutline from './ui-components/dangerButtonOutline.vue';
+import quietButton from './ui-components/quietButton.vue';
+import textButton from './ui-components/textButton.vue';
 import textInputQuiet from './ui-components/textInputQuiet.vue';
 
 export default {
@@ -27,6 +29,8 @@ export default {
         tertiaryButton,
         dangerButton,
         dangerButtonOutline,
+        quietButton,
+        textButton,
         textInputQuiet,
     }
 }
@@ -67,18 +71,32 @@ export default {
                                 <dangerButtonOutline :on-click="this.increment">Action name</dangerButtonOutline>
                             </div>
                         </div>
+                        <div class="row mt-3 justify-content-center">
+                            <div class="col-md-12">
+                                <quietButton :on-click="this.increment">Action name</quietButton>
+                            </div>
+                        </div>
+                        <div class="row mt-3 justify-content-center">
+                            <div class="col-md-12">
+                                <textButton :on-click="this.increment">Action name</textButton>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
     </div>
         <h2> Form styling </h2>
-        <div class="form-container">
-            <form>
-                <div class="form-field">
+        <div class="form-container d-flex flex-column">
+            <form class="form-container">
+                <div class="form-input">
+                    <!-- Default width value for text input is auto -->
                     <textInputQuiet form-label="Name"></textInputQuiet>
                 </div>
-                <div class="form-field">
-                    <textInputQuiet form-label="Email" type="email"></textInputQuiet>
+                <div class="form-input">
+                    <textInputQuiet width="50%" form-label="Last name"></textInputQuiet>
+                </div>
+                <div class="form-input">
+                    <textInputQuiet width="100%" form-label="Email" type="email"></textInputQuiet>
                 </div>
             </form>
         </div>
@@ -88,17 +106,13 @@ export default {
 
 </template>
 
-<script setup>
-
-</script>
-
 <style scoped>
-    .form-container {
-        display: flex;
-        justify-content: center; /* Horizontally center the content */
-    }
-    form {
-        width: 100%; /* Make sure the form takes the full width of the container */
-        max-width: 400px; /* Limit the maximum width of the form */
-    }
+.form-container {
+    border: none;
+}
+
+.form-input{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
 </style>
