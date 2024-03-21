@@ -1,26 +1,33 @@
 <script>
 import MembershipOptionComponent from "@/components/MembershipOption.vue";
 export default {
-    name: "MembershipCenter",
+    name: "MembershipCenter" ,
     data() {
         return {
             membershipOptions: [
                 {
                     regularity: "Weekly",
-                    points: ["point1", "point2"],
-                    price: "7/week"
+
+                    price: "£1/week"
                 },
                 {
                     regularity: "Monthly",
-                    points: ["point1", "point2", "point3"],
-                    price: "6.66/week"
+
+                    price: "£3/month"
                 },
                 {
                     regularity: "Yearly",
-                    points: ["point1", "point2", "point4"],
-                    price: "5/week"
+
+                    price: "£10/year"
                 },
-            ]
+            ],
+            // adjust the colours of each col
+            membershipColors: [
+                "#073617",
+                "#14903F",
+                "#0A481F",
+                // Add more colors as needed
+            ],
         };
     },
     methods: {
@@ -35,13 +42,48 @@ export default {
 </script>
 
 <template>
-    <div class="membershipPageContainer">
-        <h1>Membership Page</h1>
-        <div style="display:flex;">
-            <MembershipOptionComponent v-for="(membership, x) in membershipOptions" :key="x" v-bind:membership="membership" />    
+    <div class="membershipPageContainer" >
+        <div class="page-heading-container">
+            <h1>Membership</h1>
+        </div>
+        <p> To get access to Walkley, please choose your payment subscription option</p>
+        <div class="membership-options-container">
+            <MembershipOptionComponent v-for="(membership, x) in membershipOptions" 
+            :key="x" v-bind:membership="membership" 
+            :color="membershipColors[x]"
+            />    
         </div>
         
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import "@/assets/css/style.css";
+.membershipPageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align horizontally */
+  padding: 20px; /* Add padding around the container */
+}
+
+
+.membership-options-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Distribute items evenly */
+    align-items: flex-end; /* Align items to the bottom */
+    width: 100%;
+    max-width: 600px; /* Limit the width of the options container */
+    margin-top: 20px; /* Add some space at the top */
+}
+
+.membership-option {
+  flex: 0 0 calc(33.33% - 20px); /* Adjust width to accommodate margin */
+  margin-bottom: 20px; /* Add bottom margin */
+  display: flex; /* Enable flexbox layout for option content */
+  flex-direction: column; /* Stack regularity and details vertically */
+  border-radius: 0.8rem;
+}
+
+
+</style>
