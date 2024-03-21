@@ -24,20 +24,18 @@ export default {
 </script>
 
 <template>
-    <div class="activityCenterPageContainer p-5">
-        <div class="top-container">
-        <GoalComponent />
-        </div>
+    <div class="activityCenterPageContainer p-2">
         <div class="main-container">
-            <div class="left-column">
+            <div class="map-view-column p-3">
+                <GoalComponent />
                 <MapViewerComponent />
             </div>
-            <div class="right-column">
+            <div class="track-stats-column p-3">
                 <OverallTrailStatsComponent />
             </div>
         </div>
-        <div class="bottom-container">
-        <TrailListComponent :trails="trails" />
+        <div class="trails-container p-2">
+          <TrailListComponent :trails="trails" />
         </div>
     </div>
 </template>
@@ -48,24 +46,34 @@ export default {
   flex-direction: column;
 }
 
-.top-container {
-  margin-bottom: 20px;
-}
-
 .main-container {
   display: flex;
+  height: 80vh;
 }
 
-.left-column {
+.map-view-column {
   flex: 2; /* Occupy 2/3 of the container */
   margin-right: 10px; /* Add some space between columns */
+  background-color: var(--l1-color);
+  border-radius: var(--border-radius);
+  width: 100%;
+  height: 100%;
 }
 
-.right-column {
+.track-stats-column {
   flex: 1; /* Occupy 1/3 of the container */
+  margin-right: 10px; /* Add some space between columns */
+  background-color: var(--l1-color);
+  border-radius: var(--border-radius);
+  
 }
 
-.bottom-container {
+.trails-container {
   margin-top: 20px;
+  margin-right: 10px; /* Add some space between columns */
+  background-color: var(--l1-color);
+  border-radius: var(--border-radius);
+  width: 100%;
+  height: 100%;
 }
 </style>

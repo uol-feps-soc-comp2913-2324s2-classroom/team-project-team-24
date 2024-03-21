@@ -12,8 +12,9 @@
   </template>
   
   <script>
-  import primaryButton from '../ui-components/primaryButton.vue';
-  import dangerButton from '../ui-components/dangerButton.vue';
+  import primaryButton from '@/components/ui-components/primaryButton.vue';
+  import dangerButton from '@/components/ui-components/dangerButton.vue';
+
 
   export default {
     name: "TrailListItemComponent",
