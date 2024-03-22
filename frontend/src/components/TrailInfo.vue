@@ -23,11 +23,12 @@
 </template>
 
 <script>
+import axiosAuth from "@/api/axios-auth.js";
 export default {
     name: "TrailInfoComponent",
     data() {
         return {
-            trailId: this.$route.query.trail,
+            trailId: this.$route.query.trailId,
             name: "name",
             date: "",
             distance: 0.0,
@@ -42,9 +43,26 @@ export default {
     },
     methods: {
         getTrailData() {
-            // Call to db and get all needed info
+            axiosAuth.post('/get-trail-data', {
+                trailID: this.$route.query.trailId,
+            }).then(
+                response => {
+                    this.name = response.data.name;
+                    this.date = response.data.date;
+                    this.distance = response.data.distance;
+                    this.time = response.data.time;
+                    this.speed = response.data.speed;
+                    this.calories = response.data.calories;
+                }
+            ).catch(error => {
+                console.log("error");
+                console.log(error.response.data.error);
+            })
         }
     },
+    created() {
+        this.getTrailData();
+    }
 };
 </script>
 

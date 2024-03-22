@@ -1,6 +1,6 @@
 <template>
     <div>
-        <TrailListItemComponent v-for="(trail, x) in trails" :key="x" v-bind:trail="trail"/>
+        <TrailListItemComponent v-for="(trail) in trails" :key="trail" v-bind:trail="trail"/>
     </div>
 </template>
 

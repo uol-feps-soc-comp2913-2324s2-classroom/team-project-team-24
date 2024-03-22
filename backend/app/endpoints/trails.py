@@ -9,7 +9,7 @@ import gpxpy
 
 bp = Blueprint('trails', __name__)
 
-@bp.route('/get_overall_stats', methods=['GET'])
+@bp.route('/get-overall-stats', methods=['GET'])
 @jwt_required()
 def get_overall_stats():
     # get overall trail stats for a given user ID
@@ -48,7 +48,7 @@ def get_overall_stats():
         "totalCalories": 0
     })
 
-@bp.route('/get_trails', methods=['GET'])
+@bp.route('/get-trails', methods=['GET'])
 @jwt_required()
 def get_trails():
     # get all the trail IDs for a given user ID
@@ -67,17 +67,17 @@ def get_trails():
 
     # get trail IDs from trails
     trail_ids = [trail.id for trail in trails]
-
+    print(trail_ids)
     # return trails
     return jsonify({
         "trails": trail_ids
     })
 
-@bp.route('/get_trail_data', methods=['GET'])
+@bp.route('/get-trail-data', methods=['POST'])
 @jwt_required()
 def get_trail_data():
     # get data for a given trail ID
-
+    
     # recieve route ID
     user_id = get_current_user().id
     trail_id = request.get_json().get("trailID")
@@ -114,14 +114,14 @@ def get_trail_data():
         "gpx": route.data,
     })
 
-@bp.route('/delete_trail', methods=['POST'])
+@bp.route('/delete-trail', methods=['POST'])
 @jwt_required()
 def delete_trail():
     # delete a trail from the database
 
     # recieve user ID and trail ID
     user_id = get_current_user().id
-    trail_id = request.form["trailID"]
+    trail_id = request.get_json().get("trailID")
 
     # ensure route ID is valid
     route = Route.query.filter_by(id=trail_id).first()

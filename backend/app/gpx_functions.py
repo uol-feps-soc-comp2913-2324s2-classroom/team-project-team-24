@@ -37,8 +37,15 @@ def get_duration(gpx):
         for segment in track.segments:
             for point in segment.points:
                 times.append(point.time)
-
-    return (times[-1] - times[0]).total_seconds()
+                
+    # This is not the fix! It is just to stop it crashing
+    try:
+        return (times[-1] - times[0]).total_seconds()
+    
+    except:
+        return 1
+    
+    
 
 def get_speed(gpx):
     """

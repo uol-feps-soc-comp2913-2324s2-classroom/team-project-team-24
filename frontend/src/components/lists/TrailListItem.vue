@@ -1,8 +1,8 @@
 <template>
     <div class="outer" @click="viewTrail">
         <div>
-            <h3>{{ trailName }}</h3>
-            <p>{{ trailDate }}</p>
+            <h3>{{ name }}</h3>
+            <p>{{ date }}</p>
         </div>
         <button @click.stop="downloadTrail">Download</button>
         <button @click.stop="deleteTrail">Delete</button>
@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import axiosAuth from "@/api/axios-auth.js";
 export default {
     name: "TrailListItemComponent",
     props: {
@@ -19,21 +20,42 @@ export default {
     },
     data() {
         return {
-            trailName: this.trail,
-            trailDate: "25/07/03",
+            name: "",
+            date: "",
         };
     },
     methods: {
+        getPageData() {
+            axiosAuth.post('/get-trail-data', {
+                trailID: this.trail,
+            }).then(
+                response => {
+                    this.name = response.data.name;
+                    this.date = response.data.date;
+                }
+            )
+        },
         viewTrail() {
-            this.$router.push({path: "/mytrail", query: {trailName: this.trail}});
+            this.$router.push({path: "/mytrail", query: {trailId: this.trail}});
         },
         downloadTrail() {
             console.log("downloadTrail");
         },
         deleteTrail() {
-            console.log("deleteTrail");
+            axiosAuth.post('/delete-trail', {
+                trailID: this.trail,
+            }).then(
+                response => {
+                    console.log(response.status);
+                    this.$parent.$parent.getPageData();
+                }
+            )
+            
         }
     },
+    created() {
+        this.getPageData();
+    }
 };
 </script>
 
