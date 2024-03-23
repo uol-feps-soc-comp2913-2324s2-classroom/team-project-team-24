@@ -1,5 +1,6 @@
 <script>
 import axiosAuth from "@/api/axios-auth";
+import primaryButton from './ui-components/primaryButton.vue';
 
 export default {
     name: 'UploadGPXComponent',
@@ -10,14 +11,14 @@ export default {
         return {
             count: 0
         }
-    }
+    },
 }
 
 </script>
 
 <template>
-    <div class="upload-gpx-container">
-        <h1>Begin your new trail</h1>
+    <div class="upload-gpx-container p-5">
+        <h1>Upload your new trail</h1>
         <!-- Wrapper div for fields, with Bootstrap classes for width and centering -->
         <div class="mx-auto" style="max-width: 50%;">
             <!-- File upload input is now required, only gpx files can be accepted -->
@@ -35,12 +36,27 @@ export default {
                 <option>Biking</option>
                 <option>Hiking</option>
             </select>
+            
             <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
                 <!-- Button disabled logic checks if routeName has content and file is uploaded -->
-                <button @click="uploadData" class="btn btn-primary"
-                    :disabled="!selectedFile || isDuplicateName">Upload</button>
+                <primaryButton @click="uploadData"
+                    :disabled="!selectedFile || isDuplicateName">Upload</primaryButton>
 
             </div>
+        </div>
+        <div class="form-container d-flex flex-column">
+            <form class="form-container">
+                <div class="form-input">
+                    <!-- Default width value for text input is auto -->
+                    <textInputQuiet form-label="Name"></textInputQuiet>
+                </div>
+                <div class="form-input">
+                    <textInputQuiet width="50%" form-label="Last name"></textInputQuiet>
+                </div>
+                <div class="form-input">
+                    <textInputQuiet width="100%" form-label="Email" type="email"></textInputQuiet>
+                </div>
+            </form>
         </div>
     </div>
 </template>
