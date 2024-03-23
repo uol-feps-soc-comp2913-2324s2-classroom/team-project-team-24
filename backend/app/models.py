@@ -130,7 +130,7 @@ class User(db.Model):
                 friends.add(entry.user_1)
         return friends
     
-    def outgoint_friend_requests(self):
+    def outgoing_friend_requests(self):
         table = FriendRequest.query.filter(FriendRequest.from_user == self).all()
         outgoing_requests = set()
         for entry in table:

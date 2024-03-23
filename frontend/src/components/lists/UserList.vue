@@ -1,6 +1,6 @@
 <template>
     <div>
-        <UserListItemComponent v-for="(user, x) in users" :key="x" v-bind:user="user" :addButtonShowing="addButtonShowing" />
+        <UserListItemComponent v-for="(user) in users" :key="user" v-bind:user="user" :addButtonShowing="addButtonShowing" />
     </div>
 </template>
 

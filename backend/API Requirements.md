@@ -153,8 +153,7 @@ group_id = request.get_json()["groupID"]
 
 # Send data:
 return jsonify({
-    # I don't actually know how multiple routes are getting sent to the map item
-    # Shrey, if you could figure this out and let me know
+    trails = [1, 2, 3] # Route IDs
 })
 ```
 
@@ -197,12 +196,6 @@ Add the given route to the given group and return the new map data
 data = request.get_json()
 trail_id = data["trailID"]
 group_id = data["groupID"]
-
-# Send data:
-return jsonify({
-    # I don't actually know how multiple routes are getting sent to the map item
-    # Shrey, if you could figure this out and let me know
-})
 ```
 
 ### Add friend to group
@@ -212,11 +205,6 @@ Add the given friend to the given group and send the new list of group memebers.
 data = request.get_json()
 user_id = data["userID"]
 group_id = data["groupID"]
-
-# Send data:
-return jsonify({
-    # The same list of members as for get members, but with the new member
-})
 ```
 
 # Membership
@@ -231,15 +219,15 @@ user_id = request.get_json()["userID"]
 return jsonify({
     "membershipOptions": [
         {
+            "name": "Plan 1",
             "regularity": "Weekly",
-            "points": ["point1", "point2"],     # The benefits of the membership
-            "price": "(pounds - i can't type the symbol) 7/week",
+            "price": 7,
             "isCurrentPlan": True   # Is true if it is the given user's plan
         },
         {
+            "name": "Plan 2",
             "regularity": "Monthly",
-            "points": ["point1", "point2", "point3"],
-            "price": "(pounds - i can't type the symbol) 6.6/week",
+            "price": 6.6,
             "isCurrentPlan": False
         },
     ]
@@ -260,7 +248,6 @@ return jsonify({
     "membershipTier": "",
     "gender": "",
     "age": 12,
-    "email": "x@gmail.com",
     "paymentRegularity": "Monthly"
 })
 ```

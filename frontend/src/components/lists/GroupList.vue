@@ -1,6 +1,6 @@
 <template>
     <div>
-        <GroupListItemComponent v-for="(group, x) in groups" :key="x" v-bind:group="group" />
+        <GroupListItemComponent v-for="(group) in groups" :key="group" v-bind:group="group" />
     </div>
 </template>
 

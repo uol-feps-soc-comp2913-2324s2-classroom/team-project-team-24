@@ -3,16 +3,23 @@ import MapViewerComponent from "@/components/MapViewer.vue";
 import GoalComponent from "@/components/Goal.vue";
 import OverallTrailStatsComponent from "@/components/OverallTrailStats.vue";
 import TrailListComponent from "@/components/lists/TrailList.vue";
+import axiosAuth from "@/api/axios-auth.js";
 
 export default {
     name: "ActivityCenter",
     data() {
         return {
-            trails: ["trail1", "trail2", "trail3", "trail4"],
+            trails: [],
         };
     },
     methods: {
-
+        getPageData() {
+            axiosAuth.get('/get-trails').then(
+                response => {
+                    this.trails = response.data.trails;
+                }
+            )
+        }
     },
     components: {
         MapViewerComponent,
@@ -20,6 +27,9 @@ export default {
         OverallTrailStatsComponent,
         TrailListComponent,
     },
+    created() {
+        this.getPageData();
+    }
 };
 </script>
 
@@ -33,4 +43,5 @@ export default {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>
