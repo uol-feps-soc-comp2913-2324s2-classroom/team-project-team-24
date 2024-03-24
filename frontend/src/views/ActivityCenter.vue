@@ -14,7 +14,7 @@ export default {
     },
     methods: {
         getPageData() {
-            axiosAuth.get('/get-trails').then(
+            axiosAuth.get('/trail/get-all').then(
                 response => {
                     this.trails = response.data.trails;
                 }

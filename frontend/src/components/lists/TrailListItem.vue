@@ -26,7 +26,7 @@ export default {
     },
     methods: {
         getPageData() {
-            axiosAuth.post('/get-trail-data', {
+            axiosAuth.post('/trail/get-data', {
                 trailID: this.trail,
             }).then(
                 response => {

@@ -5,9 +5,10 @@ from app import db, app
 from app.db_functions import get_routes_by_user_id
 from app.gpx_functions import *
 from app.models import User, Route
+from app.gpx import GPX
 import gpxpy
 
-bp = Blueprint('trails', __name__)
+bp = Blueprint('trails', __name__, url_prefix="/trail")
 
 @bp.route('/get-overall-stats', methods=['GET'])
 @jwt_required()
@@ -26,7 +27,7 @@ def get_overall_stats():
     # get trails from user ID
     trails = get_routes_by_user_id(user_id)
 
-    durations = [get_duration(gpxpy.parse(trail.data)) for trail in trails]
+    durations = [GPX(trail.data).get_duration() for trail in trails]
     totalDuration = sum(durations)
     totalDuration_h = int(totalDuration / 3600)
     totalDuration_m = int((totalDuration % 3600) / 60)
@@ -48,7 +49,7 @@ def get_overall_stats():
         "totalCalories": 0
     })
 
-@bp.route('/get-trails', methods=['GET'])
+@bp.route('/get-all', methods=['GET'])
 @jwt_required()
 def get_trails():
     # get all the trail IDs for a given user ID
@@ -73,7 +74,7 @@ def get_trails():
         "trails": trail_ids
     })
 
-@bp.route('/get-trail-data', methods=['POST'])
+@bp.route('/get-data', methods=['POST'])
 @jwt_required()
 def get_trail_data():
     # get data for a given trail ID
@@ -95,8 +96,8 @@ def get_trail_data():
     if route.data == None:
         return jsonify({"error": "Invalid trail data"}), 400
 
-    gpx = gpxpy.parse(route.data)
-    duration = get_duration(gpx)
+    gpx = GPX(route.data)
+    duration = gpx.get_duration()
     hours = int(duration / 3600)
     minutes = int((duration % 3600) / 60)
     seconds = int(duration % 60)
@@ -107,14 +108,37 @@ def get_trail_data():
     return jsonify({
         "name": route.name,
         "date": str(gpx.time),
-        "distance": get_total_distance_km(gpx),    # In Km
+        "distance": gpx.get_total_distance_km(),    # In Km
         "time": {"hours": hours, "minutes": minutes, "seconds": seconds},
-        "speed": get_speed(gpx),   # In Km/h
+        "speed": gpx.get_speed(),   # In Km/h
         "calories": 0,
-        "gpx": route.data,
     })
 
-@bp.route('/delete-trail', methods=['POST'])
+@bp.route('/get-map', methods=['POST'])
+@jwt_required()
+def get_trail_map():
+    # recieve route ID
+    user_id = get_current_user().id
+    trail_id = request.get_json().get("trailID")
+    if trail_id is None:
+        return jsonify({"error": "Missing trail ID"}), 400
+    
+    # ensure route ID is valid
+    route = Route.query.filter_by(id=trail_id).first()
+    if route == None or route.user_id != user_id:
+        return jsonify({"error": "Invalid trail ID"}), 400
+
+    # get route
+    route = Route.query.filter_by(id=trail_id).first()
+    
+    if route.data == None:
+        return jsonify({"error": "Invalid trail data"}), 400
+    
+    gpx = GPX(route.data)
+    map_html = gpx.display()
+    return Response(map_html, mimetype='text/html')
+
+@bp.route('/delete', methods=['POST'])
 @jwt_required()
 def delete_trail():
     # delete a trail from the database
@@ -133,3 +157,62 @@ def delete_trail():
     db.session.commit()
 
     return Response(f"Route {trail_id} successfully deleted", 200)
+
+@bp.route('/upload', methods=('POST',))
+@jwt_required()
+def upload():
+    user_id = get_current_user().id
+
+    route_name = request.form["routeName"]
+    # route name is optional, generate default name if empty
+    if route_name == "":
+        # get existing user routes
+        routes = get_routes_by_user_id(user_id)
+
+        valid_name_found = False
+        i = 1
+        while valid_name_found == False:
+            valid_name_found = True
+            for route in routes:
+                if route.name == f"My route #{i}":
+                    valid_name_found = False
+                    i += 1
+
+        route_name = f"My route #{i}"
+    else:
+        # check that user hasn't already used this name
+        # get existing user routes
+        routes = get_routes_by_user_id(user_id)
+
+        for route in routes:
+            if route.name == route_name:
+                return Response("Route name already used", 400)
+
+    exercise_type = request.form["exerciseType"]
+    if exercise_type == "":
+        exercise_type = "None"
+
+    if len(request.files) == 0:
+        return Response("No file uploaded", 400)
+    
+    file = request.files["file"]
+    gpx_data = file.read().decode("utf-8")
+
+    if len(gpx_data) == 0:
+        return Response("Invalid file", 400)
+    
+    # check file is appropriate gpx type
+    try:
+        gpx = gpxpy.parse(gpx_data)
+
+        if len(gpx.tracks) == 0:
+            return Response("Invalid file contents", 400)
+    except gpxpy.gpx.GPXXMLSyntaxException:
+        return Response("Invalid file type", 400)
+
+    # save route data to db
+    route = Route(data=gpx_data, name=route_name, exercise_type=exercise_type, user_id=user_id)
+    db.session.add(route)
+    db.session.commit()
+
+    return Response(f"Route '{route_name}' with type '{exercise_type}' and id {route.id} uploaded to user with id {user_id}", 200)

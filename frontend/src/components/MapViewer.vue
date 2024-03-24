@@ -9,6 +9,11 @@ import axiosAuth from "@/api/axios-auth"
 
 export default {
     name: 'MapViewerComponent',
+    props: {
+        trailID: {
+            
+        }
+    },
     data() {
         return {
             mapUrl: null,
@@ -16,7 +21,9 @@ export default {
     },
     async mounted() {
         try {
-            const response = await axiosAuth.get(`/core/map`);
+            const response = await axiosAuth.post(`/trail/get-map`, {
+                trailID: this.trailID,
+            });
             const mapHtml = response.data;
             const blob = new Blob([mapHtml], { type: 'text/html' });
             this.mapUrl = URL.createObjectURL(blob);

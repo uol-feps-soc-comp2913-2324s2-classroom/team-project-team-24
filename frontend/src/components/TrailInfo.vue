@@ -43,7 +43,7 @@ export default {
     },
     methods: {
         getTrailData() {
-            axiosAuth.post('/get-trail-data', {
+            axiosAuth.post('/trail/get-data', {
                 trailID: this.$route.query.trailId,
             }).then(
                 response => {
