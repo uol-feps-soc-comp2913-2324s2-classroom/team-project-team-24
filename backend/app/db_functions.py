@@ -4,6 +4,7 @@ import bcrypt
 import string, random
 from flask_jwt_extended import create_access_token
 import datetime
+from sqlalchemy import and_, or_
 
 def db_add(*args):
     with app.app_context():
@@ -94,6 +95,18 @@ def create_friendship(user1_id: int, user2_id: int):
     if not check_for_friendship(user1_id, user2_id):
         # create new friendship
         db.session.add(Friend(user1_id, user2_id))
+        db.session.commit()
+
+def remove_friendship(user1_id: int, user2_id: int):
+    # Remove the friendship between user1 and user2
+    if check_for_friendship(user1_id, user2_id):
+        friendship = Friend.query.filter(
+            or_(and_(Friend.user_1_id==user1_id, Friend.user_2_id==user2_id),
+                and_(Friend.user_1_id==user2_id, Friend.user_2_id==user1_id)
+            )).first()
+        
+        # print(friendship)
+        db.session.delete(friendship)
         db.session.commit()
 
 def check_for_friend_request(from_id: int, to_id: int):

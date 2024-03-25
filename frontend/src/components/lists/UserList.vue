@@ -1,6 +1,6 @@
 <template>
     <div>
-        <UserListItemComponent v-for="(user) in users" :key="user" v-bind:user="user" :addButtonShowing="addButtonShowing" />
+        <UserListItemComponent v-for="(user) in users" :key="user" v-bind:user="user" :button="button" />
     </div>
 </template>
 
@@ -13,10 +13,12 @@ export default {
         users: {
             type: Array
         },
-        addButtonShowing: {
-            type: Boolean,
-            default: false
-        },
+        button: {
+            default: {
+                action: null,
+                text: null,
+            },
+        }
     },
     data() {
         return {

@@ -3,7 +3,6 @@ from flask import Blueprint, Response, request, jsonify
 from flask_jwt_extended import get_current_user, jwt_required
 from app import db, app
 from app.db_functions import get_routes_by_user_id
-from app.gpx_functions import *
 from app.models import User, Route
 from app.gpx import GPX
 import gpxpy
@@ -47,6 +46,41 @@ def get_overall_stats():
         "longestTime": {"hours": longestDuration_h, "minutes": longestDuration_m, "seconds": longestDuration_s},
         # Total calories burn in time period
         "totalCalories": 0
+    })
+
+@bp.route('/get-longest', methods=['GET'])
+@jwt_required()
+def get_longest_trail():
+    # get longest distance trail ID for a given user ID
+
+    # recieve user ID
+    user_id = get_current_user().id
+    if user_id is None:
+        return jsonify({"error": "Missing user ID"}), 400
+
+    # ensure user ID is valid
+    if User.query.filter_by(id=user_id).first() == None:
+        return jsonify({"error": "Invalid user ID"}), 400
+
+    # get trails from user ID
+    trails = get_routes_by_user_id(user_id)
+    longest = {
+        "distance": 0,
+        "trailID": -1,
+    }
+
+    for trail in trails:
+        dist = GPX(trail.data).get_total_distance_km()
+        if dist > longest["distance"]:
+            longest["distance"] = dist
+            longest["trailID"] = trail.id
+
+
+    # get trail IDs from trails
+    print(longest)
+    # return trails
+    return jsonify({
+        "trailID": longest["trailID"]
     })
 
 @bp.route('/get-all', methods=['GET'])
@@ -126,7 +160,7 @@ def get_trail_map():
     # ensure route ID is valid
     route = Route.query.filter_by(id=trail_id).first()
     if route == None or route.user_id != user_id:
-        return jsonify({"error": "Invalid trail ID"}), 400
+        return jsonify({"error": f"Invalid trail ID {trail_id}"}), 400
 
     # get route
     route = Route.query.filter_by(id=trail_id).first()
@@ -216,3 +250,4 @@ def upload():
     db.session.commit()
 
     return Response(f"Route '{route_name}' with type '{exercise_type}' and id {route.id} uploaded to user with id {user_id}", 200)
+

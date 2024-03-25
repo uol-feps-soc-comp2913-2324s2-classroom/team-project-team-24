@@ -100,11 +100,11 @@ if __name__ =="__main__":
     with open("example_data/track1.gpx", "r") as file:
         data = file.read()
 
-    gpx = gpxpy.parse(data)
+    gpx = GPX(data)
     print(str(gpx.time))
-    print(get_total_distance_km(gpx))
-    hours = int(get_duration(gpx) / 3600)
-    minutes = int((get_duration(gpx) % 3600) / 60)
-    seconds = int(get_duration(gpx) % 60)
+    print(gpx.get_total_distance_km())
+    hours = int(gpx.get_duration() / 3600)
+    minutes = int(gpx.get_duration() % 3600 / 60)
+    seconds = int(gpx.get_duration() % 60)
     print(hours, minutes, seconds)
-    print(get_speed(gpx))
+    print(gpx.get_speed())

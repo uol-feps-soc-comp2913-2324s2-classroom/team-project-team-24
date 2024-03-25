@@ -21,6 +21,7 @@ export default {
     },
     async mounted() {
         try {
+            console.log(this.trailID);
             const response = await axiosAuth.post(`/trail/get-map`, {
                 trailID: this.trailID,
             });

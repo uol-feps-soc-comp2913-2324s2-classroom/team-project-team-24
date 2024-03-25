@@ -15,7 +15,7 @@ export default {
     name: "TrailListItemComponent",
     props: {
         trail: {
-            type: String
+            type: Number
         }
     },
     data() {
