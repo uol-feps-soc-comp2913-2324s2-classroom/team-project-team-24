@@ -142,6 +142,8 @@ def add_user_to_group(user_id: int, group_id: int):
         group = Group.query.filter_by(id=group_id).first()
         user = User.query.filter_by(id=user_id).first()
         group.members.append(user)
+        db.session.add(group)
+        db.session.commit()
 
 def remove_user_from_group(user_id: int, group_id: int):
     if check_for_user_in_group(user_id, group_id):
@@ -149,6 +151,8 @@ def remove_user_from_group(user_id: int, group_id: int):
         user = User.query.filter_by(id=user_id).first()
         if user in group.members:
             group.members.remove(user)
+            db.session.add(group)
+            db.session.commit()
 
 def add_route_to_group(route_id: int, group_id: int):
     # ensure route owner is in the group

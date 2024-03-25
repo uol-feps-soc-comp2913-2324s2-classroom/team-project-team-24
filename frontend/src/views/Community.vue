@@ -13,7 +13,7 @@ export default {
             groupsIsShowing: false,
             createGroupIsShowing: false,
             friends: [],
-            groups: ["group1", "group2"],
+            groups: [],
             friendRequests: [],
             buttonDict: {
                 text: "Remove",
@@ -28,7 +28,12 @@ export default {
                     this.friends = response.data.friends;
                     console.log("Friends:", this.friends);
                 }
-            )
+            );
+            axiosAuth.get('/groups/get-all').then(
+                response => {
+                    this.groups = response.data.groups;
+                }
+            );
         },
         showFriends() {
             this.friendsIsShowing = true;
@@ -51,7 +56,7 @@ export default {
             this.createGroupIsShowing = false;
         },
         async removeFriend(userID) {
-            await axiosAuth.post("/friends/remove", {
+            await axiosAuth.post('/friends/remove', {
                 friendID: userID,
             }).catch(error => {
                 console.log(error);

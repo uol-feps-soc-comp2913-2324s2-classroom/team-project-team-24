@@ -24,7 +24,11 @@ export default {
             console.log(this.trailID);
             const response = await axiosAuth.post(`/trail/get-map`, {
                 trailID: this.trailID,
-            });
+            }).catch(
+                error => {
+                    console.log(error);
+                }
+            );
             const mapHtml = response.data;
             const blob = new Blob([mapHtml], { type: 'text/html' });
             this.mapUrl = URL.createObjectURL(blob);
