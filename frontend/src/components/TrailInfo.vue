@@ -28,7 +28,7 @@ export default {
     name: "TrailInfoComponent",
     data() {
         return {
-            trailId: this.$route.query.trailId,
+            trailID: this.$route.query.trailID,
             name: "name",
             date: "",
             distance: 0.0,
@@ -44,7 +44,7 @@ export default {
     methods: {
         getTrailData() {
             axiosAuth.post('/trail/get-data', {
-                trailID: this.$route.query.trailId,
+                trailID: this.$route.query.trailID,
             }).then(
                 response => {
                     this.name = response.data.name;

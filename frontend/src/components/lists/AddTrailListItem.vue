@@ -1,20 +1,22 @@
 <template>
-    <div class="outer" @click="viewTrail">
+    <div class="outer">
         <div>
             <h3>{{ name }}</h3>
             <p>{{ date }}</p>
         </div>
-        <button @click.stop="downloadTrail">Download</button>
-        <button @click.stop="deleteTrail">Delete</button>
+        <button @click.stop="addTrailToGroup">Add</button>
     </div>
 </template>
 
 <script>
 import axiosAuth from "@/api/axios-auth.js";
 export default {
-    name: "TrailListItemComponent",
+    name: "AddTrailListItemComponent",
     props: {
         trailID: {
+            type: Number
+        },
+        groupID: {
             type: Number
         }
     },
@@ -35,23 +37,13 @@ export default {
                 }
             )
         },
-        viewTrail() {
-            this.$router.push({path: "/mytrail", query: {trailID: this.trailID}});
-        },
-        downloadTrail() {
-            console.log("downloadTrail");
-        },
-        deleteTrail() {
-            axiosAuth.post('/delete-trail', {
+        addTrailToGroup() {
+            axiosAuth.post('/groups/add-route', {
+                groupID: this.groupID,
                 trailID: this.trailID,
-            }).then(
-                response => {
-                    console.log(response.status);
-                    this.$parent.$parent.getPageData();
-                }
-            )
-            
+            })
         }
+        
     },
     created() {
         this.getPageData();

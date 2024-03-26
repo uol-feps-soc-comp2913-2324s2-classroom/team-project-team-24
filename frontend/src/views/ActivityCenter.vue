@@ -2,7 +2,8 @@
 import MapViewerComponent from "@/components/MapViewer.vue";
 import GoalComponent from "@/components/Goal.vue";
 import OverallTrailStatsComponent from "@/components/OverallTrailStats.vue";
-import TrailListComponent from "@/components/lists/TrailList.vue";
+import TrailListItemComponent from "@/components/lists/TrailListItem.vue";
+import ListComponent from "@/components/lists/List.vue";
 import axiosAuth from "@/api/axios-auth.js";
 
 export default {
@@ -34,7 +35,8 @@ export default {
         MapViewerComponent,
         GoalComponent,
         OverallTrailStatsComponent,
-        TrailListComponent,
+        TrailListItemComponent,
+        ListComponent,
     },
     created() {
         this.getPageData();
@@ -48,7 +50,9 @@ export default {
         <GoalComponent />
         <MapViewerComponent v-bind:trailID="longestTrail" />
         <OverallTrailStatsComponent />
-        <TrailListComponent v-bind:trails="trails"/>
+        <ListComponent v-bind:dataArray="trails" v-slot="slotProps">
+            <TrailListItemComponent v-bind:trailID="slotProps.data"/>
+        </ListComponent>
     </div>
 </template>
 

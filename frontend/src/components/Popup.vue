@@ -11,8 +11,8 @@ import '@/assets/css/form.css';
 export default {
     name: "PopupComponent",
     props: {
-        inner: {
-
+        closeWindow: {
+            type: Function,
         }
     },
     data() {
@@ -21,9 +21,6 @@ export default {
         };
     },
     methods: {
-        closeWindow() {
-            this.$parent.closePopup();
-        }
     },
 };
 </script>

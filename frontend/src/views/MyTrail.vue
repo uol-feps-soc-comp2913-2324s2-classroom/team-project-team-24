@@ -6,7 +6,7 @@ export default {
     name: "MyTrails",
     data() {
         return {
-            trailID: this.$route.query.trailId,
+            trailID: this.$route.query.trailID,
         };
     },
     methods: {

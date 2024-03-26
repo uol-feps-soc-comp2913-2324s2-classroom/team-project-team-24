@@ -10,12 +10,15 @@
         </form>
         <br/>
         <h2>Friend Requests</h2>
-        <UserListComponent v-bind:users="friendRequests" :button="buttonDict"/>
+        <ListComponent v-bind:dataArray="friendRequests" v-slot="slotProps">
+            <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict"/>
+        </ListComponent>
     </div>
 </template>
 
 <script>
-import UserListComponent from "@/components/lists/UserList.vue";
+import UserListItemComponent from "@/components/lists/UserListItem.vue";
+import ListComponent from "@/components/lists/List.vue";
 import axiosAuth from "@/api/axios-auth.js";
 
 export default {
@@ -43,7 +46,7 @@ export default {
         addFriend() {
             axiosAuth.post("/friends/send-request",  {
                 receiveUserID: this.friend,
-            }).then(response => {
+            }).then(() => {
                 this.success = "Friend request sent";
                 this.error = null;
                 this.$parent.getPageData();
@@ -68,7 +71,8 @@ export default {
         this.getPageData();
     },
     components: {
-        UserListComponent,
+        UserListItemComponent,
+        ListComponent,
     }
 };
 </script>
