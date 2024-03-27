@@ -11,13 +11,14 @@
         <br/>
         <h2>Friend Requests</h2>
         <ListComponent v-bind:dataArray="friendRequests" v-slot="slotProps">
-            <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict"/>
+            <UserList2ButtonItemComponent v-bind:user="slotProps.data" :button1="acceptButtonDict" :button2="rejectButtonDict"/>
         </ListComponent>
     </div>
 </template>
 
 <script>
 import UserListItemComponent from "@/components/lists/UserListItem.vue";
+import UserList2ButtonItemComponent from "@/components/lists/UserList2ButtonItem.vue";
 import ListComponent from "@/components/lists/List.vue";
 import axiosAuth from "@/api/axios-auth.js";
 
@@ -28,9 +29,13 @@ export default {
             friendRequests: [],
             error: null,
             success: null,
-            buttonDict: {
+            acceptButtonDict: {
                 action: this.acceptRequest,
-                text: "Add",
+                text: "Accept",
+            },
+            rejectButtonDict: {
+                action: this.rejectRequest,
+                text: "Reject",
             }
         };
     },
@@ -65,7 +70,17 @@ export default {
             })
             this.getPageData();
             this.$parent.getPageData();
-        }
+        },
+        async rejectRequest(userID) {
+            console.log("ID: " + userID);
+            await axiosAuth.post("/friends/reject-request",  {
+                fromUserID: userID,
+            }).catch(error => {
+                console.log(error.response.data.error);
+            })
+            this.getPageData();
+            this.$parent.getPageData();
+        },
     },
     created() {
         this.getPageData();
@@ -73,6 +88,7 @@ export default {
     components: {
         UserListItemComponent,
         ListComponent,
+        UserList2ButtonItemComponent,
     }
 };
 </script>

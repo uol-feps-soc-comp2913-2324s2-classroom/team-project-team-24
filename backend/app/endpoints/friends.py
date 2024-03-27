@@ -155,7 +155,7 @@ def accept_friend_request_route():
 @membership_required
 def reject_friend_request_route():
     user_id = get_current_user().id
-    from_id = request.form.get("fromUserID")
+    from_id = request.get_json().get("fromUserID")
 
     if from_id == None:
         return jsonify({"error": "Missing ID"}), 400
