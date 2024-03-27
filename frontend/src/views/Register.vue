@@ -14,7 +14,7 @@ export default {
         form1Submit() {
             this.form1 = false;
             this.form2 = true;
-        }
+        },
     },
     components: {
         RegisterForm1Component,

@@ -23,10 +23,10 @@ export default {
             }
 
             this.$store.dispatch('auth/register', formData).then(() => {
-                this.$router.push('/activitycenter');
+                console.log(formData);
+                this.$parent.form1Submit();
             });
-            console.log(formData);
-            this.$parent.form1Submit();
+            
         },
     },
 };

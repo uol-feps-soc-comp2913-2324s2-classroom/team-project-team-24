@@ -1,11 +1,12 @@
 <template>
     <div :class="'membership-option'" :style="{ backgroundColor: color }">
         <h3>{{ membership.regularity }}</h3>
+        <h4 v-if="currentMembershipID === membership.id">Current</h4>
         <ul>
-            <li v-for="(point, x) in membership.points" :key="x">{{point}}</li>
+            <li v-for="(point) in membership.points" :key="point">{{point}}</li>
         </ul>
         <div class="option-details">
-            <h4>{{ membership.price }}</h4>
+            <h4>£{{ membership.price }} {{ membership.regularity }}</h4>
             <primaryButton  :on-click="this.increment" @click="buyMembership">Buy Now</primaryButton>
         </div>
     </div>
@@ -13,12 +14,14 @@
 
 <script>
 import primaryButton from './ui-components/primaryButton.vue';
+import axiosAuth from '@/api/axios-auth.js';
 
 export default {
     name: "MembershipOptionComponent",
     props: {
         membership: {},
-        color: String // Ensure the color prop is of type String
+        color: String, // Ensure the color prop is of type String,
+        currentMembershipID: Number,
     },
     data() {
         return {
@@ -26,12 +29,15 @@ export default {
         };
     },
     methods: {
-        buyMembership() {
+        async buyMembership() {
             const confirmationMessage = `You are about to purchase the ${this.membership.regularity} membership for ${this.membership.price}. Are you sure?`;
             if (confirm(confirmationMessage)) {
                 // Proceed with purchasing the membership
                 // You can add your logic here, such as navigating to a checkout page or triggering a payment process
-                console.log('Membership purchased!');
+                await axiosAuth.post('/membership/purchase', {
+                    membershipID: this.membership.id
+                });
+                this.$parent.getPageData();
             } else {
                 console.log('Purchase cancelled.');
             }
