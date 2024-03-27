@@ -1,4 +1,5 @@
 <script>
+import axiosAuth from "@/api/axios-auth.js";
 import dangerButton from './ui-components/dangerButton.vue';
 import secondaryButton from './ui-components/secondaryButton.vue';
 
@@ -6,28 +7,48 @@ export default {
     name: "GoalComponent",
     data() {
         return {
-            name: "Person",
-            membershipTier: "Freemium",
-            gender: "Male",
-            age: 25,
-            email: "test@gmail.com",
-            membership: "Monthly"
+            name: "",
+            membershipTier: "",
+            gender: "",
+            age: null,
+            email: "",
+            membership: ""
         };
     },
     methods: {
-        getAccountDetails() {
-            
+        getPageData() {
+            axiosAuth.get('/account/get-details').then(
+                response => {
+                    this.name = response.data.name;
+                    this.gender = response.data.gender;
+                    this.age = response.data.age;
+                    this.email = response.data.email;
+                    this.membershipTier = response.data.membershipTier;
+                    this.membership = response.data.paymentRegularity;
+                }
+            )
         },
         changePassword() {
             
         },
         deleteAccount() {
+            axiosAuth.get('/account/delete').then(
+                response => {
+                    console.log(response.data);
+                    this.$store.dispatch('auth/logout').then(() => {
+                        this.$router.push('/register');
+                    });
+                }
+            )
             
         }
     },
     components: {
         dangerButton,
         secondaryButton
+    },
+    created() {
+        this.getPageData();
     }
 };
 </script>

@@ -20,6 +20,7 @@ export default {
             let formData = {
                 username: this.username,
                 password: this.password,
+                email: this.email,
             }
 
             this.$store.dispatch('auth/register', formData).then(() => {

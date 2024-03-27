@@ -79,8 +79,8 @@ class User(db.Model):
     password = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(32))
     profile_picture = db.Column(db.LargeBinary)
-    sex = db.Column(db.String(32))
-    date_of_birth = db.Column(db.DateTime)
+    gender = db.Column(db.String(32))
+    age = db.Column(db.Integer)
     membership_id = db.Column(db.Integer, db.ForeignKey("membership_plan.id"))
     
     membership = db.relationship("MembershipPlan", foreign_keys=[membership_id])

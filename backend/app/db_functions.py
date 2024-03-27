@@ -17,10 +17,11 @@ def hash_pwd(password):
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(encode, salt)
 
-def create_user(username, password):
+def create_user(username, password, email=None):
     u = User()
     u.username = username
     u.password = hash_pwd(password)
+    u.email = email
     db_add(u)
     return u
 
