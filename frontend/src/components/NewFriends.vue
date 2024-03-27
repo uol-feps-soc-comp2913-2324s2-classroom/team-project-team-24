@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import UserListItemComponent from "@/components/lists/UserListItem.vue";
 import UserList2ButtonItemComponent from "@/components/lists/UserList2ButtonItem.vue";
 import ListComponent from "@/components/lists/List.vue";
 import axiosAuth from "@/api/axios-auth.js";
@@ -86,7 +85,6 @@ export default {
         this.getPageData();
     },
     components: {
-        UserListItemComponent,
         ListComponent,
         UserList2ButtonItemComponent,
     }

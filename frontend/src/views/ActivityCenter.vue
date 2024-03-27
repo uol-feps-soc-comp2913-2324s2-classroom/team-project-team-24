@@ -11,7 +11,7 @@ export default {
     data() {
         return {
             trails: [],
-            longestTrail: null,
+            longestTrailID: null,
         };
     },
     methods: {
@@ -24,7 +24,7 @@ export default {
             // TODO: Get this to update the map element once completed
             await axiosAuth.get('/trail/get-longest').then(
                 response => {
-                    this.longestTrail = response.data.trailID;
+                    this.longestTrailID = response.data.trailID;
 
                     console.log(this.longestTrail);
                 }
@@ -48,7 +48,7 @@ export default {
     <div class="activityCenterPageContainer">
         <h1>Activity Center Page</h1>
         <GoalComponent />
-        <MapViewerComponent v-bind:trailID="longestTrail" />
+        <MapViewerComponent v-bind:trailID="longestTrailID" :key="longestTrailID" />
         <OverallTrailStatsComponent />
         <ListComponent v-bind:dataArray="trails" v-slot="slotProps">
             <TrailListItemComponent v-bind:trailID="slotProps.data"/>
