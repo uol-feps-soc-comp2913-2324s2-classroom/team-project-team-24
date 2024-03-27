@@ -29,13 +29,11 @@ app.register_blueprint(friends.bp)
 app.register_blueprint(groups.bp)
 app.register_blueprint(memberships.bp)
 app.register_blueprint(account.bp)
-print(app.url_map)
 
 
 jwt = JWTManager(app)
 
 from app import views, models
-print([x.username for x in models.User.query.all()])
 
 @jwt.user_identity_loader
 def user_identity_lookup(user):

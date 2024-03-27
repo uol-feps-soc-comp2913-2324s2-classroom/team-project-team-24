@@ -4,11 +4,13 @@ from flask_jwt_extended import get_current_user, jwt_required
 from app import db, app
 from app.db_functions import *
 from app.models import User, Route, Friend
+from app.decorators import *
 
 bp = Blueprint('friends', __name__, url_prefix="/friends")
 
 @bp.route('/get-all', methods=['GET'])
 @jwt_required()
+@membership_required
 def get_friends():
     # recieve user ID
     user_id = get_current_user().id
@@ -39,6 +41,7 @@ def get_friends():
 
 @bp.route('/get-requests', methods=['GET'])
 @jwt_required()
+@membership_required
 def get_friend_requests():
     # recieve user ID
     user = get_current_user()
@@ -59,6 +62,7 @@ def get_friend_requests():
 
 @bp.route('/add', methods=['POST'])
 @jwt_required()
+@membership_required
 def add_friend():
     user_id = get_current_user().id
     user_2_id = request.form.get("userID2")
@@ -77,6 +81,7 @@ def add_friend():
 
 @bp.route('/remove', methods=['POST'])
 @jwt_required()
+@membership_required
 def remove_friend():
     user_id = get_current_user().id
     user_2_id = request.get_json().get("friendID")
@@ -96,6 +101,7 @@ def remove_friend():
 
 @bp.route('/send-request', methods=['POST'])
 @jwt_required()
+@membership_required
 def send_friend_request():
     user_id = get_current_user().id
     to_user = request.get_json().get("receiveUserID")
@@ -124,6 +130,7 @@ def send_friend_request():
 
 @bp.route('/accept-request', methods=['POST'])
 @jwt_required()
+@membership_required
 def accept_friend_request_route():
     user_id = get_current_user().id
     from_id = request.get_json().get("fromUserID")
@@ -145,6 +152,7 @@ def accept_friend_request_route():
 
 @bp.route('/reject-request', methods=['POST'])
 @jwt_required()
+@membership_required
 def reject_friend_request_route():
     user_id = get_current_user().id
     from_id = request.form.get("fromUserID")

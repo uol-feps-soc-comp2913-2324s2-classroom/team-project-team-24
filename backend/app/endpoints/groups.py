@@ -4,11 +4,13 @@ from flask_jwt_extended import get_current_user, jwt_required
 from app import db, app
 from app.db_functions import *
 from app.models import User, Route, Friend
+from app.decorators import *
 
 bp = Blueprint('groups', __name__, url_prefix='/groups')
 
 @bp.route('/get-all', methods=['GET'])
 @jwt_required()
+@membership_required
 def get_groups():
     # recieve user ID
     user_id = get_current_user().id
@@ -26,6 +28,7 @@ def get_groups():
 
 @bp.route('/create', methods=['POST'])
 @jwt_required()
+@membership_required
 def create_group():
     # recieve user ID
     user_id = get_current_user().id
@@ -44,6 +47,7 @@ def create_group():
 
 @bp.route('/get-name', methods=['POST'])
 @jwt_required()
+@membership_required
 def get_group_name():
     # recieve user ID
     user_id = get_current_user().id
@@ -66,6 +70,7 @@ def get_group_name():
 
 @bp.route('/get-trails', methods=['POST'])
 @jwt_required()
+@membership_required
 def get_group_trails():
     # recieve user ID
     user_id = get_current_user().id
@@ -88,6 +93,7 @@ def get_group_trails():
 
 @bp.route('/get-members', methods=['POST'])
 @jwt_required()
+@membership_required
 def get_group_members():
     # recieve user ID
     user_id = get_current_user().id
@@ -119,6 +125,7 @@ def get_group_members():
 
 @bp.route('/leave', methods=['POST'])
 @jwt_required()
+@membership_required
 def leave_group():
     # recieve user ID
     user_id = get_current_user().id
@@ -145,6 +152,7 @@ def leave_group():
 
 @bp.route('/add-route', methods=['POST'])
 @jwt_required()
+@membership_required
 def add_route_to_group_route():
     # recieve user ID
     user_id = get_current_user().id
@@ -176,6 +184,7 @@ def add_route_to_group_route():
 
 @bp.route('/add-friend', methods=['POST'])
 @jwt_required()
+@membership_required
 def add_user_to_group_route():
     # recieve user ID
     user_id = get_current_user().id

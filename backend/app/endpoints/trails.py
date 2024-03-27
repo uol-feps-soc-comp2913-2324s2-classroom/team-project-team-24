@@ -6,11 +6,13 @@ from app.db_functions import get_routes_by_user_id
 from app.models import User, Route
 from app.gpx import GPX
 import gpxpy
+from app.decorators import *
 
 bp = Blueprint('trails', __name__, url_prefix="/trail")
 
 @bp.route('/get-overall-stats', methods=['GET'])
 @jwt_required()
+@membership_required
 def get_overall_stats():
     # get overall trail stats for a given user ID
 
@@ -50,6 +52,7 @@ def get_overall_stats():
 
 @bp.route('/get-longest', methods=['GET'])
 @jwt_required()
+@membership_required
 def get_longest_trail():
     # get longest distance trail ID for a given user ID
 
@@ -85,6 +88,7 @@ def get_longest_trail():
 
 @bp.route('/get-all', methods=['GET'])
 @jwt_required()
+@membership_required
 def get_trails():
     # get all the trail IDs for a given user ID
 
@@ -110,6 +114,7 @@ def get_trails():
 
 @bp.route('/get-data', methods=['POST'])
 @jwt_required()
+@membership_required
 def get_trail_data():
     # get data for a given trail ID
     
@@ -150,6 +155,7 @@ def get_trail_data():
 
 @bp.route('/get-map', methods=['POST'])
 @jwt_required()
+@membership_required
 def get_trail_map():
     # recieve route ID
     user_id = get_current_user().id
@@ -174,6 +180,7 @@ def get_trail_map():
 
 @bp.route('/delete', methods=['POST'])
 @jwt_required()
+@membership_required
 def delete_trail():
     # delete a trail from the database
 
@@ -194,6 +201,7 @@ def delete_trail():
 
 @bp.route('/upload', methods=('POST',))
 @jwt_required()
+@membership_required
 def upload():
     user_id = get_current_user().id
 

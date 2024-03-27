@@ -16,7 +16,6 @@ class Owner(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), unique=True, nullable=False)
     password = db.Column(db.String(64), nullable=False)
-    salt = db.Column(db.String(60))   
 
 class Friend(db.Model):
     user_1_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
@@ -78,7 +77,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), unique=True, nullable=False)
     password = db.Column(db.String(64), nullable=False)
-    salt = db.Column(db.String(60))
+    email = db.Column(db.String(32))
     profile_picture = db.Column(db.LargeBinary)
     sex = db.Column(db.String(32))
     date_of_birth = db.Column(db.DateTime)

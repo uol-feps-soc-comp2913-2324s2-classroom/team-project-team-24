@@ -5,11 +5,11 @@ from app import db, app
 from app.db_functions import *
 from app.models import User
 
-bp = Blueprint('memberships', __name__)
+bp = Blueprint('memberships', __name__, url_prefix='/membership')
 
-@bp.route('/check_membership', methods=['GET'])
+@bp.route('/get-current', methods=['GET'])
 @jwt_required()
-def check_membership():
+def get_current_membership():
     # ensure the user isn't on a free membership
 
     # recieve user
@@ -23,6 +23,7 @@ def check_membership():
             membership = None
         else:
             membership = {
+                "id": membership.id,
                 "name": membership.name,
                 "regularity": membership.payment_regularity,
                 "price": membership.cost
@@ -33,7 +34,7 @@ def check_membership():
         "membership": membership
     })
 
-@bp.route('/get_membership_options', methods=['GET'])
+@bp.route('/get-options', methods=['GET'])
 @jwt_required()
 def get_membership_options():
     # get all the membership IDs, specifying a user's current membership
@@ -45,6 +46,7 @@ def get_membership_options():
     membershipOptions = []
     for membership in MembershipPlan.query.all():
         membershipOptions.append({
+            "id": membership.id,
             "name": membership.name,
             "regularity": membership.payment_regularity,
             "price": membership.cost,
@@ -56,7 +58,7 @@ def get_membership_options():
         "membershipOptions": membershipOptions
     })
 
-@bp.route('/cancel_membership', methods=['POST'])
+@bp.route('/cancel', methods=['GET'])
 @jwt_required()
 def cancel_membership():
     # recieve user
@@ -68,3 +70,17 @@ def cancel_membership():
 
     delete_user_membership(user.id)
     return Response("Cancelled user membership", 200)
+
+@bp.route('/purchase', methods=['POST'])
+@jwt_required()
+def purchase_membership():
+    # recieve user
+    user = get_current_user()
+    membership_id = request.get_json().get("membershipID")
+
+    # ensure that user is a member
+    if get_user_membership_id(user.id) == membership_id:
+        return jsonify({"error": "User is already on this membership tier"}), 400
+
+    set_user_membership_plan(user.id, membership_id)
+    return Response("User purchased new membership", 200)
