@@ -34,7 +34,7 @@ const routes = [
         path: "/activitycenter",
         name: "Activity",
         component: ActivityCenter,
-        // meta: { requiresAuth: true },
+        meta: { requiresAuth: true },
     },
     {
         path: "/community",
