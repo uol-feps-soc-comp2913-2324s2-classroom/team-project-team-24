@@ -25,32 +25,49 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 // cypress/support/commands.js
-Cypress.Commands.add('login', () => {
-    // Caching session when logging in via page visit
-    cy.session('user-login', () => {
-        cy.visit('http://localhost:3000/login');
-        cy.get('#username').type('u1'); // Assuming '#username' is the selector for the username input field
-        cy.get('#password').type('pwd'); // Assuming '#password' is the selector for the password input field
-        cy.get('form').submit();
-        // cy.url().should('include', '/activitycenter');
-    });
-    // Caching session when logging in via API
-    cy.session('api-login', () => {
-        cy.request({
-        method: 'POST',
-        url: 'http://localhost:3000/login',
-        body: { username: 'u1', password: 'pwd' }, // Use the actual username and password values
-        }).then(({ body }) => {
-        window.localStorage.setItem('token', body.token)
-        
-      }).then(response => {
-        // expect(response.body).to.have.property('token');
-      });
-        // }).then(response => {
-        // expect(response.status).to.eq(200);
-        // expect(response.body).to.have.property('token');
-        // window.localStorage.setItem('token', response.body.token);
-        // });
-    });
+
+Cypress.Commands.add('setUserToken', () => {
+  // Extract token from the response and set it in Cypress environment
+  cy.request({
+    method: 'POST',
+    url: 'http://localhost:3000/login', // Replace with your login endpoint
+    body: {
+      username: Cypress.env('username'),
+      password: Cypress.env('password')
+    }
+  }).then((response) => {
+    Cypress.env('token', response.body.token);
   });
-  
+});
+
+Cypress.Commands.add('login', () => {
+  // Make a login call to the endpoint and set token in Cypress environment
+  cy.visit('http://localhost:3000/login'); // Assuming '/login' is your login page URL
+  cy.get('#username').type(Cypress.env('username')); // Assuming '#username' is the username input field
+  cy.get('#password').type(Cypress.env('password')); // Assuming '#password' is the password input field
+  cy.contains('button', 'Login').click(); // Click the login button
+  cy.url().should('include', '/activitycenter'); // Verify successful login redirect
+  cy.setUserToken(); // Set user token after successful login
+});   
+
+Cypress.Commands.add('createProduct', (name) => {
+  const payload = {
+    name: name,
+  };
+
+  const token = Cypress.env('token');
+  // Access the user JWT token stored in env
+
+  cy.request({
+    method: 'POST',
+    url: 'http://localhost:5001/products/', // Replace with your products endpoint
+    body: payload,
+    headers: {
+      authorization: 'Bearer ' + token, // Consume the token
+    },
+  }).as('createProduct');
+});
+
+// Set your login credentials as environment variables
+Cypress.env('username', 'u1');
+Cypress.env('password', 'pwd');
