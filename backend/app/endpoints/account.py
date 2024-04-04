@@ -64,7 +64,7 @@ def set_account_details():
 
     return Response(f"Details successfully updated", 200)
 
-# TODO: INSERT SAVE PROFILE PIC
+# TODO: HOW TO COMMIT PROFILE PIC FILE
 # def save_uploaded_file(file):
 #     # Create a unique filename
 #     filename = secure_filename(file.filename)
