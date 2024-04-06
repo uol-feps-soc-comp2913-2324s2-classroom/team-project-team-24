@@ -14,7 +14,22 @@ import ResetPassword from "@/views/ResetPassword.vue";
 import UploadTrail from "@/views/UploadTrail.vue";
 import axiosAuth from "@/api/axios-auth";
 
+// Defines a variable using environment variables to disable
+// logins for development purposes.
+// Checks if environment variable VUE_APP_DISABLE_LOGIN exists
+// If it exists takes its boolean value to disable or enable login
+// Defaults to true if the variable doesn't exist (requiring login)
+const authRequired =
+  process.env.VUE_APP_DISABLE_LOGIN !== undefined
+    ? !JSON.parse(process.env.VUE_APP_DISABLE_LOGIN)
+    : true;
+console.log(process.env.VUE_APP_DISABLE_LOGIN);
+
 const routes = [
+    {
+        path: "/",
+        redirect: "/activitycenter",
+    },
     {
         path: "/login",
         name: "Login",
@@ -34,43 +49,43 @@ const routes = [
         path: "/activitycenter",
         name: "Activity",
         component: ActivityCenter,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
     {
         path: "/community",
         name: "Community",
         component: Community,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
     {
         path: "/membership",
         name: "Membership",
         component: Membership,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
     {
         path: "/group",
         name: "Group",
         component: MyGroup,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
     {
         path: "/myaccount",
         name: "Account",
         component: MyAccount,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
     {
         path: "/mytrail",
         name: "MyTrail",
         component: MyTrail,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
     {
         path: "/uploadtrail",
         name: "UploadTrail",
         component: UploadTrail,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
     {
         path: "/resetpassword",
@@ -81,7 +96,7 @@ const routes = [
         path: "/stylingguide",
         name: "StylingGuide",
         component: StylingGuide,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
 ]
 
