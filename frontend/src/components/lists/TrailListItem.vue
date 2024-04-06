@@ -47,8 +47,6 @@ export default {
         <primaryButton @click.stop="downloadTrail">Download</primaryButton>
         <dangerButton @click.stop="deleteTrail">Delete</dangerButton>
       </div>
-      
-
   </div>
 </template>
   
