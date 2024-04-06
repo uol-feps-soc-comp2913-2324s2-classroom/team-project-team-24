@@ -1,6 +1,7 @@
 <template>
     <div>
-        <img src="medal">
+        <!-- commented out because unsure of implementation -->
+        <!-- <img src="medal"> -->
         <h3>Mileage accumulated in <b>{{ month }}</b></h3>
         <b-progress :value="value" :max="max" show-progress animated></b-progress>
     </div>

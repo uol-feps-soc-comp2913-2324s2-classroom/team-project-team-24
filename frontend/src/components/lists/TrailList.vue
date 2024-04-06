@@ -24,6 +24,7 @@ export default {
     },
     components: {
         TrailListItemComponent,
+        
     }
 };
 </script>
