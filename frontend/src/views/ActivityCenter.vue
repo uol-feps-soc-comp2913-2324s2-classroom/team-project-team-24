@@ -60,12 +60,17 @@ export default {
   height: 100%;
 }
 
+.map-view-column iframe {
+  flex: 1; /* Allow the iframe to grow to fill available space */
+  width: 100%; /* Ensure the iframe takes full width of its container */
+  border: none; /* Remove iframe border */
+}
+
 .track-stats-column {
   flex: 1; /* Occupy 1/3 of the container */
   margin-right: 10px; /* Add some space between columns */
   background-color: var(--l1-color);
   border-radius: var(--border-radius);
-  
 }
 
 .trails-container {

@@ -29,3 +29,14 @@ export default {
 };
 </script>
 
+<style scoped>
+.outer {
+  /* Your regular styles */
+  transition: background-color 0.3s; /* Add transition for smoother hover effect */
+}
+
+.outer:hover {
+  background-color: lightgray; /* Change background color on hover */
+  border-radius: var(--border-radius);
+}
+</style>
