@@ -14,31 +14,8 @@ def set_account_details():
     # recieve user ID and new password
     user = get_current_user()
 
-    # OLD CODE
-    # data = request.get_json()
-
     # Retrieve JSON data
     data = request.form.to_dict()
-    # Retrieve profile photo file
-    profile_photo = request.files.get('profilePhoto')
-    
-    print(data)
-    print(request.files["profilePhoto"].read().decode("utf-8"))
-
-    # OLD CODE
-    # # I don't mind if any/all of the data is missing
-    # if data.get('name') is not None:
-    #     user.name = data['name']
-
-    # if data.get('email') is not None:
-    #     user.email = data['email']
-
-    # if data.get('age') is not None:
-    #     user.age = data['age']
-
-    # if data.get('gender') is not None:
-    #     user.gender = data['gender']
-
     
     # Handle JSON data
     if 'name' in data:
@@ -53,27 +30,13 @@ def set_account_details():
     if 'gender' in data:
         user.gender = data['gender']
 
-    # Handle profile photo upload
-    if profile_photo:
-        # Save the uploaded file
-        filename = save_uploaded_file(profile_photo)
-        # Update user's profile_photo attribute with file path
-        user.profile_photo = filename
+    if data.get('profilePhoto') is not None:
+        # Assuming 'profilePhoto' contains binary data of the image
+        user.profile_picture = data['profilePhoto']
 
     db.session.commit()
 
     return Response(f"Details successfully updated", 200)
-
-# TODO: HOW TO COMMIT PROFILE PIC FILE
-# def save_uploaded_file(file):
-#     # Create a unique filename
-#     filename = secure_filename(file.filename)
-#     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    
-#     # Save the file to disk
-#     file.save(filepath)
-    
-#     return filename
 
 @bp.route('/get-details', methods=['GET'])
 @jwt_required()
