@@ -24,7 +24,15 @@ export default {
     },
     components: {
         TrailListItemComponent,
+        
     }
 };
 </script>
 
+<style scoped>
+
+.outer:hover {
+  background-color: lightgray; /* Change background color on hover */
+  border-radius: var(--border-radius);
+}
+</style>
