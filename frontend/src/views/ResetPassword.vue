@@ -1,6 +1,6 @@
 <template>
     <div class="login-container">
-        <h1 class="title">Reset Password</h1>
+        <h2 class="title"><b>Reset Password</b></h2>
         <ResetPasswordFormComponent />
     </div>
     <br />
@@ -8,35 +8,33 @@
 </template>
 
 <script>
-import ResetPasswordFormComponent from '@/components/forms/ResetPasswordForm.vue';
+import ResetPasswordFormComponent from '@/components/forms/ResetPasswordForm.vue'
 
 export default {
-    name: "ResetPasswordView",
+    name: 'ResetPasswordView',
     data() {
-        return {
-
-        };
+        return {}
     },
-    methods: {
-
-    },
+    methods: {},
     components: {
         ResetPasswordFormComponent,
     },
-};
+}
 </script>
 
 <style scoped>
 .title {
-    margin-top: 5cm;
+    color: #333;
+    margin-top: 10px;
+    margin-left: 30px;
 }
 
 .login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    text-align: center;
+    max-width: 600px;
+    margin: 70px auto;
+    padding: 40px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 </style>

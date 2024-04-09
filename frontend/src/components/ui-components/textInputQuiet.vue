@@ -4,38 +4,50 @@ export default {
     props: {
         placeHolder: {
             type: String,
-            default: ''
+            default: '',
         },
         formLabel: {
             type: String,
-            default: 'Form label'
+            // default: 'Form label'
         },
         type: {
             type: String,
-            default: 'text'
+            default: 'text',
         },
         width: {
             type: String,
-            default: 'auto'
-        }
+            default: 'auto',
+        },
+        // customStyles: {
+        //     type: Object,
+        //     default: () => ({}),
+        // },
+        // //新加的，目的是想根据container改变线条长度
     },
     data() {
         return {
-            inputValue: ''
-        };
+            inputValue: '',
+        }
     },
     methods: {
         handleInput(event) {
-            this.inputValue = event.target.value;
-        }
-    }
-};
+            this.inputValue = event.target.value
+        },
+    },
+}
 </script>
 
 <template>
-        <p>{{ formLabel }}</p>
-        <input :style="{ width: width }" :type="type" v-model="inputValue" @input="handleInput" :placeholder="placeHolder"/>
+    <p>{{ formLabel }}</p>
+    <input
+        :style="{ width: width }"
+        :type="type"
+        v-model="inputValue"
+        @input="handleInput"
+        :placeholder="placeHolder"
+    />
 </template>
+<!-- :style="{ width: width }" -->
 
 <style scoped>
 p {
@@ -53,7 +65,6 @@ input {
 
 input:hover {
     border-color: #a2a2a2;
-
 }
 
 input:focus {
