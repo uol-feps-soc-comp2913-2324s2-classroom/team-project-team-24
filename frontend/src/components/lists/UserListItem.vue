@@ -1,6 +1,5 @@
 <template>
     <div style="display: flex;">
-        <img src="{{ this.user.profilePhoto }}"/>
         <h4>{{ this.user.name }}</h4>
         <button v-if="this.button.text !== null" @click.prevent="this.button.action(this.user.id)">{{ this.button.text }}</button>
     </div>

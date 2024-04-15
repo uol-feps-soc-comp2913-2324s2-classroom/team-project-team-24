@@ -23,10 +23,11 @@ export default {
                 email: this.email,
             }
 
-            this.$store.dispatch('auth/register', formData).then(() => {
+            this.$store.dispatch('auth/register', formData)
+            .then(() => {
                 console.log(formData);
                 this.$parent.form1Submit();
-            });
+            }).catch(console.log("errorcode"));
             
         },
     },

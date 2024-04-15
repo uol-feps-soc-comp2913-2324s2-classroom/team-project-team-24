@@ -57,10 +57,6 @@ export default {
     <div>
         <table class="my-5">
             <tr>
-                <td class="ps-5 floor-ceiling-padding">Profile picture</td>
-                <td><img src="profile_photo"></td>
-            </tr>
-            <tr>
                 <td class="ps-5 floor-ceiling-padding">Name</td>
                 <td class="bold">{{ name }}</td>
             </tr>

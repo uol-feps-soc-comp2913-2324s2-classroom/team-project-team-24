@@ -49,6 +49,7 @@ const actions = {
             let success = response.data.success;
             
             if (success == true) {
+                console.log("success");
                 commit('authUser', { username: authData.username, token: response.data.token });
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('username', authData.username);
@@ -57,6 +58,7 @@ const actions = {
                 console.log('Login error');
             }
         }).catch(error => {
+            console.log("error");
             console.log(error);
         })
     },

@@ -13,9 +13,10 @@ bp = Blueprint('account', __name__, url_prefix='/account')
 def set_account_details():
     # recieve user ID and new password
     user = get_current_user()
-
+    print("here")
     # Retrieve JSON data
-    data = request.form.to_dict()
+    data = request.get_json()
+    print("handling", data)
     
     # Handle JSON data
     if 'name' in data:
@@ -29,10 +30,6 @@ def set_account_details():
 
     if 'gender' in data:
         user.gender = data['gender']
-
-    if data.get('profilePhoto') is not None:
-        # Assuming 'profilePhoto' contains binary data of the image
-        user.profile_picture = data['profilePhoto']
 
     db.session.commit()
 
@@ -49,7 +46,6 @@ def get_account_details():
     return jsonify({
         "name": user.username,
         "email": user.email,
-        "profilePhoto": user.profile_picture,
         "membershipTier": membership.name if membership is not None else None,
         "gender": user.gender,
         "age": user.age,
