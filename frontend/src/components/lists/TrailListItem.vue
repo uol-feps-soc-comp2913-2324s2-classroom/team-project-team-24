@@ -47,6 +47,10 @@ export default {
     },
     created() {
         this.getPageData();
+    },
+    components: {
+      primaryButton,
+      dangerButton,
     }
 };
 </script>

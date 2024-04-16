@@ -159,6 +159,7 @@ def add_route_to_group_route():
 
     group_id = request.get_json().get("groupID")
     route_id = request.get_json().get("trailID")
+    print(group_id, route_id)
     if group_id == None or route_id == None:
         return jsonify({"error": "Missing route ID and/or group ID"}), 400
 

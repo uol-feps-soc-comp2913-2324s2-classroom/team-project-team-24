@@ -55,8 +55,8 @@ def create_route_from_file(file_path, name, exercise_type, user_id):
 
 def delete_all(c):
     with app.app_context():
-        for user in c.query.all():
-            db.session.delete(user)
+        for rec in c.query.all():
+            db.session.delete(rec)
         db.session.commit()
 
 def get_random_string(n):
@@ -75,14 +75,25 @@ def get_routes_by_user_id(id: int) -> list:
 
     return Route.query.filter_by(user_id=id)
 
-def get_test_user_headers(username, password):
+def get_test_user_headers(username, password, membership=True):
     if User.query.filter_by(username=username).first() == None:
-        create_user(username, password)
+        u = User()
+        u.username = "u1"
+        u.password = hash_pwd("pwd")
+        if membership:
+            memberships = MembershipPlan.query.all()
+            if len(memberships) != 0:
+                u.membership_id = memberships[0].id
+            else:
+                create_membership_plan("tst", "weekly", 12.50)
+                u.membership_id = MembershipPlan.query.all()[0].id
+                
+        db_add(u)
     
     test_user = User.query.filter_by(username=username).first()
     access_token = create_access_token(identity=test_user)
     headers = {
-        'Authorization': 'Bearer {}'.format(access_token)
+        'Authorization': 'Bearer {}'.format(access_token),
     }
 
     return headers
