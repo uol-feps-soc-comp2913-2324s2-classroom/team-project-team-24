@@ -31,7 +31,7 @@ def test_get_account_details_no_membership(client):
     User.query.delete()
     db.session.commit()
 
-    headers = get_test_user_headers("u1", "pwd")
+    headers = get_test_user_headers("u1", "pwd", membership=False)
     user = User.query.filter_by(username="u1").first()
     user.gender = "Male"
     user.age = 13
@@ -51,7 +51,7 @@ def test_get_account_details_few_details(client):
     User.query.delete()
     db.session.commit()
 
-    headers = get_test_user_headers("u1", "pwd")
+    headers = get_test_user_headers("u1", "pwd", membership=False)
 
     response = client.get("/account/get-details", headers=headers)
     assert response.status_code == 200
