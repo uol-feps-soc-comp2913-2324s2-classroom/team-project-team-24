@@ -28,11 +28,22 @@ export default {
                 "#0A481F",
                 // Add more colors as needed
             ],
+            isMember: true, // for member or not
+            currentPlan: "Monthly" // Simulate currentPlan state
         };
     },
+    computed: {
+        
+        // Computed property to determine the viewer's current membership tier
+        viewerMembershipOption() {
+            // Find the membership option that matches the viewer's tier
+            return this.membershipOptions.find(option => option.regularity === this.viewerMembershipTier);
+        }
+    },
     methods: {
-        getMembershipOptions() {
-            
+        getMembershipOptions(regularity) {
+            const index = this.membershipOptions.findIndex(option => option.regularity === regularity);
+            return this.membershipColors[index] || ''; // Return the corresponding color or an empty string if not found
         }
     },
     components: {
@@ -46,11 +57,18 @@ export default {
         <div class="page-heading-container">
             <h1>Membership</h1>
         </div>
-        <p> To get access to Walkley, please choose your payment subscription option</p>
+        <p v-if="!isMember">
+            We've detected you haven't subscribed to Walkley. To get access to Walkley, please choose your payment subscription option
+        </p>
+        <p v-else>
+            Hello Member! You are subscribed to the {{ currentPlan }} plan.
+        </p>
         <div class="membership-options-container">
             <MembershipOptionComponent v-for="(membership, x) in membershipOptions" 
             :key="x" v-bind:membership="membership" 
             :color="membershipColors[x]"
+            :isMember="isMember"
+            :currentPlan="currentPlan"
             />    
         </div>
         

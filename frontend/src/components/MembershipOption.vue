@@ -6,7 +6,14 @@
         </ul>
         <div class="option-details">
             <h4>{{ membership.price }}</h4>
-            <primaryButton  :on-click="this.increment" @click="buyMembership">Buy Now</primaryButton>
+        
+            <template v-if="currentPlan===membership.regularity">
+                <button class="dummy-button">Current Plan</button>
+            </template>
+            <template v-else>
+                <primaryButton :on-click="this.increment" @click="buyMembership">Buy Now</primaryButton>
+            </template>
+        
         </div>
     </div>
 </template>
@@ -18,7 +25,8 @@ export default {
     name: "MembershipOptionComponent",
     props: {
         membership: {},
-        color: String // Ensure the color prop is of type String
+        color: String, // Ensure the color prop is of type String
+        currentPlan: String // Accept 'currentPlan' as a prop
     },
     data() {
         return {
@@ -72,5 +80,22 @@ export default {
   margin: 0;
 }
 
-
+.dummy-button {
+    background-color: var(--tertiary-button-grey);
+    border-style: solid;
+    border-color: var(--tertiary-button-grey);
+    border-width: 3px;
+    font-weight: bold;
+    color: var(--secondary-button-offBlack);
+    padding-top: var(--button-padding-vertical);
+    padding-bottom: var(--button-padding-vertical);
+    padding-left: var(--button-padding-horizontal);
+    padding-right: var(--button-padding-horizontal);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    cursor: pointer;
+    border-radius: 99999px;
+}
 </style>
