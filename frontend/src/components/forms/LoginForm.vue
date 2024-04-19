@@ -119,6 +119,14 @@ export default {
     gap: 30px;
 }
 
+.form-actions a {
+    text-decoration: none;
+}
+
+.form-footer a {
+    text-decoration: none;
+}
+
 .separator-line {
     flex-grow: 1;
     border: none;

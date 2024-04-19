@@ -28,7 +28,7 @@ export default {
 
 <template>
     <div class="register-container">
-        <h2 class="title"><b>Create an Account</b></h2>
+        <h2 class="title"><b>Create an account</b></h2>
         <RegisterForm1Component v-if="form1" @formSubmitted="form1Submit" />
         <RegisterForm2Component
             v-if="form2"

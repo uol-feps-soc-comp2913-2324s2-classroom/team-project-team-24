@@ -34,7 +34,7 @@ export default {
                 email is registered.
             </p>
             <div class="form-field">
-                <label for="email">Email:</label>
+                <label for="email">Email</label>
                 <textInputQuiet
                     width="100%"
                     class="text-input"
@@ -78,6 +78,7 @@ export default {
     margin-right: 1px;
     margin-left: 210px;
     margin-bottom: 0;
+    text-decoration: none;
 }
 
 img {

@@ -46,11 +46,11 @@ export default {
     <div class="registerbox-in">
         <form @submit.prevent="handleRegister">
             <div class="form-field go-to-login">
-                <span>Already have an account?</span>
+                <span>Already have an account?</span>&nbsp;
                 <a href="#" @click="alreadyHaveAccount">Login</a>
             </div>
             <div class="form-field">
-                <label for="username">Username:</label>
+                <label for="username">Username</label>
                 <textInputQuiet
                     width="100%"
                     class="text-input"
@@ -60,7 +60,7 @@ export default {
                 ></textInputQuiet>
             </div>
             <div class="form-field">
-                <label for="email">Email:</label>
+                <label for="email">Email</label>
                 <textInputQuiet
                     width="100%"
                     class="text-input"
@@ -70,7 +70,7 @@ export default {
                 ></textInputQuiet>
             </div>
             <div class="form-field">
-                <label for="password">Password:</label>
+                <label for="password">Password</label>
                 <textInputQuiet
                     width="100%"
                     class="text-input"
@@ -80,7 +80,7 @@ export default {
                 ></textInputQuiet>
             </div>
             <div class="form-field">
-                <label for="confirmPassword">Confirm Password:</label>
+                <label for="confirmPassword">Confirm Password</label>
                 <textInputQuiet
                     width="100%"
                     class="text-input"
@@ -105,6 +105,10 @@ export default {
     margin: 0 auto; /* This centers the container */
     padding: 20px; /* Adjust as needed for your design */
     box-sizing: border-box;
+}
+
+.registerbox-in a {
+    text-decoration: none;
 }
 
 .form-field {
