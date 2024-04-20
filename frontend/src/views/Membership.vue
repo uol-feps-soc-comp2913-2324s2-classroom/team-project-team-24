@@ -1,26 +1,11 @@
 <script>
 import MembershipOptionComponent from "@/components/MembershipOption.vue";
+import axiosAuth from "@/api/axios-auth.js";
 export default {
     name: "MembershipCenter" ,
     data() {
         return {
-            membershipOptions: [
-                {
-                    regularity: "Weekly",
-
-                    price: "£1/week"
-                },
-                {
-                    regularity: "Monthly",
-
-                    price: "£3/month"
-                },
-                {
-                    regularity: "Yearly",
-
-                    price: "£10/year"
-                },
-            ],
+            membershipOptions: [],
             // adjust the colours of each col
             membershipColors: [
                 "#073617",
@@ -28,16 +13,31 @@ export default {
                 "#0A481F",
                 // Add more colors as needed
             ],
+            currentMembershipID: -1,
         };
     },
     methods: {
-        getMembershipOptions() {
-            
+        getPageData() {
+            axiosAuth.get('/membership/get-options').then(
+                response => {
+                    this.membershipOptions = response.data.membershipOptions;
+                }
+            ),
+            axiosAuth.get('/membership/get-current').then(
+                response => {
+                    if (response.data.membership !== null) {
+                        this.currentMembershipID = response.data.membership.id;
+                    }
+                }
+            )
         }
     },
     components: {
         MembershipOptionComponent,
     },
+    created() {
+        this.getPageData();
+    }
 };
 </script>
 
@@ -49,8 +49,9 @@ export default {
         <p> To get access to Walkley, please choose your payment subscription option</p>
         <div class="membership-options-container">
             <MembershipOptionComponent v-for="(membership, x) in membershipOptions" 
-            :key="x" v-bind:membership="membership" 
+            :key="membership" v-bind:membership="membership" 
             :color="membershipColors[x]"
+            :currentMembershipID="currentMembershipID"
             />    
         </div>
         

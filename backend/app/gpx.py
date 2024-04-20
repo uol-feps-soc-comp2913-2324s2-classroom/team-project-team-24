@@ -5,17 +5,17 @@ import os
 
 class GPX:
     
-    def __init__(self, filename):
+    def __init__(self, gpx_string):
         '''
         Initialize the GPX object with a given filename.
 
         Args:
-            filename (str): The name of the file to be parsed.
+            gpx_string (str): The stored string of GPX data
         '''
-        gpx_file_path = os.path.abspath('./example_data/'+filename)  #example_data is now in backend directory to load it into docker image.
-        #TODO: remove example_data once upload functionality is implemented properly
-        gpx_file = open(gpx_file_path, 'r')
-        self.gpx = gpxpy.parse(gpx_file)
+        self.gpx = gpxpy.parse(gpx_string)
+
+        # Setup needed attributes of self.gpx
+        self.time = self.gpx.time
     
     def display(self, map=None, zoom=10):
         '''
@@ -41,6 +41,70 @@ class GPX:
         map_html = map._repr_html_()
         return map_html
 
-    
-    #def get_moving_data(self):
-        #return self.gpx.get_moving_data()
+
+    def get_total_distance_km(self):
+        """
+        Get total distance of GPX route
+
+        Returns:
+            (float): total distance in km
+        """
+
+        distance = 0
+
+        # calculate distance between every 2 points
+        for track in self.gpx.tracks:
+            for segment in track.segments:
+                previous_point = None
+                for point in segment.points:
+                    if previous_point is not None:
+                        distance += (point.distance_3d(previous_point) / 1000)
+                    previous_point = point
+        return distance
+
+    def get_duration(self):
+        """
+        Get total duration of GPX route
+
+        Returns:
+            (int): total duration in seconds
+        """
+
+        times = []
+        for track in self.gpx.tracks:
+            for segment in track.segments:
+                for point in segment.points:
+                    times.append(point.time)
+                    
+        # This is not the fix! It is just to stop it crashing
+        try:
+            return (times[-1] - times[0]).total_seconds()
+        
+        except:
+            return 1
+        
+        
+
+    def get_speed(self):
+        """
+        Get overall speec of GPX route in km/h
+
+        Returns:
+            (float): overall speed in km/h
+        """
+        distance_km = self.get_total_distance_km()
+        duration_hours = self.get_duration() / 3600
+        return distance_km / duration_hours
+
+if __name__ =="__main__":
+    with open("example_data/track1.gpx", "r") as file:
+        data = file.read()
+
+    gpx = GPX(data)
+    print(str(gpx.time))
+    print(gpx.get_total_distance_km())
+    hours = int(gpx.get_duration() / 3600)
+    minutes = int(gpx.get_duration() % 3600 / 60)
+    seconds = int(gpx.get_duration() % 60)
+    print(hours, minutes, seconds)
+    print(gpx.get_speed())

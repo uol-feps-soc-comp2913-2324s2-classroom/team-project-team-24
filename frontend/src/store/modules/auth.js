@@ -45,22 +45,20 @@ const actions = {
         })
     },
     register: ({ commit }, authData) => {
-        axios.post('/auth/register', {
-            username: authData.username,
-            password: authData.password,
-        }).then( response => {
+        axios.post('/auth/register', authData).then( response => {
             let success = response.data.success;
             
             if (success == true) {
+                console.log("success");
                 commit('authUser', { username: authData.username, token: response.data.token });
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('username', authData.username);
-                router.replace('activitycenter');
             }
             else {
                 console.log('Login error');
             }
         }).catch(error => {
+            console.log("error");
             console.log(error);
         })
     },

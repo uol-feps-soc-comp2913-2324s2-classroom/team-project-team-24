@@ -20,13 +20,15 @@ export default {
             let formData = {
                 username: this.username,
                 password: this.password,
+                email: this.email,
             }
 
-            this.$store.dispatch('auth/register', formData).then(() => {
-                this.$router.push('/activitycenter');
-            });
-            console.log(formData);
-            this.$parent.form1Submit();
+            this.$store.dispatch('auth/register', formData)
+            .then(() => {
+                console.log(formData);
+                this.$parent.form1Submit();
+            }).catch(console.log("errorcode"));
+            
         },
     },
 };

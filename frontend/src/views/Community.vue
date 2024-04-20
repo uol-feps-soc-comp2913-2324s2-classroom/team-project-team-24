@@ -1,8 +1,10 @@
 <script>
-import UserListComponent from "@/components/lists/UserList.vue";
-import GroupListComponent from "@/components/lists/GroupList.vue";
+import UserListItemComponent from "@/components/lists/UserListItem.vue";
+import ListComponent from "@/components/lists/List.vue";
+import GroupListItemComponent from "@/components/lists/GroupListItem.vue";
 import NewFriendsComponent from "@/components/NewFriends.vue";
 import CreateGroupComponent from "@/components/forms/CreateGroup.vue";
+import axiosAuth from "@/api/axios-auth.js";
 
 export default {
     name: "CommunityCenter",
@@ -11,11 +13,29 @@ export default {
             friendsIsShowing: true,
             groupsIsShowing: false,
             createGroupIsShowing: false,
-            friends: ["friend1", "friend2", "friend3", "friend4", "friend5", "friend6", "friend7", "friend7"],
-            groups: ["group1", "group2"]
+            friends: [],
+            groups: [],
+            friendRequests: [],
+            buttonDict: {
+                text: "Remove",
+                action: this.removeFriend
+            },
         };
     },
     methods: {
+        getPageData() {
+            axiosAuth.get('/friends/get-all').then(
+                response => {
+                    this.friends = response.data.friends;
+                    console.log("Friends:", this.friends);
+                }
+            );
+            axiosAuth.get('/groups/get-all').then(
+                response => {
+                    this.groups = response.data.groups;
+                }
+            );
+        },
         showFriends() {
             this.friendsIsShowing = true;
             this.groupsIsShowing = false;
@@ -36,12 +56,24 @@ export default {
             this.friendsIsShowing = false;
             this.createGroupIsShowing = false;
         },
+        async removeFriend(userID) {
+            await axiosAuth.post('/friends/remove', {
+                friendID: userID,
+            }).catch(error => {
+                console.log(error);
+            })
+            this.getPageData();
+        }
+    },
+    created() {
+        this.getPageData();
     },
     components: {
-        UserListComponent,
-        GroupListComponent,
+        UserListItemComponent,
+        ListComponent,
         NewFriendsComponent,
         CreateGroupComponent,
+        GroupListItemComponent,
     },
 };
 </script>
@@ -55,9 +87,13 @@ export default {
                     <button @click="showFriends">Friends</button>
                     <button @click="showGroups">Groups</button>
                 </div>
-                <UserListComponent v-if="friendsIsShowing" v-bind:users="friends" />
+                <ListComponent v-if="friendsIsShowing" v-bind:dataArray="friends" v-slot="slotProps">
+                    <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict"/>
+                </ListComponent>
                 <button @click="createGroup" v-if="groupsIsShowing" style="float:right; margin-right: 30px;">+</button>
-                <GroupListComponent v-if="groupsIsShowing" v-bind:groups="groups" />
+                <ListComponent v-if="groupsIsShowing" v-bind:dataArray="groups" v-slot="slotProps">
+                    <GroupListItemComponent v-bind:group="slotProps.data"/>
+                </ListComponent>
                 <CreateGroupComponent v-if="createGroupIsShowing"/>
             </div>
             <NewFriendsComponent />

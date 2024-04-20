@@ -136,10 +136,9 @@ def test_users_and_routes_in_groups():
         - g2.routes = [r1, r2, r3]
         - Checks all is then correct (from group, user, and route perspective)
     """
-    Route.query.delete()
-    User.query.delete()
-    Group.query.delete()
-    db.session.commit()
+    delete_all(Route)
+    delete_all(Group)
+    delete_all(User)
     
     u1 = create_user('u1', 'pwd')
     u2 = create_user('u2', 'pwd')

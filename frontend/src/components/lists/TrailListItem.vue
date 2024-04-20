@@ -2,35 +2,56 @@
 import primaryButton from '../ui-components/primaryButton.vue';
 import dangerButton from '../ui-components/dangerButton.vue';
 
+import axiosAuth from "@/api/axios-auth.js";
 export default {
-  name: "TrailListItemComponent",
-  props: {
-    trail: {
-      type: String
-    }
-  },
-  data() {
-    return {
-      trailName: this.trail,
-      trailDate: "25/07/03",
-      trailType: "Running"
-    };
-  },
-  methods: {
-    viewTrail() {
-      this.$router.push({ path: "/mytrail", query: { trailName: this.trail } });
+    name: "TrailListItemComponent",
+    props: {
+        trailID: {
+            type: Number
+        }
     },
-    downloadTrail() {
-      console.log("downloadTrail");
+    data() {
+        return {
+            name: "",
+            date: "",
+        };
     },
-    deleteTrail() {
-      console.log("deleteTrail");
-    }
-  },
-  components: {
+    methods: {
+        getPageData() {
+            axiosAuth.post('/trail/get-data', {
+                trailID: this.trailID,
+            }).then(
+                response => {
+                    this.name = response.data.name;
+                    this.date = response.data.date;
+                }
+            )
+        },
+        viewTrail() {
+            this.$router.push({path: "/mytrail", query: {trailID: this.trailID}});
+        },
+        downloadTrail() {
+            console.log("downloadTrail");
+        },
+        deleteTrail() {
+            axiosAuth.post('/delete-trail', {
+                trailID: this.trailID,
+            }).then(
+                response => {
+                    console.log(response.status);
+                    this.$parent.$parent.getPageData();
+                }
+            )
+            
+        }
+    },
+    created() {
+        this.getPageData();
+    },
+    components: {
       primaryButton,
-      dangerButton
-  }
+      dangerButton,
+    }
 };
 </script>
 

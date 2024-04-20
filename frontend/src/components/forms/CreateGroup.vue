@@ -1,19 +1,20 @@
 <template>
-    <form>
-        <div class="inner-container">
-            <button @click="closeWindow" style="float:right;">X</button>
+    <PopupComponent>
+        <form>
             <h2>Create your group</h2>
             <div class="form-field">
                 <label for="name">Group: </label>
-                <input class="text-input" id="name" v-model="text" placeholder="Group name" />
+                <input class="text-input" id="name" v-model="name" placeholder="Group name" />
             </div>
             <button class="submit-button" type="submit" @click.prevent="createGroup">Create</button>
-        </div>
-    </form>
+        </form>
+    </PopupComponent>
 </template>
 
 <script>
-import '@/assets/css/form.css'
+import PopupComponent from "@/components/Popup.vue";
+import '@/assets/css/form.css';
+import axiosAuth from "@/api/axios-auth.js";
 
 export default {
     name: "CreateGroupComponent",
@@ -23,12 +24,20 @@ export default {
         };
     },
     methods: {
-        createGroup() {
-
+        async createGroup() {
+            await axiosAuth.post("/groups/create", {
+                groupName: this.name,
+            }).then(
+                this.closePopup(),
+            )
+            this.$parent.getPageData();
         },
-        closeWindow() {
+        closePopup() {
             this.$parent.closeCreateGroup();
         }
+    },
+    components: {
+        PopupComponent,
     },
 };
 </script>

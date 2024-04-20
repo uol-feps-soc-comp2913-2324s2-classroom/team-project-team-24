@@ -4,6 +4,7 @@ import bcrypt
 import string, random
 from flask_jwt_extended import create_access_token
 import datetime
+from sqlalchemy import and_, or_
 
 def db_add(*args):
     with app.app_context():
@@ -16,10 +17,11 @@ def hash_pwd(password):
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(encode, salt)
 
-def create_user(username, password):
+def create_user(username, password, email=None):
     u = User()
     u.username = username
     u.password = hash_pwd(password)
+    u.email = email
     db_add(u)
     return u
 
@@ -53,8 +55,8 @@ def create_route_from_file(file_path, name, exercise_type, user_id):
 
 def delete_all(c):
     with app.app_context():
-        for user in c.query.all():
-            db.session.delete(user)
+        for rec in c.query.all():
+            db.session.delete(rec)
         db.session.commit()
 
 def get_random_string(n):
@@ -73,14 +75,25 @@ def get_routes_by_user_id(id: int) -> list:
 
     return Route.query.filter_by(user_id=id)
 
-def get_test_user_headers(username, password):
+def get_test_user_headers(username, password, membership=True):
     if User.query.filter_by(username=username).first() == None:
-        create_user(username, password)
+        u = User()
+        u.username = "u1"
+        u.password = hash_pwd("pwd")
+        if membership:
+            memberships = MembershipPlan.query.all()
+            if len(memberships) != 0:
+                u.membership_id = memberships[0].id
+            else:
+                create_membership_plan("tst", "weekly", 12.50)
+                u.membership_id = MembershipPlan.query.all()[0].id
+                
+        db_add(u)
     
     test_user = User.query.filter_by(username=username).first()
     access_token = create_access_token(identity=test_user)
     headers = {
-        'Authorization': 'Bearer {}'.format(access_token)
+        'Authorization': 'Bearer {}'.format(access_token),
     }
 
     return headers
@@ -94,6 +107,18 @@ def create_friendship(user1_id: int, user2_id: int):
     if not check_for_friendship(user1_id, user2_id):
         # create new friendship
         db.session.add(Friend(user1_id, user2_id))
+        db.session.commit()
+
+def remove_friendship(user1_id: int, user2_id: int):
+    # Remove the friendship between user1 and user2
+    if check_for_friendship(user1_id, user2_id):
+        friendship = Friend.query.filter(
+            or_(and_(Friend.user_1_id==user1_id, Friend.user_2_id==user2_id),
+                and_(Friend.user_1_id==user2_id, Friend.user_2_id==user1_id)
+            )).first()
+        
+        # print(friendship)
+        db.session.delete(friendship)
         db.session.commit()
 
 def check_for_friend_request(from_id: int, to_id: int):
@@ -129,6 +154,8 @@ def add_user_to_group(user_id: int, group_id: int):
         group = Group.query.filter_by(id=group_id).first()
         user = User.query.filter_by(id=user_id).first()
         group.members.append(user)
+        db.session.add(group)
+        db.session.commit()
 
 def remove_user_from_group(user_id: int, group_id: int):
     if check_for_user_in_group(user_id, group_id):
@@ -136,6 +163,8 @@ def remove_user_from_group(user_id: int, group_id: int):
         user = User.query.filter_by(id=user_id).first()
         if user in group.members:
             group.members.remove(user)
+            db.session.add(group)
+            db.session.commit()
 
 def add_route_to_group(route_id: int, group_id: int):
     # ensure route owner is in the group
