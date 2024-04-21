@@ -146,7 +146,8 @@ def get_trail_data():
     # return trails
     return jsonify({
         "name": route.name,
-        "date": str(gpx.time),
+        "date": gpx.time.strftime("%d/%m/%Y"),
+        "type": route.exercise_type,
         "distance": gpx.get_total_distance_km(),    # In Km
         "time": {"hours": hours, "minutes": minutes, "seconds": seconds},
         "speed": gpx.get_speed(),   # In Km/h
