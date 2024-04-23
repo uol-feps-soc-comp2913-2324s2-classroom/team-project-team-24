@@ -30,7 +30,7 @@ export default {
                 used to register for your Walkley account.
             </p>
             <p>
-                We will send you an email with a password reset link iff the
+                We will send you an email with a password reset link if the
                 email is registered.
             </p>
             <div class="form-field">

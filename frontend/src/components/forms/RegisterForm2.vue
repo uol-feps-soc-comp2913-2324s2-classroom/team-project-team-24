@@ -25,6 +25,9 @@ export default {
             });
             this.$router.push('/activitycenter');
         },
+        async alreadyHaveAccount() {
+            this.$router.push('/login');
+        }
     },
 }
 </script>
@@ -35,26 +38,6 @@ export default {
             <div class="form-field go-to-login">
                 <span>Already have an account?</span> &nbsp;
                 <a href="#" @click="alreadyHaveAccount">Login</a>
-            </div>
-
-            <div class="form-field profile">
-                <img
-                    :src="profilePreview"
-                    class="profile-preview"
-                    alt="Profile Picture Preview"
-                />
-                <div class="profile-upload">
-                    <label for="profile-photo"
-                        >Profile picture <i class="bi bi-upload"></i>
-                    </label>
-                    <input
-                        id="profile-photo"
-                        type="file"
-                        accept="image/jpeg"
-                        @change="uploadImage"
-                        class="file-input"
-                    />
-                </div>
             </div>
 
             <div class="form-field">
@@ -116,44 +99,6 @@ export default {
 .go-to-login {
     margin-bottom: 30px;
 }
-.profile-preview {
-    border-radius: 50%;
-    width: 80px;
-    height: 80px; /* size for the preview */
-    background-color: #ddd;
-    display: block; /* Center the image preview in the form */
-    margin-bottom: 1rem;
-}
 
-.profile {
-    display: flex;
-    align-items: center;
-    gap: 50px;
-}
-
-
-
-.file-input {
-    opacity: 0;
-    position: absolute;
-    z-index: -1;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-}
-
-.upload-label {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-}
-
-img {
-    height: 30px;
-    width: 30px;
-}
 
 </style>

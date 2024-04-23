@@ -20,10 +20,6 @@
                     type="password"
                 ></textInputQuiet>
             </div>
-            <div class="form-field remember-me">
-                <input type="checkbox" id="remember-me" v-model="rememberMe" />
-                <label for="remember-me">Remember me</label>
-            </div>
 
             <div class="form-actions">
                 <a href="#" @click.prevent="forgotPassword">Forgot password</a>
@@ -66,11 +62,12 @@ export default {
     },
     methods: {
         onSubmit() {
+            console.log("Submitting...")
             let formData = {
                 username: this.username,
                 password: this.password,
             }
-
+            console.log(this.username, this.password)
             this.$store.dispatch('auth/login', formData).then(() => {
                 this.$router.push('/activitycenter')
             })
