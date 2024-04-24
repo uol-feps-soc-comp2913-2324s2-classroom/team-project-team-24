@@ -27,6 +27,12 @@ export default {
         },
         async alreadyHaveAccount() {
             this.$router.push('/login');
+        },
+        enterGender(event) {
+            this.gender = event;
+        },
+        enterAge(event) {
+            this.age = event;
         }
     },
 }
@@ -49,6 +55,7 @@ export default {
                     v-model="text"
                     type="text"
                     required
+                    @textInput="enterGender"
                 ></textInputQuiet>
             </div>
             <div class="form-field">
@@ -59,11 +66,12 @@ export default {
                     id="password"
                     v-model="text"
                     type="text"
+                    @textInput="enterAge"
                 ></textInputQuiet>
             </div>
             <div class="submit-button-container">
                 <primaryButton type="submit" class="submit-button"
-                    >Register</primaryButton
+                    :on-click="handleRegister">Register</primaryButton
                 >
             </div>
         </form>

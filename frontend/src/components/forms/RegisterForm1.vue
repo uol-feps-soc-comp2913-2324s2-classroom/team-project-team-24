@@ -31,7 +31,7 @@ export default {
             }
 
             this.$store.dispatch('auth/register', formData).then(() => {
-                this.$router.push('/activitycenter')
+                // this.$router.push('/activitycenter')
             })
             console.log(formData)
             this.$parent.form1Submit()
@@ -39,6 +39,18 @@ export default {
         alreadyHaveAccount() {
             this.$router.push('/login')
         },
+        enterUsername(event) {
+            this.username = event;
+        },
+        enterPassword(event) {
+            this.password = event;
+        },
+        enterPasswordConfirm(event) {
+            this.confirmPassword = event;
+        },
+        enterEmail(event) {
+            this.email = event;
+        }
     },
 }
 </script>
@@ -58,6 +70,7 @@ export default {
                     id="username"
                     v-model="username"
                     type="text"
+                    @textInput="enterUsername"
                 ></textInputQuiet>
             </div>
             <div class="form-field">
@@ -68,6 +81,7 @@ export default {
                     id="email"
                     v-model="email"
                     type="email"
+                    @textInput="enterEmail"
                 ></textInputQuiet>
             </div>
             <div class="form-field">
@@ -78,6 +92,7 @@ export default {
                     id="password"
                     v-model="password"
                     type="password"
+                    @textInput="enterPassword"
                 ></textInputQuiet>
             </div>
             <div class="form-field">
@@ -88,11 +103,12 @@ export default {
                     id="confirmPassword"
                     v-model="confirmPassword"
                     type="password"
+                    @textInput="enterPasswordConfirm"
                 ></textInputQuiet>
             </div>
 
             <div class="submit-button-container">
-                <primaryButton @click="$emit('formSubmitted')"
+                <primaryButton @click="$emit('formSubmitted')" :on-click="handleRegister"
                     >Continue</primaryButton
                 >
             </div>
