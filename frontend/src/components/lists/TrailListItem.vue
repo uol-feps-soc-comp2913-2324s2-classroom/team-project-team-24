@@ -14,6 +14,7 @@ export default {
         return {
             name: "",
             date: "",
+            type: "",
         };
     },
     methods: {
@@ -24,6 +25,7 @@ export default {
                 response => {
                     this.name = response.data.name;
                     this.date = response.data.date;
+                    this.type = response.data.type;
                 }
             )
         },
@@ -34,7 +36,7 @@ export default {
             console.log("downloadTrail");
         },
         deleteTrail() {
-            axiosAuth.post('/delete-trail', {
+            axiosAuth.post('/trail/delete', {
                 trailID: this.trailID,
             }).then(
                 response => {
@@ -58,15 +60,15 @@ export default {
 <template>
   <div class="outer" @click="viewTrail">
       <div class="name-type">
-        <h3>{{ trailName }}</h3>
-        <h5>{{ trailType }}</h5>
+        <h3>{{ name }}</h3>
+        <h5>{{ type }}</h5>
       </div>
       <div class="trail-date">
-        <h5>{{ trailDate }}</h5>
+        <h5>{{ date }}</h5>
       </div>
       <div class="button-container">
         <primaryButton @click.stop="downloadTrail">Download</primaryButton>
-        <dangerButton @click.stop="deleteTrail">Delete</dangerButton>
+        <dangerButton :on-click="deleteTrail">Delete</dangerButton>
       </div>
   </div>
 </template>

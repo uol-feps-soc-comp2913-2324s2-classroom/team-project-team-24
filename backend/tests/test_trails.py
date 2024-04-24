@@ -32,7 +32,7 @@ def test_get_trail_data_success(client):
     response = client.post("/trail/get-data", json={"trailID": route_id}, headers=headers)
     assert response.status_code == 200
     assert response.json["name"] == "Trail 1"
-    assert str(response.json["date"]) == "2013-06-11 10:00:00+00:00"
+    assert str(response.json["date"]) == "11/06/2013"
     assert int(response.json["distance"]) == 25
     assert response.json["time"] == {"hours": 0, "minutes": 49, "seconds": 40}
     assert int(response.json["speed"]) == 30

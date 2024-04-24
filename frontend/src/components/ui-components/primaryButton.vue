@@ -16,7 +16,7 @@ export default {
 </script>
 
 <template>
-    <button @click="handleClick"> 
+    <button @click.stop.prevent="handleClick"> 
         <slot></slot>
     </button>
 </template>
