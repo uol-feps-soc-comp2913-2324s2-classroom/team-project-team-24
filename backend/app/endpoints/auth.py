@@ -14,10 +14,11 @@ def register():
     data = request.get_json()
     password = data['password']
     username = data['username']
+    email = data['email']
 
     user = User.query.filter_by(username=username).first()
     if user is None:
-        create_user(username, password)
+        create_user(username, password, email)
         user = User.authenticate(username=username, password=password)
         access_token = create_access_token(identity=user)
 

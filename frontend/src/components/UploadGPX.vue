@@ -94,7 +94,7 @@ const uploadData = () => {
     formData.append("exerciseType", exerciseType.value);
     console.log(formData);
 
-    axiosAuth.post(`upload`, formData,
+    axiosAuth.post(`/trail/upload`, formData,
         {
             headers: { 'Content-Type': 'multipart/form-data' }
         })

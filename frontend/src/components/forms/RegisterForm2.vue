@@ -2,7 +2,7 @@
 import '@/assets/css/form.css'
 import textInputQuiet from '@/components/ui-components/textInputQuiet.vue'
 import primaryButton from '@/components/ui-components/primaryButton.vue'
-
+import axiosAuth from "@/api/axios-auth.js";
 export default {
     name: 'RegisterForm2Component',
     components: {
@@ -11,25 +11,29 @@ export default {
     },
     data() {
         return {
-            profilePreview: null,
-            gender: '',
-            age: '',
-        }
+            gender: "",
+            age: 0,
+        };
     },
     methods: {
         async handleRegister() {
-            console.log('Registering...')
-            //this.$parent.clicked()
-            this.$emit('registrationSuccessful')
+            console.log("Registering...");
+
+            await axiosAuth.post('/account/set-details', {
+                gender: this.gender,
+                age: this.age,
+            });
+            this.$router.push('/activitycenter');
         },
-        uploadImage(e) {
-            const image = e.target.files[0]
-            const reader = new FileReader()
-            reader.readAsDataURL(image)
-            reader.onload = (e) => {
-                this.profilePreview = e.target.result
-            }
+        async alreadyHaveAccount() {
+            this.$router.push('/login');
         },
+        enterGender(event) {
+            this.gender = event;
+        },
+        enterAge(event) {
+            this.age = event;
+        }
     },
 }
 </script>
@@ -42,28 +46,8 @@ export default {
                 <a href="#" @click="alreadyHaveAccount">Login</a>
             </div>
 
-            <div class="form-field profile">
-                <img
-                    :src="profilePreview"
-                    class="profile-preview"
-                    alt="Profile Picture Preview"
-                />
-                <div class="profile-upload">
-                    <label for="profile-photo"
-                        >Profile picture <i class="bi bi-upload"></i>
-                    </label>
-                    <input
-                        id="profile-photo"
-                        type="file"
-                        accept="image/jpeg"
-                        @change="uploadImage"
-                        class="file-input"
-                    />
-                </div>
-            </div>
-
             <div class="form-field">
-                <label for="email">Gender</label>
+                <label for="Gender">Gender</label>
                 <textInputQuiet
                     width="100%"
                     class="text-input"
@@ -71,6 +55,7 @@ export default {
                     v-model="text"
                     type="text"
                     required
+                    @textInput="enterGender"
                 ></textInputQuiet>
             </div>
             <div class="form-field">
@@ -81,11 +66,12 @@ export default {
                     id="password"
                     v-model="text"
                     type="text"
+                    @textInput="enterAge"
                 ></textInputQuiet>
             </div>
             <div class="submit-button-container">
                 <primaryButton type="submit" class="submit-button"
-                    >Register</primaryButton
+                    :on-click="handleRegister">Register</primaryButton
                 >
             </div>
         </form>
@@ -121,49 +107,6 @@ export default {
 .go-to-login {
     margin-bottom: 30px;
 }
-.profile-preview {
-    border-radius: 50%;
-    width: 80px;
-    height: 80px; /* size for the preview */
-    background-color: #ddd;
-    display: block; /* Center the image preview in the form */
-    margin-bottom: 1rem;
-}
 
-.profile {
-    display: flex;
-    align-items: center;
-    gap: 50px;
-}
 
-.profile-upload {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-img {
-    height: 30px;
-    width: 30px;
-}
-
-.file-input {
-    opacity: 0;
-    position: absolute;
-    z-index: -1;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-}
-
-.upload-label {
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.bi-upload {
-    font-size: 1.5rem;
-    margin-right: 0.5rem;
-}
 </style>

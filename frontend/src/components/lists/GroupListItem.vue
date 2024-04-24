@@ -1,6 +1,6 @@
 <template>
     <div @click="showGroup" class="outer">
-        <h4>{{ group }}</h4>
+        <h4>{{ group.name }}</h4>
     </div>
 </template>
 
@@ -9,7 +9,7 @@ export default {
     name: "GroupListItemComponent",
     props: {
         group: {
-            type: String
+            
         }
     },
     data() {
@@ -19,7 +19,7 @@ export default {
     },
     methods: {
         showGroup() {
-            this.$router.push({path: "/group", query: {groupName: this.group}});
+            this.$router.push({path: "/group", query: {groupID: this.group.id}});
         }
     },
 };

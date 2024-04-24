@@ -12,11 +12,8 @@ export default {
     },
     methods: {
         form1Submit() {
-            this.form1 = false
-            this.form2 = true
-        },
-        handleRegistrationSuccessful() {
-            this.$router.push('/login')
+            this.form1 = false;
+            this.form2 = true;
         },
     },
     components: {

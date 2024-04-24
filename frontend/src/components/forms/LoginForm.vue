@@ -8,6 +8,7 @@
                     class="text-input"
                     id="username"
                     v-model="username"
+                    @textInput = "usernameEntered"
                 ></textInputQuiet>
             </div>
             <div class="form-field">
@@ -18,11 +19,8 @@
                     id="password"
                     v-model="password"
                     type="password"
+                    @textInput = "passwordEntered"
                 ></textInputQuiet>
-            </div>
-            <div class="form-field remember-me">
-                <input type="checkbox" id="remember-me" v-model="rememberMe" />
-                <label for="remember-me">Remember me</label>
             </div>
 
             <div class="form-actions">
@@ -66,11 +64,12 @@ export default {
     },
     methods: {
         onSubmit() {
+            console.log("Submitting...")
             let formData = {
                 username: this.username,
                 password: this.password,
             }
-
+            console.log(this.username, this.password)
             this.$store.dispatch('auth/login', formData).then(() => {
                 this.$router.push('/activitycenter')
             })
@@ -80,6 +79,13 @@ export default {
         },
         createAccount() {
             this.$router.push('/register')
+        },
+        usernameEntered(event) {
+            this.username = event;
+            console.log(event)
+        },
+        passwordEntered(event) {
+            this.password = event;
         },
     },
 }

@@ -1,8 +1,7 @@
 <template>
     <div style="display: flex;">
-        <img src="{{ testimg }}"/>
-        <h4>{{ name }}</h4>
-        <button v-if="addButtonShowing">Add</button>
+        <h4>{{ this.user.name }}</h4>
+        <button v-if="this.button.text !== null" @click.prevent="this.button.action(this.user.id)">{{ this.button.text }}</button>
     </div>
 </template>
 
@@ -11,11 +10,15 @@ export default {
     name: "UserListItemComponent",
     props: {
         user: {
-            type: String
+            
         },
-        addButtonShowing: {
-            type: Boolean,
-            default: false
+        button: {
+            default: {
+                action: {
+                    type: Function 
+                },
+                text: null,
+            },
         }
     },
     data() {
@@ -25,7 +28,7 @@ export default {
         };
     },
     methods: {
-        
+        blank() {},
     },
 };
 </script>

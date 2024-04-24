@@ -22,7 +22,7 @@ def test_user_creation():
         create_user(uname, pwd)
         assert User.authenticate(uname, pwd).username == uname
         assert User.authenticate(uname, 'pwd') == None
-        delete_user(uname, pwd)
+        delete_user(User.query.filter_by(username=uname).first().id)
         
 def test_friends():
     """
@@ -73,11 +73,11 @@ def test_friend_requests():
     u2 = User.authenticate('u2', 'pwd')
     u3 = User.authenticate('u3', 'pwd')
     
-    assert u1.outgoint_friend_requests() == {u2}
+    assert u1.outgoing_friend_requests() == {u2}
     assert u1.incoming_friend_requests() == set()
-    assert u2.outgoint_friend_requests() == {u3}
+    assert u2.outgoing_friend_requests() == {u3}
     assert u2.incoming_friend_requests() == {u1}
-    assert u3.outgoint_friend_requests() == set()
+    assert u3.outgoing_friend_requests() == set()
     assert u3.incoming_friend_requests() == {u2}
     
 def test_membership():
@@ -89,8 +89,9 @@ def test_membership():
         - Checks both that the MembershipPlan.members.all() contains the right users
         - And User.membership is the correct membership
     """
-    delete_all(MembershipPlan)
-    delete_all(User)
+    MembershipPlan.query.delete()
+    User.query.delete()
+    db.session.commit()
     
     m1 = MembershipPlan()
     m1.name = "Test"
@@ -135,9 +136,9 @@ def test_users_and_routes_in_groups():
         - g2.routes = [r1, r2, r3]
         - Checks all is then correct (from group, user, and route perspective)
     """
-    delete_all(User)
-    delete_all(Group)
     delete_all(Route)
+    delete_all(Group)
+    delete_all(User)
     
     u1 = create_user('u1', 'pwd')
     u2 = create_user('u2', 'pwd')
@@ -180,8 +181,3 @@ def test_users_and_routes_in_groups():
     assert r1.groups == [g2]
     assert r2.groups == [g1, g2]
     assert r3.groups == [g2]
-    
-    
-
-    
-    

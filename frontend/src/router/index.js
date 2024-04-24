@@ -34,13 +34,13 @@ const routes = [
         path: "/activitycenter",
         name: "Activity",
         component: ActivityCenter,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, requiresMembership: true },
     },
     {
         path: "/community",
         name: "Community",
         component: Community,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, requiresMembership: true },
     },
     {
         path: "/membership",
@@ -52,7 +52,7 @@ const routes = [
         path: "/group",
         name: "Group",
         component: MyGroup,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, requiresMembership: true },
     },
     {
         path: "/myaccount",
@@ -64,13 +64,13 @@ const routes = [
         path: "/mytrail",
         name: "MyTrail",
         component: MyTrail,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, requiresMembership: true },
     },
     {
         path: "/uploadtrail",
         name: "UploadTrail",
         component: UploadTrail,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, requiresMembership: true },
     },
     {
         path: "/resetpassword",
@@ -93,8 +93,9 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     let token = localStorage.getItem('token');
     let requireAuth = to.matched.some(record => record.meta.requiresAuth);
+    let requireMembership = to.matched.some(record => record.meta.requiresMembership);
 
-    if (!requireAuth) {
+    if (!requireAuth && !requireMembership) {
         next();
     }
 
@@ -115,10 +116,37 @@ router.beforeEach((to, from, next) => {
         }
     }
 
-    if (requireAuth && token) {
+    if (requireAuth && token && !requireMembership) {
         axiosAuth.post('/auth/verify-token').then(() => {
             next();
         }).catch(() => {
+            next('/login');
+        })
+    }
+    if (requireAuth && token && requireMembership) {
+        axiosAuth.post('/auth/verify-token').then(() => {
+            axiosAuth.get('/membership/get-current').then(
+                response => {
+                    console.log(response.data.membership !== null);
+                    if (response.data.membership !== null) {
+                        console.log("next1");
+                        next();
+                    } else {
+                        console.log("next2");
+                        next('/membership');
+                    }
+                }
+            ).catch(
+                error => {
+                    if (error.response.status !== 200) {
+                        next('/membership');
+                    } else {
+                        console.log(error);
+                    }
+                }
+            )
+        }).catch(() => {
+            console.log("next4");
             next('/login');
         })
     }

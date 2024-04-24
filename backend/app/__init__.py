@@ -20,24 +20,26 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-from app.endpoints import auth, upload, core
+from app.endpoints import auth, core, trails, friends, groups, memberships, account
 
 app.register_blueprint(auth.bp)
-app.register_blueprint(upload.bp)
 app.register_blueprint(core.bp)
-print(app.url_map)
+app.register_blueprint(trails.bp)
+app.register_blueprint(friends.bp)
+app.register_blueprint(groups.bp)
+app.register_blueprint(memberships.bp)
+app.register_blueprint(account.bp)
 
 
 jwt = JWTManager(app)
 
 from app import views, models
-print([x.username for x in models.User.query.all()])
 
 @jwt.user_identity_loader
 def user_identity_lookup(user):
     return user.id
 
-
+print([x.username for x in models.User.query.all()])
 @jwt.user_lookup_loader
 def user_lookup_callback(_jwt_header, jwt_data):
     identity = jwt_data["sub"]
