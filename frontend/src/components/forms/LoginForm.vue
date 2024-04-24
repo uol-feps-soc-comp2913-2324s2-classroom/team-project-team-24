@@ -8,6 +8,7 @@
                     class="text-input"
                     id="username"
                     v-model="username"
+                    @textInput = "usernameEntered"
                 ></textInputQuiet>
             </div>
             <div class="form-field">
@@ -18,6 +19,7 @@
                     id="password"
                     v-model="password"
                     type="password"
+                    @textInput = "passwordEntered"
                 ></textInputQuiet>
             </div>
 
@@ -77,6 +79,13 @@ export default {
         },
         createAccount() {
             this.$router.push('/register')
+        },
+        usernameEntered(event) {
+            this.username = event;
+            console.log(event)
+        },
+        passwordEntered(event) {
+            this.password = event;
         },
     },
 }
