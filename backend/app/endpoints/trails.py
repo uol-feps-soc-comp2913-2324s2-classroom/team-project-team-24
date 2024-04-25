@@ -7,6 +7,7 @@ from app.models import User, Route
 from app.gpx import GPX
 import gpxpy
 from app.decorators import *
+from sqlalchemy import and_
 
 bp = Blueprint('trails', __name__, url_prefix="/trail")
 
@@ -257,6 +258,10 @@ def upload():
     route = Route(data=gpx_data, name=route_name, exercise_type=exercise_type, user_id=user_id)
     db.session.add(route)
     db.session.commit()
-
-    return Response(f"Route '{route_name}' with type '{exercise_type}' and id {route.id} uploaded to user with id {user_id}", 200)
+    
+    routeID = Route.query.filter(and_(Route.name == route_name, Route.user_id == user_id)).first().id
+    print(routeID)
+    return jsonify({
+        "trailID": routeID,
+    })
 

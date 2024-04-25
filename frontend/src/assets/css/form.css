@@ -11,7 +11,7 @@
     margin-bottom: 15px;
 }
 
-.text-input {
+.text-input-old {
     width: 100%;
     max-width: 400px; /* Limit width to 400px */
     padding: 10px;
@@ -20,18 +20,31 @@
     margin-bottom: 15px;
 }
 
-.submit-button {
-    width: 100%; /* Full width */
-    max-width: 400px; /* Limit width to 400px */
-    padding: 10px 20px;
-    border: none;
-    background-color: var(--app-green); /* Use variable for background color */
-    color: var(--l1-color); /* Use variable for text color */
-    border-radius: var(--border-radius); /* Use variable for border radius */
-    cursor: pointer;
-    transition: background-color var(--transition-speed) ease-in-out; /* Include transition */
+
+
+.input-label {
+    margin: 0;
+    font-size: 13px;
+    color: #666666;
 }
 
-.submit-button:hover {
-    background-color: #18b44b; /* Change background color on hover */
+.text-input {
+    margin: 0;
+    border-width: 0 0 2px 0;
+    border-style: solid;
+    border-color: #c0c0c0;
+}
+
+.text-input:hover {
+    border-color: #a2a2a2;
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: #0e7eff;
+    border-width: 0 0 3px 0;
+}
+
+.form-error-text {
+    color: red;
 }

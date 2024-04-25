@@ -8,10 +8,6 @@
       <p>Longest time:</p>
       <h4>{{ longestTime.hours }}h{{ longestTime.minutes }}m</h4>
     </div>
-    <div class="stats-group">
-      <p>Total Calorie Consumption:</p>
-      <h4>{{ totalCalories }}</h4>
-    </div>
   </div>
 </template>
   
@@ -28,7 +24,6 @@ export default {
         hours: 5,
         minutes: 30
       },
-      totalCalories: 2000,
     };
   },
   methods: {},
