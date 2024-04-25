@@ -15,10 +15,6 @@
             <h4>{{ speed }} km/h</h4>
             <p>Average speed</p>
         </div>
-        <div>
-            <h4>{{ calories }} cal</h4>
-            <p>Calories</p>
-        </div>
     </div>
 </template>
 
@@ -49,10 +45,9 @@ export default {
                 response => {
                     this.name = response.data.name;
                     this.date = response.data.date;
-                    this.distance = response.data.distance;
+                    this.distance = response.data.distance.toFixed(1);
                     this.time = response.data.time;
-                    this.speed = response.data.speed;
-                    this.calories = response.data.calories;
+                    this.speed = response.data.speed.toFixed(2);
                 }
             ).catch(error => {
                 console.log("error");
