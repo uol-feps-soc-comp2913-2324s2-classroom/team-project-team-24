@@ -44,3 +44,7 @@
     border-color: #0e7eff;
     border-width: 0 0 3px 0;
 }
+
+.form-error-text {
+    color: red;
+}

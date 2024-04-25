@@ -33,6 +33,7 @@
 
 <script>
 import '@/assets/css/form.css'
+import axios from 'axios'
 
 export default {
     name: 'LoginFormComponent',
@@ -46,18 +47,21 @@ export default {
         }
     },
     methods: {
-        onSubmit() {
+        async onSubmit() {
             console.log("Submitting...")
             let formData = {
                 username: this.username,
                 password: this.password,
             }
             console.log(this.username, this.password)
-            this.$store.dispatch('auth/login', formData).then(() => {
-                this.$router.push('/activitycenter')
-            }).catch(
-                this.invalidCredentials = true,
-            )
+            axios.post("/auth/login", formData).then(response => {
+                if (response.data.success === true) {
+                    localStorage.setItem('token', response.data.token);
+                    this.$router.push("/activitycenter");
+                }
+            }).catch(() => {
+                this.invalidCredentials = true;
+            });
         },
         forgotPassword() {
             this.$router.push('/resetpassword')

@@ -129,10 +129,8 @@ router.beforeEach((to, from, next) => {
                 response => {
                     console.log(response.data.membership !== null);
                     if (response.data.membership !== null) {
-                        console.log("next1");
                         next();
                     } else {
-                        console.log("next2");
                         next('/membership');
                     }
                 }
@@ -146,7 +144,6 @@ router.beforeEach((to, from, next) => {
                 }
             )
         }).catch(() => {
-            console.log("next4");
             next('/login');
         })
     }

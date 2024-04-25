@@ -1,5 +1,6 @@
 <script>
 import '@/assets/css/form.css'
+import axios from 'axios'
 
 export default {
     name: 'RegisterForm1Component',
@@ -11,6 +12,7 @@ export default {
             email: '',
             password: '',
             confirmPassword: '',
+            errorText: null,
         }
     },
     methods: {
@@ -26,11 +28,18 @@ export default {
                 email: this.email,
             }
 
-            this.$store.dispatch('auth/register', formData).then(() => {
-                // this.$router.push('/activitycenter')
-            })
-            console.log(formData)
-            this.$parent.form1Submit()
+            axios.post("/auth/register", formData).then(response => {
+                if (response.data.success === true) {
+                    localStorage.setItem('token', response.data.token);
+                    this.$parent.form1Submit();
+                } else {
+                    console.log("register error");
+                    this.errorText = response.data.error;
+                }
+            }).catch(error => {
+                console.log("register error", error);
+                this.errorText = error.response.data.error;
+            });
         },
         alreadyHaveAccount() {
             this.$router.push('/login')
@@ -73,6 +82,9 @@ export default {
             <div class="form-field">
                 <label for="confirmPassword" class="input-label">Confirm Password</label>
                 <input class="text-input" id="confirmPassword" type="password" v-model="confirmPassword">
+            </div>
+            <div>
+                <p class="form-error-text" v-if="errorText !== null">{{ errorText }}</p>
             </div>
 
             <div class="submit-button-container">

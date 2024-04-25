@@ -10,9 +10,8 @@ export default {
     },
     methods: {
         accountLogout() {
-            this.$store.dispatch('auth/logout').then(() => {
-                this.$router.push('/login');
-            });
+            localStorage.removeItem('token');
+            this.$router.push("/login");
         }
     },
     components: {
