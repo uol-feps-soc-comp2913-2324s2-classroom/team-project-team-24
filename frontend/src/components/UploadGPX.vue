@@ -12,6 +12,11 @@ export default {
             count: 0
         }
     },
+    methods: {
+        nextPage() {
+            this.$router.push("/activitycentre");
+        }
+    }
 }
 
 </script>
@@ -63,10 +68,13 @@ export default {
 
 <script setup>
 import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 const routeName = ref('');
 const exerciseType = ref('Walking'); // set Walking as default
 const selectedFile = ref(null);
+
+const router = useRouter();
 
 // ensures user uploads valid data
 const handleFileUpload = event => {
@@ -100,7 +108,11 @@ const uploadData = () => {
         })
         .then(
             function (response) {
-                console.log(response);
+                console.log("response:", response);
+                router.push({
+                    path: "/mytrail",
+                    query: {trailID: response.data.trailID}
+                });
             }
         );
 
