@@ -22,7 +22,9 @@
                     @textInput = "passwordEntered"
                 ></textInputQuiet>
             </div>
-
+            <div>
+                <p v-if="invalidCredentials" class="error-ext">Your username/password is incorrect</p>
+            </div>
             <div class="form-actions">
                 <a href="#" @click.prevent="forgotPassword">Forgot password</a>
 
@@ -72,7 +74,9 @@ export default {
             console.log(this.username, this.password)
             this.$store.dispatch('auth/login', formData).then(() => {
                 this.$router.push('/activitycenter')
-            })
+            }).catch(
+                this.invalidCredentials = true,
+            )
         },
         forgotPassword() {
             this.$router.push('/resetpassword')
@@ -150,5 +154,9 @@ export default {
     align-items: center;
     gap: 10px;
     margin-top: 10px;
+}
+
+.error-ext {
+    color: red;
 }
 </style>
