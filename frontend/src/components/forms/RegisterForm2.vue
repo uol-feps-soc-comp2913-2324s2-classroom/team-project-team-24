@@ -1,13 +1,8 @@
 <script>
-import '@/assets/css/form.css'
-import textInputQuiet from '@/components/ui-components/textInputQuiet.vue'
-import primaryButton from '@/components/ui-components/primaryButton.vue'
 import axiosAuth from "@/api/axios-auth.js";
 export default {
     name: 'RegisterForm2Component',
     components: {
-        textInputQuiet,
-        primaryButton,
     },
     data() {
         return {
@@ -42,37 +37,20 @@ export default {
     <div class="registerbox-in">
         <form @submit.prevent="handleRegister">
             <div class="form-field go-to-login">
-                <span>Already have an account?</span> &nbsp;
-                <a href="#" @click="alreadyHaveAccount">Login</a>
+                <span>Already have an account?</span>
+                <a href="#" @click="alreadyHaveAccount"> Login</a>
             </div>
 
             <div class="form-field">
-                <label for="Gender">Gender</label>
-                <textInputQuiet
-                    width="100%"
-                    class="text-input"
-                    id="Gender"
-                    v-model="text"
-                    type="text"
-                    required
-                    @textInput="enterGender"
-                ></textInputQuiet>
+                <label for="Gender" class="input-label">Gender</label>
+                <input class="text-input" id="gender" type="text" v-model="gender">
             </div>
             <div class="form-field">
-                <label for="password">Age</label>
-                <textInputQuiet
-                    width="100%"
-                    class="text-input"
-                    id="password"
-                    v-model="text"
-                    type="text"
-                    @textInput="enterAge"
-                ></textInputQuiet>
+                <label for="age" class="input-label">Age</label>
+                <input class="text-input" id="age" type="text" v-model.number="age">
             </div>
             <div class="submit-button-container">
-                <primaryButton type="submit" class="submit-button"
-                    :on-click="handleRegister">Register</primaryButton
-                >
+                <button class="btn-primary" type="submit">Register</button>
             </div>
         </form>
     </div>
@@ -93,7 +71,6 @@ export default {
 .form-field input,
 .submit-button-container button {
     box-sizing: border-box; /* Padding and border are included in the width */
-    width: 40%;
 }
 
 .submit-button-container {
@@ -108,5 +85,8 @@ export default {
     margin-bottom: 30px;
 }
 
+.text-input {
+    width: 100%;
+}
 
 </style>

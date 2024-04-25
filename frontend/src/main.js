@@ -1,10 +1,16 @@
 import { createApp } from 'vue'
-import '@/assets/css/style.css'
 import router from './router'
 import App from './App.vue'
 import store from './store/index'
 import 'bootstrap/dist/css/bootstrap.css'
 import axios from 'axios'
+
+// CSS
+import '@/assets/css/style.css'
+import '@/assets/css/button.css'
+import '@/assets/css/nav.css'
+import '@/assets/css/pages.css'
+import '@/assets/css/form.css'
 
 axios.defaults.baseURL = `${process.env.VUE_APP_BACKEND_URL}`;
 

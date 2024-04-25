@@ -1,6 +1,4 @@
 <script>
-import primaryButton from '../ui-components/primaryButton.vue';
-import dangerButton from '../ui-components/dangerButton.vue';
 
 import axiosAuth from "@/api/axios-auth.js";
 export default {
@@ -51,8 +49,6 @@ export default {
         this.getPageData();
     },
     components: {
-      primaryButton,
-      dangerButton,
     }
 };
 </script>
@@ -67,8 +63,8 @@ export default {
         <h5>{{ date }}</h5>
       </div>
       <div class="button-container">
-        <primaryButton @click.stop="downloadTrail">Download</primaryButton>
-        <dangerButton :on-click="deleteTrail">Delete</dangerButton>
+        <button class="btn-primary" @click.stop="downloadTrail">Download</button>
+        <button class="btn-danger" @click.stop="deleteTrail">Delete</button>
       </div>
   </div>
 </template>
@@ -101,10 +97,10 @@ export default {
   display: flex;
   align-items: center; /* Align items vertically */
 }
-.primaryButton {
+.btn-primary {
   margin-right: 15px; /* Add margin to the right of the primary button */
 }
-.dangerButton {
+.btn-danger {
   margin-left: 7px; /* Add margin to the left of the danger button */
 }
 

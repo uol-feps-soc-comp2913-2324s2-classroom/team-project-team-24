@@ -1,13 +1,9 @@
 <script>
 import '@/assets/css/form.css'
-import textInputQuiet from '@/components/ui-components/textInputQuiet.vue'
-import primaryButton from '@/components/ui-components/primaryButton.vue'
 
 export default {
     name: 'RegisterForm1Component',
     components: {
-        textInputQuiet,
-        primaryButton,
     },
     data() {
         return {
@@ -63,54 +59,25 @@ export default {
                 <a href="#" @click="alreadyHaveAccount">Login</a>
             </div>
             <div class="form-field">
-                <label for="username">Username</label>
-                <textInputQuiet
-                    width="100%"
-                    class="text-input"
-                    id="username"
-                    v-model="username"
-                    type="text"
-                    @textInput="enterUsername"
-                ></textInputQuiet>
+                <label for="username" class="input-label">Username</label>
+                <input class="text-input" id="username" type="username" v-model="username">
             </div>
             <div class="form-field">
-                <label for="email">Email</label>
-                <textInputQuiet
-                    width="100%"
-                    class="text-input"
-                    id="email"
-                    v-model="email"
-                    type="email"
-                    @textInput="enterEmail"
-                ></textInputQuiet>
+                <label for="email" class="input-label">Email</label>
+                <input class="text-input" id="email" type="email" v-model="email">
             </div>
             <div class="form-field">
-                <label for="password">Password</label>
-                <textInputQuiet
-                    width="100%"
-                    class="text-input"
-                    id="password"
-                    v-model="password"
-                    type="password"
-                    @textInput="enterPassword"
-                ></textInputQuiet>
+                <label for="password" class="input-label">Password</label>
+                <input class="text-input" id="password" type="password" v-model="password">
             </div>
             <div class="form-field">
-                <label for="confirmPassword">Confirm Password</label>
-                <textInputQuiet
-                    width="100%"
-                    class="text-input"
-                    id="confirmPassword"
-                    v-model="confirmPassword"
-                    type="password"
-                    @textInput="enterPasswordConfirm"
-                ></textInputQuiet>
+                <label for="confirmPassword" class="input-label">Confirm Password</label>
+                <input class="text-input" id="confirmPassword" type="password" v-model="confirmPassword">
             </div>
 
             <div class="submit-button-container">
-                <primaryButton @click="$emit('formSubmitted')" :on-click="handleRegister"
-                    >Continue</primaryButton
-                >
+
+                <button type="submit" class="btn-primary">Continue</button>
             </div>
         </form>
     </div>
@@ -140,6 +107,10 @@ export default {
 .submit-button-container {
     display: flex;
     justify-content: flex-end;
+    width: 100%;
+}
+
+.text-input {
     width: 100%;
 }
 </style>
