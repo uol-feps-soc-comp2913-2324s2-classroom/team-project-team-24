@@ -13,7 +13,7 @@ export default {
     methods: {
         async handleRegister() {
             console.log("Registering...");
-
+            console.log("age", this.age);
             await axiosAuth.post('/account/set-details', {
                 gender: this.gender,
                 age: this.age,
@@ -23,12 +23,6 @@ export default {
         async alreadyHaveAccount() {
             this.$router.push('/login');
         },
-        enterGender(event) {
-            this.gender = event;
-        },
-        enterAge(event) {
-            this.age = event;
-        }
     },
 }
 </script>
@@ -47,7 +41,7 @@ export default {
             </div>
             <div class="form-field">
                 <label for="age" class="input-label">Age</label>
-                <input class="text-input" id="age" type="text" v-model.number="age">
+                <input class="text-input" id="age" type="number" v-model.number="age">
             </div>
             <div class="submit-button-container">
                 <button class="btn-primary" type="submit">Register</button>

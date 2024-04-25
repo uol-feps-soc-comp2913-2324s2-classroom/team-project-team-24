@@ -18,7 +18,7 @@ export default {
     methods: {
         async handleRegister() {
             if (this.password !== this.confirmPassword) {
-                alert('Passwords do not match.')
+                this.errorText = "Passwords do not match";
                 return
             }
 
@@ -55,6 +55,9 @@ export default {
         },
         enterEmail(event) {
             this.email = event;
+        },
+        removeErrorMessage() {
+            this.errorText = "";
         }
     },
 }
@@ -69,19 +72,19 @@ export default {
             </div>
             <div class="form-field">
                 <label for="username" class="input-label">Username</label>
-                <input class="text-input" id="username" type="username" v-model="username">
+                <input class="text-input" id="username" type="username" v-model="username" @input="removeErrorMessage">
             </div>
             <div class="form-field">
                 <label for="email" class="input-label">Email</label>
-                <input class="text-input" id="email" type="email" v-model="email">
+                <input class="text-input" id="email" type="email" v-model="email" @input="removeErrorMessage">
             </div>
             <div class="form-field">
                 <label for="password" class="input-label">Password</label>
-                <input class="text-input" id="password" type="password" v-model="password">
+                <input class="text-input" id="password" type="password" v-model="password" @input="removeErrorMessage">
             </div>
             <div class="form-field">
                 <label for="confirmPassword" class="input-label">Confirm Password</label>
-                <input class="text-input" id="confirmPassword" type="password" v-model="confirmPassword">
+                <input class="text-input" id="confirmPassword" type="password" v-model="confirmPassword" @input="removeErrorMessage">
             </div>
             <div>
                 <p class="form-error-text" v-if="errorText !== null">{{ errorText }}</p>

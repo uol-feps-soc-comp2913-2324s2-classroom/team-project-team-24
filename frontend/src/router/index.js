@@ -94,36 +94,31 @@ router.beforeEach((to, from, next) => {
     let token = localStorage.getItem('token');
     let requireAuth = to.matched.some(record => record.meta.requiresAuth);
     let requireMembership = to.matched.some(record => record.meta.requiresMembership);
-
-    if (!requireAuth && !requireMembership) {
-        next();
-    }
-
-    if (requireAuth && !token) {
-        next('/login');
-    }
-
+    
     if (to.path === '/login') {
         if (token) {
             axiosAuth.post('/auth/verify-token').then(() => {
                 next('/activitycenter');
-            }).catch(() => {
-                next();
-            });
-        }
-        else {
-            next();
+            })
         }
     }
+    
+    if (!requireAuth && !requireMembership) {
+        next();
+    }
 
-    if (requireAuth && token && !requireMembership) {
+    else if (requireAuth && !token) {
+        next('/login');
+    }
+
+    else if (requireAuth && token && !requireMembership) {
         axiosAuth.post('/auth/verify-token').then(() => {
             next();
         }).catch(() => {
             next('/login');
         })
     }
-    if (requireAuth && token && requireMembership) {
+    else if (requireAuth && token && requireMembership) {
         axiosAuth.post('/auth/verify-token').then(() => {
             axiosAuth.get('/membership/get-current').then(
                 response => {
