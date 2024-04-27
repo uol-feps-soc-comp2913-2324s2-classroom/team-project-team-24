@@ -101,13 +101,18 @@ docker rmi <image_id>
 Or forget about all of this and use the Docker Desktop app to manage containers and images.
 
 ## Testing the frontend with cypress (End-To-End Testing)
-navigate to frontend\gpx_app_front
+1. navigate to frontend\gpx_app_front
 ```BASH
 # Run cypress
 npx cypress open
 ```
-To stop it, simply ctrl + c.
+2. To stop it, simply ctrl + c.
 
-navigate to E2E testing > specs > frontend\gpx_app_front\cypress\frontend_test.cy.js
-you can either add to the specs for further tests, or utilise existing files.
+3. To observe the tests in action, navigate to E2E testing > specs > 'frontend\gpx_app_front\cypress\e2e', and select your desired cypress test file
 
+4. If you'd like to add to the specs for further tests, or utilise existing files, navigate to the same area in your IDE, and 
+
+- Commands are to be placed in `cypress/support/commands.js`, essential commands such as login() are found here.
+- Whenever you do cypress testing, to use `cy.login()`, just include it in the `beforeEach` portion of your tests, see `uploadTrail.cy.js` for reference
+- Test GPX and dummy files are included in `cypress/fixtures`
+- refer to https://docs.cypress.io/api/table-of-contents for helpful commands in cypress

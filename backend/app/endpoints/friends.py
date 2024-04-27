@@ -3,13 +3,14 @@ from flask import Blueprint, Response, request, jsonify
 from flask_jwt_extended import get_current_user, jwt_required
 from app import db, app
 from app.db_functions import *
-from app.gpx_functions import *
 from app.models import User, Route, Friend
+from app.decorators import *
 
-bp = Blueprint('friends', __name__)
+bp = Blueprint('friends', __name__, url_prefix="/friends")
 
-@bp.route('/get_friends', methods=['GET'])
+@bp.route('/get-all', methods=['GET'])
 @jwt_required()
+@membership_required
 def get_friends():
     # recieve user ID
     user_id = get_current_user().id
@@ -38,8 +39,30 @@ def get_friends():
 
     return jsonify({"friends": friends_info})
 
-@bp.route('/add_friend', methods=['POST'])
+@bp.route('/get-requests', methods=['GET'])
 @jwt_required()
+@membership_required
+def get_friend_requests():
+    # recieve user ID
+    user = get_current_user()
+
+    # get user's friends' IDs
+    user_friends = user.incoming_friend_requests()
+
+    # get info about each friend
+    friends_info = []
+    for friend in user_friends:
+        friends_info.append({
+            "id": friend.id,
+            "name": friend.username,
+            "profilePhoto": friend.profile_picture
+        })
+
+    return jsonify({"requests": friends_info})
+
+@bp.route('/add', methods=['POST'])
+@jwt_required()
+@membership_required
 def add_friend():
     user_id = get_current_user().id
     user_2_id = request.form.get("userID2")
@@ -56,17 +79,40 @@ def add_friend():
     create_friendship(user_id, user_2_id)
     return Response("Friendship created", 200)
 
-@bp.route('/send_friend_request', methods=['POST'])
+@bp.route('/remove', methods=['POST'])
 @jwt_required()
+@membership_required
+def remove_friend():
+    user_id = get_current_user().id
+    user_2_id = request.get_json().get("friendID")
+
+    if user_2_id == None:
+        return jsonify({"error": "Friend ID not given"}), 400
+    
+    if User.query.filter_by(id=user_2_id).first() == None:
+        return jsonify({"error": "Invalid ID"}), 400
+
+    if not check_for_friendship(user_id, user_2_id):
+        return jsonify({"error": "Users are not yet friends"}), 400
+
+    # Remove friendship
+    remove_friendship(user_id, user_2_id)
+    return Response("Friendship created", 200)
+
+@bp.route('/send-request', methods=['POST'])
+@jwt_required()
+@membership_required
 def send_friend_request():
     user_id = get_current_user().id
-    to_id = request.form.get("receiveUserID")
+    to_user = request.get_json().get("receiveUserID")
+    to_id = User.query.filter_by(username=to_user).first().id
+    print(to_id)
 
-    if to_id == None:
+    if to_user == None:
         return jsonify({"error": "Receive user ID not given"}), 400
     
-    if User.query.filter_by(id=to_id).first() == None:
-        return jsonify({"error": "Invalid ID"}), 400
+    if to_id == None:
+        return jsonify({"error": "User not found"}), 400
 
     if check_for_friendship(user_id, to_id):
         return jsonify({"error": "Users are already friends"}), 400
@@ -80,13 +126,14 @@ def send_friend_request():
         accept_friend_request(user_id, to_id)
     else:
         create_friend_request(user_id, to_id)
-    return Response("Friend request created", 200)
+    return Response("Friend request sent", 200)
 
-@bp.route('/accept_friend_request', methods=['POST'])
+@bp.route('/accept-request', methods=['POST'])
 @jwt_required()
+@membership_required
 def accept_friend_request_route():
     user_id = get_current_user().id
-    from_id = request.form.get("fromUserID")
+    from_id = request.get_json().get("fromUserID")
 
     if from_id == None:
         return jsonify({"error": "Missing ID"}), 400
@@ -103,12 +150,15 @@ def accept_friend_request_route():
     accept_friend_request(user_id, from_id)
     return Response("Friend request accepted", 200)
 
-@bp.route('/reject_friend_request', methods=['POST'])
+@bp.route('/reject-request', methods=['POST'])
 @jwt_required()
+@membership_required
 def reject_friend_request_route():
+    print("Rejecting friend request")
     user_id = get_current_user().id
-    from_id = request.form.get("fromUserID")
-
+    print(request)
+    from_id = request.get_json().get("fromUserID")
+    print(from_id)
     if from_id == None:
         return jsonify({"error": "Missing ID"}), 400
     
@@ -123,3 +173,4 @@ def reject_friend_request_route():
 
     remove_friend_request(user_id, from_id)
     return Response("Friend request rejected", 200)
+

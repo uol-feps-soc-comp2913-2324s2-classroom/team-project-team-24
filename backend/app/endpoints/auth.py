@@ -14,18 +14,32 @@ def register():
     data = request.get_json()
     password = data['password']
     username = data['username']
+    email = data['email']
+
+    if username == "":
+        return jsonify(error="Please enter a username"), 400
+    
+    if password == "":
+        return jsonify(error="Please enter a password"), 400
+    
+    if email == "":
+        return jsonify(error="Please enter an email"), 400
 
     user = User.query.filter_by(username=username).first()
-    if user is None:
-        create_user(username, password)
-        user = User.authenticate(username=username, password=password)
-        access_token = create_access_token(identity=user)
+    if user is not None:
+        return jsonify(error="Username already in use - please pick another."), 400
+    
+    if User.query.filter_by(email=email).first() is not None:
+        return jsonify(error="Email already in use."), 400
+    
+    create_user(username, password, email)
+    user = User.authenticate(username=username, password=password)
+    access_token = create_access_token(identity=user)
 
-        response = jsonify({'success': True, 'token': access_token})
+    response = jsonify({'success': True, 'token': access_token})
 
-        return response, 201
-    else:
-        return jsonify(message="Unable to create user."), 400
+    return response, 201
+        
     
 @bp.route('/login', methods=('POST',))
 def login():

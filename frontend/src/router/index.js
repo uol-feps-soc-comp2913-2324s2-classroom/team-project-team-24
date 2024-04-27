@@ -49,13 +49,13 @@ const routes = [
         path: "/activitycenter",
         name: "Activity",
         component: ActivityCenter,
-        meta: { requiresAuth: authRequired },
+        meta: { requiresAuth: authRequired, requiresMembership: true },
     },
     {
         path: "/community",
         name: "Community",
         component: Community,
-        meta: { requiresAuth: authRequired },
+        meta: { requiresAuth: authRequired, requiresMembership: true },
     },
     {
         path: "/membership",
@@ -67,7 +67,7 @@ const routes = [
         path: "/group",
         name: "Group",
         component: MyGroup,
-        meta: { requiresAuth: authRequired },
+        meta: { requiresAuth: authRequired, requiresMembership: true },
     },
     {
         path: "/myaccount",
@@ -79,13 +79,13 @@ const routes = [
         path: "/mytrail",
         name: "MyTrail",
         component: MyTrail,
-        meta: { requiresAuth: authRequired },
+        meta: { requiresAuth: authRequired, requiresMembership: true },
     },
     {
         path: "/uploadtrail",
         name: "UploadTrail",
         component: UploadTrail,
-        meta: { requiresAuth: authRequired },
+        meta: { requiresAuth: authRequired, requiresMembership: true },
     },
     {
         path: "/resetpassword",
@@ -108,31 +108,51 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     let token = localStorage.getItem('token');
     let requireAuth = to.matched.some(record => record.meta.requiresAuth);
-
-    if (!requireAuth) {
-        next();
-    }
-
-    if (requireAuth && !token) {
-        next('/login');
-    }
-
+    let requireMembership = to.matched.some(record => record.meta.requiresMembership);
+    
     if (to.path === '/login') {
         if (token) {
             axiosAuth.post('/auth/verify-token').then(() => {
                 next('/activitycenter');
-            }).catch(() => {
-                next();
-            });
-        }
-        else {
-            next();
+            })
         }
     }
+    
+    if (!requireAuth && !requireMembership) {
+        next();
+    }
 
-    if (requireAuth && token) {
+    else if (requireAuth && !token) {
+        next('/login');
+    }
+
+    else if (requireAuth && token && !requireMembership) {
         axiosAuth.post('/auth/verify-token').then(() => {
             next();
+        }).catch(() => {
+            next('/login');
+        })
+    }
+    else if (requireAuth && token && requireMembership) {
+        axiosAuth.post('/auth/verify-token').then(() => {
+            axiosAuth.get('/membership/get-current').then(
+                response => {
+                    console.log(response.data.membership !== null);
+                    if (response.data.membership !== null) {
+                        next();
+                    } else {
+                        next('/membership');
+                    }
+                }
+            ).catch(
+                error => {
+                    if (error.response.status !== 200) {
+                        next('/membership');
+                    } else {
+                        console.log(error);
+                    }
+                }
+            )
         }).catch(() => {
             next('/login');
         })

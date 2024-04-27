@@ -6,7 +6,7 @@ export default {
     name: "MyTrails",
     data() {
         return {
-            trailName: this.$route.query.trailName,
+            trailID: this.$route.query.trailID,
         };
     },
     methods: {
@@ -21,7 +21,7 @@ export default {
 
 <template>
     <div class="myTrailsPageContainer">
-        <MapViewerComponent />
+        <MapViewerComponent v-bind:trailID="trailID"/>
         <TrailInfoComponent />
     </div>
 </template>

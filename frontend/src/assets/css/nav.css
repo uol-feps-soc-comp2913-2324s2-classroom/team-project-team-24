@@ -1,0 +1,112 @@
+.navSpacer{
+    width: 6.5rem;
+}
+
+.sideNav{
+    margin-left: 0.5rem;
+    height: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
+    width: 5rem;
+    font-size: var(--font-size);
+    transition: width var(--transition-speed);
+}
+
+.navList{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.navLogo{
+    padding: 0.2rem;
+}
+
+.logoText{
+    font-weight: bold;
+    color: var(--text-color)
+}
+
+.navItemLogo{
+    padding: 1rem 0 1rem 0;
+}
+
+
+.navIcons{
+    padding: 1rem;
+}
+
+.navItem{
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.navItem:last-child{
+    margin-top: auto;
+    margin-bottom: 0;
+    padding: 0.6rem 0 0.6rem 0;
+}
+
+.navItem:last-child:hover{
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.navLink{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    padding: 0.5rem;
+    text-decoration: none !important;
+    color: var(--unselected-color);
+}
+
+.navItemLinkContainer:hover{
+    background-color: #eeeeee;
+}
+
+.navText{
+    display: none;
+    text-decoration: none !important;
+    margin-left: 1rem;
+    white-space: nowrap;
+}
+
+.router-link-active .navText{
+    color: var(--selected-color);
+    font-weight: bold;
+}
+
+.sideNav:hover{
+    width: 13rem;
+    max-width: 14rem;
+    z-index: 1;
+}
+
+.sideNav:hover .navText{
+    display: block;
+    text-decoration: none !important;
+}
+
+::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-background);
+    border: solid 20px transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border: solid 50px transparent;
+    border-radius: 0.25rem;
+}

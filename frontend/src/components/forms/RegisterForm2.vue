@@ -1,68 +1,86 @@
 <script>
-import "@/assets/css/form.css"
+import axiosAuth from "@/api/axios-auth.js";
 export default {
-    name: "RegisterForm2Component",
+    name: 'RegisterForm2Component',
+    components: {
+    },
     data() {
         return {
-            profilePreview: null,
             gender: "",
-            age: "",
+            age: 0,
         };
     },
     methods: {
         async handleRegister() {
             console.log("Registering...");
-            this.$parent.clicked();
+            console.log("age", this.age);
+            await axiosAuth.post('/account/set-details', {
+                gender: this.gender,
+                age: this.age,
+            });
+            this.$router.push('/activitycenter');
         },
-        uploadImage(e) {
-            const image = e.target.files[0];
-            const reader = new FileReader();
-            reader.readAsDataURL(image);
-            reader.onload = e =>{
-                this.profilePreview = e.target.result;
-            };
-        }
+        async alreadyHaveAccount() {
+            this.$router.push('/login');
+        },
     },
-};
+}
 </script>
 
 <template>
     <div class="registerbox-in">
         <form @submit.prevent="handleRegister">
+            <div class="form-field go-to-login">
+                <span>Already have an account?</span>
+                <a href="#" @click="alreadyHaveAccount"> Login</a>
+            </div>
+
             <div class="form-field">
-                <img :src="profilePreview"/>
-                <label for="profile-photo">Profile:</label>
-                <input id="profile-photo" type="file" accept="image/jpeg" @change="uploadImage"/>
+                <label for="Gender" class="input-label">Gender</label>
+                <input class="text-input" id="gender" type="text" v-model="gender">
             </div>
             <div class="form-field">
-                <label for="email">Gender:</label>
-                <input class="text-input" id="Gender" v-model="text" type="text"
-                    required />
+                <label for="age" class="input-label">Age</label>
+                <input class="text-input" id="age" type="number" v-model.number="age">
             </div>
-            <div class="form-field">
-                <label for="password">Age:</label>
-                <input class="text-input" id="password" v-model="text" type="text"
-                    placeholder="Enter your age" required />
+            <div class="submit-button-container">
+                <button class="btn-primary" type="submit">Register</button>
             </div>
-            <button type="submit" class="submit-button">Register</button>
         </form>
     </div>
 </template>
 
 <style scoped>
 .registerbox-in {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+    max-width: 500px; /* Adjust as needed for your design */
+    margin: 0 auto; /* This centers the container */
+    padding: 20px; /* Adjust as needed for your design */
+    box-sizing: border-box;
 }
 
-img {
-    height: 30px;
-    width: 30px;
+.registerbox-in a {
+    text-decoration: none;
+}
+
+.form-field input,
+.submit-button-container button {
+    box-sizing: border-box; /* Padding and border are included in the width */
+}
+
+.submit-button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-field {
+    margin-bottom: 40px;
+}
+.go-to-login {
+    margin-bottom: 30px;
+}
+
+.text-input {
+    width: 100%;
 }
 
 </style>

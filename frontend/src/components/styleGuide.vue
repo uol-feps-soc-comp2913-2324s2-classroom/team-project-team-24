@@ -10,6 +10,7 @@ import textInputQuiet from './ui-components/textInputQuiet.vue';
 import topNavRailed from './ui-components/topNavRailedCommunity.vue';
 // import topNavElement from './ui-components/topNavElement.vue';
 
+
 export default {
     name: 'styleGuideComponent',
     props: {
@@ -50,7 +51,6 @@ export default {
         // topNavElement,
     }
 }
-
 </script>
 
 <template>
@@ -64,37 +64,37 @@ export default {
                     <div class="button-container text-center">
                         <div class="row justify-content-center">
                             <div class="col-md-12">
-                                <primaryButton :on-click="this.increment">Action name</primaryButton>
+                                <button class="btn-primary" @click.prevent="increment">Action name</button>
                             </div>
                         </div>
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-12">
-                                <secondaryButton :on-click="this.increment">Action name</secondaryButton>
+                                <button class="btn-secondary" @click.prevent="increment">Action name</button>
                             </div>
                         </div>
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-12">
-                                <tertiaryButton :on-click="this.increment">Action name</tertiaryButton>
+                                <button class="btn-tertiary" @click.prevent="increment">Action name</button>
                             </div>
                         </div>
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-12">
-                                <dangerButton :on-click="this.increment">Action name</dangerButton>
+                                <button class="btn-danger" @click.prevent="increment">Action name</button>
                             </div>
                         </div>
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-12">
-                                <dangerButtonOutline :on-click="this.increment">Action name</dangerButtonOutline>
+                                <button class="btn-danger-outline" @click.prevent="increment">Action name</button>
                             </div>
                         </div>
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-12">
-                                <quietButton :on-click="this.increment">Action name</quietButton>
+                                <button class="btn-quiet" @click.prevent="increment">Action name</button>
                             </div>
                         </div>
                         <div class="row mt-3 justify-content-center">
                             <div class="col-md-12">
-                                <textButton :on-click="this.increment">Action name</textButton>
+                                <button class="btn-text" @click.prevent="increment">Action name</button>
                             </div>
                         </div>
                     </div>
@@ -106,14 +106,17 @@ export default {
             <form class="form-container">
                 <div class="form-input">
                     <!-- Default width value for text input is auto -->
-                    <textInputQuiet form-label="Name"></textInputQuiet>
+                    <label class="input-label" for="default-width">Name</label>
+                    <input class="text-input" id="default-width">
                 </div>
                 
                 <div class="form-input">
-                    <textInputQuiet width="50%" form-label="Last name"></textInputQuiet>
+                    <label class="input-label" for="50%-width">Last name</label>
+                    <input class="text-input" id="50%-width" style="width:50%">
                 </div>
                 <div class="form-input">
-                    <textInputQuiet width="100%" form-label="Email" type="email"></textInputQuiet>
+                    <label class="input-label" for="100%-width">Email</label>
+                    <input class="text-input" id="100%-width" style="width:100%" type="email">
                 </div>
             </form>
         </div>

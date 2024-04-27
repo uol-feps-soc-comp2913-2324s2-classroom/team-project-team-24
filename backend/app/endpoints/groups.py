@@ -3,13 +3,14 @@ from flask import Blueprint, Response, request, jsonify
 from flask_jwt_extended import get_current_user, jwt_required
 from app import db, app
 from app.db_functions import *
-from app.gpx_functions import *
 from app.models import User, Route, Friend
+from app.decorators import *
 
-bp = Blueprint('groups', __name__)
+bp = Blueprint('groups', __name__, url_prefix='/groups')
 
-@bp.route('/get_groups', methods=['GET'])
+@bp.route('/get-all', methods=['GET'])
 @jwt_required()
+@membership_required
 def get_groups():
     # recieve user ID
     user_id = get_current_user().id
@@ -19,17 +20,20 @@ def get_groups():
     for group in user.groups:
         groups.append({"id": group.id, "name": group.name})
 
+    for x in Group.query.all():
+        print(x, x.members)
     return jsonify({
         "groups": groups
     })
 
-@bp.route('/create_group', methods=['POST'])
+@bp.route('/create', methods=['POST'])
 @jwt_required()
+@membership_required
 def create_group():
     # recieve user ID
     user_id = get_current_user().id
 
-    name = request.form.get("groupName")
+    name = request.get_json().get("groupName")
     if name == None:
         return jsonify({"error": "Missing group name"}), 400
 
@@ -41,8 +45,32 @@ def create_group():
 
     return Response(f"Group {name} successfully created", 200)
 
-@bp.route('/get_group_trails', methods=['GET'])
+@bp.route('/get-name', methods=['POST'])
 @jwt_required()
+@membership_required
+def get_group_name():
+    # recieve user ID
+    user_id = get_current_user().id
+
+    group_id = request.get_json().get("groupID")
+    if group_id == None:
+        return jsonify({"error": "Missing group ID"}), 400
+
+    group = Group.query.filter_by(id=group_id).first()
+
+    if group == None:
+        return jsonify({"error": "Invalid group ID"}), 400
+
+    if not check_for_user_in_group(user_id, group_id):
+        return jsonify({"error": "User is not in this group"}), 400
+
+    return jsonify({
+        "name": group.name
+    })
+
+@bp.route('/get-trails', methods=['POST'])
+@jwt_required()
+@membership_required
 def get_group_trails():
     # recieve user ID
     user_id = get_current_user().id
@@ -63,8 +91,9 @@ def get_group_trails():
         "trails": trails
     })
 
-@bp.route('/get_group_members', methods=['GET'])
+@bp.route('/get-members', methods=['POST'])
 @jwt_required()
+@membership_required
 def get_group_members():
     # recieve user ID
     user_id = get_current_user().id
@@ -94,13 +123,14 @@ def get_group_members():
 
     return jsonify({"members": members_info})
 
-@bp.route('/leave_group', methods=['POST'])
+@bp.route('/leave', methods=['POST'])
 @jwt_required()
+@membership_required
 def leave_group():
     # recieve user ID
     user_id = get_current_user().id
 
-    group_id = request.form.get("groupID")
+    group_id = request.get_json().get("groupID")
     if group_id == None:
         return jsonify({"error": "Missing group ID"}), 400
     
@@ -120,14 +150,16 @@ def leave_group():
 
     return Response(f"Successfully left group", 200)
 
-@bp.route('/add_route_to_group', methods=['POST'])
+@bp.route('/add-route', methods=['POST'])
 @jwt_required()
+@membership_required
 def add_route_to_group_route():
     # recieve user ID
     user_id = get_current_user().id
 
-    group_id = request.form.get("groupID")
-    route_id = request.form.get("routeID")
+    group_id = request.get_json().get("groupID")
+    route_id = request.get_json().get("trailID")
+    print(group_id, route_id)
     if group_id == None or route_id == None:
         return jsonify({"error": "Missing route ID and/or group ID"}), 400
 
@@ -151,14 +183,15 @@ def add_route_to_group_route():
     add_route_to_group(route_id, group_id)
     return Response(f"Route successfully added to group", 200)
 
-@bp.route('/add_friend_to_group', methods=['POST'])
+@bp.route('/add-friend', methods=['POST'])
 @jwt_required()
+@membership_required
 def add_user_to_group_route():
     # recieve user ID
     user_id = get_current_user().id
 
-    group_id = request.form.get("groupID")
-    friend_id = request.form.get("friendID")
+    group_id = request.get_json().get("groupID")
+    friend_id = request.get_json().get("friendID")
     if group_id == None or friend_id == None:
         return jsonify({"error": "Missing friend ID and/or group ID"}), 400
 

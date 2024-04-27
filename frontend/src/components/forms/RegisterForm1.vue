@@ -1,74 +1,131 @@
 <script>
-import "@/assets/css/form.css"
+import '@/assets/css/form.css'
+import axios from 'axios'
+
 export default {
-    name: "RegisterForm1Component",
+    name: 'RegisterForm1Component',
+    components: {
+    },
     data() {
         return {
-            username: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-        };
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            errorText: null,
+        }
     },
     methods: {
         async handleRegister() {
             if (this.password !== this.confirmPassword) {
-                alert("Passwords do not match.");
-                return;
+                this.errorText = "Passwords do not match";
+                return
             }
-            
+
             let formData = {
                 username: this.username,
                 password: this.password,
+                email: this.email,
             }
 
-            this.$store.dispatch('auth/register', formData).then(() => {
-                this.$router.push('/activitycenter');
+            axios.post("/auth/register", formData).then(response => {
+                if (response.data.success === true) {
+                    localStorage.setItem('token', response.data.token);
+                    this.$parent.form1Submit();
+                } else {
+                    console.log("register error");
+                    this.errorText = response.data.error;
+                }
+            }).catch(error => {
+                console.log("register error", error);
+                this.errorText = error.response.data.error;
             });
-            console.log(formData);
-            this.$parent.form1Submit();
         },
+        alreadyHaveAccount() {
+            this.$router.push('/login')
+        },
+        enterUsername(event) {
+            this.username = event;
+        },
+        enterPassword(event) {
+            this.password = event;
+        },
+        enterPasswordConfirm(event) {
+            this.confirmPassword = event;
+        },
+        enterEmail(event) {
+            this.email = event;
+        },
+        removeErrorMessage() {
+            this.errorText = "";
+        }
     },
-};
+}
 </script>
 
 <template>
     <div class="registerbox-in">
         <form @submit.prevent="handleRegister">
-            <div class="form-field">
-                <label for="username">Username:</label>
-                <input class="text-input" id="username" v-model="username" type="text"
-                    placeholder="Enter your username" required />
+            <div class="form-field go-to-login">
+                <span>Already have an account?</span>&nbsp;
+                <a href="#" @click="alreadyHaveAccount">Login</a>
             </div>
             <div class="form-field">
-                <label for="email">Email:</label>
-                <input class="text-input" id="email" v-model="email" type="email" placeholder="Enter your email"
-                    required />
+                <label for="username" class="input-label">Username</label>
+                <input class="text-input" id="username" type="username" v-model="username" @input="removeErrorMessage">
             </div>
             <div class="form-field">
-                <label for="password">Password:</label>
-                <input class="text-input" id="password" v-model="password" type="password"
-                    placeholder="Create your password" required />
+                <label for="email" class="input-label">Email</label>
+                <input class="text-input" id="email" type="email" v-model="email" @input="removeErrorMessage">
             </div>
             <div class="form-field">
-                <label for="confirmPassword">Confirm Password:</label>
-                <input class="text-input" id="confirmPassword" v-model="confirmPassword" type="password"
-                    placeholder="Confirm your password" required />
+                <label for="password" class="input-label">Password</label>
+                <input class="text-input" id="password" type="password" v-model="password" @input="removeErrorMessage">
             </div>
-            <button type="submit" class="submit-button">Continue</button>
+            <div class="form-field">
+                <label for="confirmPassword" class="input-label">Confirm Password</label>
+                <input class="text-input" id="confirmPassword" type="password" v-model="confirmPassword" @input="removeErrorMessage">
+            </div>
+            <div>
+                <p class="form-error-text" v-if="errorText !== null">{{ errorText }}</p>
+            </div>
+
+            <div class="submit-button-container">
+
+                <button type="submit" class="btn-primary">Continue</button>
+            </div>
         </form>
     </div>
 </template>
 
 <style scoped>
 .registerbox-in {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+    max-width: 500px; /* Adjust as needed for your design */
+    margin: 0 auto; /* This centers the container */
+    padding: 20px; /* Adjust as needed for your design */
+    box-sizing: border-box;
 }
 
+.registerbox-in a {
+    text-decoration: none;
+}
+
+.form-field {
+    margin-bottom: 30px;
+}
+
+.go-to-login {
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.submit-button-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.text-input {
+    width: 100%;
+}
 </style>
