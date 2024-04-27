@@ -30,6 +30,10 @@
     /* Used in My Accounts Table*/
     --table-border-width: 1px;
     --table-border-color: #cacaca;
+
+    --selectionRailColor: #dfdfdf;
+    --selectionTrainColor: #000000;
+    --topNavElementUnselectedTextColor: #797979; 
 }
 
 @media screen and (max-width: 600px){

@@ -7,6 +7,8 @@ import dangerButtonOutline from './ui-components/dangerButtonOutline.vue';
 import quietButton from './ui-components/quietButton.vue';
 import textButton from './ui-components/textButton.vue';
 import textInputQuiet from './ui-components/textInputQuiet.vue';
+import topNavRailed from './ui-components/topNavRailedCommunity.vue';
+// import topNavElement from './ui-components/topNavElement.vue';
 
 export default {
     name: 'styleGuideComponent',
@@ -21,6 +23,18 @@ export default {
     methods: {
         increment() {
             this.count++;
+        },
+        handleClicked({event, to}) {
+            // console.log('clicked', to);
+            // console.log('event', event);
+            console.log("We're going to tNR")
+            this.$refs.topNavRailed.handleClicked({event, to});
+            // this.currentSelection = to;
+    
+            // const clickedElement = event.target.getBoundingClientRect();
+            // const parentElement = event.target.parentNode.getBoundingClientRect();
+            // this.selectionTrainStyle.width = `${clickedElement.width}px`
+            // this.selectionTrainStyle.transform = `translateX(${clickedElement.left - parentElement.left}px) translateY(-4px)`
         }
     },
     components: {
@@ -32,6 +46,8 @@ export default {
         quietButton,
         textButton,
         textInputQuiet,
+        topNavRailed,
+        // topNavElement,
     }
 }
 
@@ -84,7 +100,7 @@ export default {
                     </div>
                 </div>
             </div>
-    </div>
+        </div>
         <h2> Form styling </h2>
         <div class="form-container d-flex flex-column">
             <form class="form-container">
@@ -92,6 +108,7 @@ export default {
                     <!-- Default width value for text input is auto -->
                     <textInputQuiet form-label="Name"></textInputQuiet>
                 </div>
+                
                 <div class="form-input">
                     <textInputQuiet width="50%" form-label="Last name"></textInputQuiet>
                 </div>
@@ -99,6 +116,26 @@ export default {
                     <textInputQuiet width="100%" form-label="Email" type="email"></textInputQuiet>
                 </div>
             </form>
+        </div>
+        <div>
+            <h2> Top Nav Railed </h2>
+            <topNavRailed>
+                <!-- <topNavElement to="#" @NavElementClicked="$emit('NavElementClicked')">Friends</topNavElement>
+                <topNavElement to="#" @NavElementClicked="$emit('NavElementClicked')">Groups</topNavElement>
+                <topNavElement to="#" @NavElementClicked="$emit('NavElementClicked')">Add Friends</topNavElement>
+                <topNavElement to="#" @NavElementClicked="$emit('NavElementClicked')">Friend Requests</topNavElement> -->
+
+                <!-- this is really interesting
+                <template v-slot:left>
+                    <textButton>Left</textButton>
+                </template>
+                <template v-slot:center>
+                    <textButton>Center</textButton>
+                </template>
+                <template v-slot:right>
+                    <textButton>Right</textButton>
+                </template> -->
+            </topNavRailed>
         </div>
 
         
