@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h3 class="my-4">My friends list</h3>
         <UserListItemComponent v-for="(user, x) in users" :key="x" v-bind:user="user" :addButtonShowing="addButtonShowing" />
     </div>
 </template>
