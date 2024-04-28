@@ -99,7 +99,7 @@ router.beforeEach((to, from, next) => {
         if (token) {
             axiosAuth.post('/auth/verify-token').then(() => {
                 next('/activitycenter');
-            })
+            }).catch(() => {});
         }
     }
     
