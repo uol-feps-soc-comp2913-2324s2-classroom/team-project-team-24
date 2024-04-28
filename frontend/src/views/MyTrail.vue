@@ -20,9 +20,12 @@ export default {
 </script>
 
 <template>
-    <div class="myTrailsPageContainer">
+    <div class="myTrailsPageContainer p-2">
         <MapViewerComponent v-bind:trailID="trailID"/>
         <TrailInfoComponent />
     </div>
 </template>
-<style scoped></style>
+<style scoped>
+.myTrailsPageContainer {
+}
+</style>
