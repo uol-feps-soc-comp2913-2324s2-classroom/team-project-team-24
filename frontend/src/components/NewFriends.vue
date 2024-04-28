@@ -1,7 +1,7 @@
 <template>
     <div>
         <form @submit.prevent="addFriend" class="my-3 d-flex flex-row align-items-center">
-            <input id="friend-email" v-model="friend" type="text" class="text-input-loud me-3" placeholder="Enter a Walkeley username to send a friend request" required />
+            <input id="friend-email" v-model="friend" type="text" class="text-input-loud me-3" placeholder="Enter a Walkley username to send a friend request" required />
             <button type="submit" class="btn-primary sendRequestButton">Send request</button>
             <h6 style="color:red" v-if="error">{{ error }}</h6>
             <h6 style="color:green" v-if="success">{{ success }}</h6>
