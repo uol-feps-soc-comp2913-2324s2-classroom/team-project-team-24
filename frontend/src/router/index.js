@@ -134,13 +134,13 @@ router.beforeEach((to, from, next) => {
                     if (response.data.membership !== null) {
                         next();
                     } else {
-                        next('/welcome');
+                        next('/membership');
                     }
                 }
             ).catch(
                 error => {
                     if (error.response.status !== 200) {
-                        next('/welcome');
+                        next('/membership');
                     } else {
                         console.log(error);
                     }
@@ -150,6 +150,7 @@ router.beforeEach((to, from, next) => {
             next('/login');
         })
     }
+
 });
 
 export default router
