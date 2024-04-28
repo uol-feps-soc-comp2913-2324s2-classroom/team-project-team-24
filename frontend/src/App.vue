@@ -6,7 +6,6 @@ import axiosAuth from "@/api/axios-auth"
 export default {
     name: "App",
     created() {
-        this.$store.dispatch('auth/autoLogin');
         this.$watch('$route', () => {
             this.checkAuth();
         });

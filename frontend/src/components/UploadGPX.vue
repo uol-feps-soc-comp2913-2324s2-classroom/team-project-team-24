@@ -1,6 +1,5 @@
 <script>
 import axiosAuth from "@/api/axios-auth";
-import primaryButton from './ui-components/primaryButton.vue';
 
 export default {
     name: 'UploadGPXComponent',
@@ -12,6 +11,11 @@ export default {
             count: 0
         }
     },
+    methods: {
+        nextPage() {
+            this.$router.push("/activitycentre");
+        }
+    }
 }
 
 </script>
@@ -39,34 +43,23 @@ export default {
             
             <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
                 <!-- Button disabled logic checks if routeName has content and file is uploaded -->
-                <primaryButton @click="uploadData"
-                    :disabled="!selectedFile || isDuplicateName">Upload</primaryButton>
+                <button class="btn-primary" @click="uploadData"
+                    :disabled="!selectedFile || isDuplicateName">Upload</button>
 
             </div>
-        </div>
-        <div class="form-container d-flex flex-column">
-            <form class="form-container">
-                <div class="form-input">
-                    <!-- Default width value for text input is auto -->
-                    <textInputQuiet form-label="Name"></textInputQuiet>
-                </div>
-                <div class="form-input">
-                    <textInputQuiet width="50%" form-label="Last name"></textInputQuiet>
-                </div>
-                <div class="form-input">
-                    <textInputQuiet width="100%" form-label="Email" type="email"></textInputQuiet>
-                </div>
-            </form>
         </div>
     </div>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 const routeName = ref('');
 const exerciseType = ref('Walking'); // set Walking as default
 const selectedFile = ref(null);
+
+const router = useRouter();
 
 // ensures user uploads valid data
 const handleFileUpload = event => {
@@ -100,7 +93,11 @@ const uploadData = () => {
         })
         .then(
             function (response) {
-                console.log(response);
+                console.log("response:", response);
+                router.push({
+                    path: "/mytrail",
+                    query: {trailID: response.data.trailID}
+                });
             }
         );
 

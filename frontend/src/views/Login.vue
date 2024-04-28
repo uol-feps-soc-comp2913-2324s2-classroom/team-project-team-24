@@ -9,16 +9,29 @@
 
 <script>
 import LoginFormComponent from '@/components/forms/LoginForm.vue'
+import axiosAuth from '@/api/axios-auth.js'
 
 export default {
     name: 'LoginView',
     data() {
         return {}
     },
-    methods: {},
+    methods: {
+        autoLogin() {
+            let token = localStorage.getItem('token');
+            if (token) {
+                axiosAuth.post('/auth/verify-token').then(() => {
+                    this.$router.push('/activitycenter');
+                })
+            }
+        }
+    },
     components: {
         LoginFormComponent,
     },
+    created() {
+        this.autoLogin();
+    }
 }
 </script>
 

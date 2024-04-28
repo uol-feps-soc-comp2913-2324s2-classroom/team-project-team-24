@@ -1,34 +1,21 @@
 <template>
-    <form>
+    <form @submit.prevent="onSubmit">
         <div class="inner-container">
             <div class="form-field">
-                <label for="email">Username</label>
-                <textInputQuiet
-                    width="100%"
-                    class="text-input"
-                    id="username"
-                    v-model="username"
-                    @textInput = "usernameEntered"
-                ></textInputQuiet>
+                <label for="username" class="input-label">Username</label>
+                <input class="text-input" id="username" v-model="username" type="username">
             </div>
             <div class="form-field">
-                <label for="password">Password</label>
-                <textInputQuiet
-                    width="100%"
-                    class="text-input"
-                    id="password"
-                    v-model="password"
-                    type="password"
-                    @textInput = "passwordEntered"
-                ></textInputQuiet>
+                <label for="password" class="input-label">Password</label>
+                <input class="text-input" id="password" v-model="password" type="password">
             </div>
-
+            <div>
+                <p v-if="invalidCredentials" class="error-ext">Your username/password is incorrect</p>
+            </div>
             <div class="form-actions">
                 <a href="#" @click.prevent="forgotPassword">Forgot password</a>
 
-                <primaryButton class="login-button" :on-click="onSubmit">
-                    Login
-                </primaryButton>
+                <button type="submit" class="btn-primary">Login</button>
             </div>
 
             <div class="separator">
@@ -46,14 +33,11 @@
 
 <script>
 import '@/assets/css/form.css'
-import textInputQuiet from '@/components/ui-components/textInputQuiet.vue'
-import primaryButton from '@/components/ui-components/primaryButton.vue'
+import axios from 'axios'
 
 export default {
     name: 'LoginFormComponent',
     components: {
-        textInputQuiet,
-        primaryButton,
     },
     data() {
         return {
@@ -63,29 +47,27 @@ export default {
         }
     },
     methods: {
-        onSubmit() {
+        async onSubmit() {
             console.log("Submitting...")
             let formData = {
                 username: this.username,
                 password: this.password,
             }
             console.log(this.username, this.password)
-            this.$store.dispatch('auth/login', formData).then(() => {
-                this.$router.push('/activitycenter')
-            })
+            axios.post("/auth/login", formData).then(response => {
+                if (response.data.success === true) {
+                    localStorage.setItem('token', response.data.token);
+                    this.$router.push("/activitycenter");
+                }
+            }).catch(() => {
+                this.invalidCredentials = true;
+            });
         },
         forgotPassword() {
             this.$router.push('/resetpassword')
         },
         createAccount() {
             this.$router.push('/register')
-        },
-        usernameEntered(event) {
-            this.username = event;
-            console.log(event)
-        },
-        passwordEntered(event) {
-            this.password = event;
         },
     },
 }
@@ -150,5 +132,13 @@ export default {
     align-items: center;
     gap: 10px;
     margin-top: 10px;
+}
+
+.error-ext {
+    color: red;
+}
+
+.text-input {
+    width: 100%;
 }
 </style>

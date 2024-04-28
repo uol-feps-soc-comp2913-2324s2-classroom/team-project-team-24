@@ -7,13 +7,12 @@
         </ul>
         <div class="option-details">
             <h4>£{{ membership.price }} {{ membership.regularity }}</h4>
-            <primaryButton  :on-click="this.increment" @click="buyMembership">Buy Now</primaryButton>
+            <button class="btn-primary" @click="buyMembership">Buy Now</button>
         </div>
     </div>
 </template>
 
 <script>
-import primaryButton from './ui-components/primaryButton.vue';
 import axiosAuth from '@/api/axios-auth.js';
 
 export default {
@@ -45,7 +44,6 @@ export default {
 
     },
     components: {
-        primaryButton,
     }
 };
 </script>

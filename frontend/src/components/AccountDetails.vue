@@ -1,7 +1,5 @@
 <script>
 import axiosAuth from "@/api/axios-auth.js";
-import dangerButton from './ui-components/dangerButton.vue';
-import secondaryButton from './ui-components/secondaryButton.vue';
 
 export default {
     name: "GoalComponent",
@@ -35,17 +33,14 @@ export default {
             axiosAuth.get('/account/delete').then(
                 response => {
                     console.log(response.data);
-                    this.$store.dispatch('auth/logout').then(() => {
-                        this.$router.push('/register');
-                    });
+                    localStorage.removeItem('token');
+                    this.$router.push("/login");
                 }
             )
             
         }
     },
     components: {
-        dangerButton,
-        secondaryButton
     },
     created() {
         this.getPageData();
@@ -81,13 +76,14 @@ export default {
                 <td>
                     <div class="d-flex flex-row justify-content-between align-items-center">
                         <span class="bold">********</span>
-                        <span class="pe-5"><secondaryButton :on-click="this.changePassword">Change</secondaryButton></span>
+                        <span class="pe-5"><button class="btn-secondary" @click="changePassword">Change</button></span>
+                        
                     </div>
                 </td>
             </tr>
         </table>
         <div>
-            <dangerButton :on-click="this.deleteAccount">Delete account</dangerButton>
+            <button class="btn-danger" @click="deleteAccount">Delete account</button>
         </div>
     </div>
 
