@@ -213,6 +213,38 @@ def get_selected_trails_map():
     
     return jsonify({"mapHtml": map_html})
 
+@bp.route('/zoom-to-trail', methods=['POST'])
+@jwt_required()
+@membership_required
+def zoom_to_trail():
+    user_id = get_current_user().id
+    trail_id = request.get_json().get("trailID")
+    
+    if not trail_id:
+        return jsonify({"error": "No trail ID provided"}), 400
+    
+    route = Route.query.filter_by(id=trail_id, user_id=user_id).first()
+    
+    if not route:
+        return jsonify({"error": "Invalid trail ID"}), 400
+    
+    gpx = GPX(route.data)
+    points = []
+    for track in gpx.gpx.tracks:
+        for segment in track.segments:
+            for point in segment.points:
+                points.append(tuple([point.latitude, point.longitude]))
+    
+    if not points:
+        return jsonify({"error": "No track points found"}), 400
+    
+    map_obj = folium.Map(location=points[0], zoom_start=14)
+    folium.PolyLine(points, color="red", weight=2.5, opacity=1).add_to(map_obj)
+    
+    map_html = map_obj._repr_html_()
+    
+    return jsonify({"mapHtml": map_html})
+
 @bp.route('/delete', methods=['POST'])
 @jwt_required()
 @membership_required

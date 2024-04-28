@@ -1,13 +1,14 @@
 <template>
     <div class="map-container">
-      <div v-for="(trail, index) in trails" :key="index">
-        <input type="checkbox" :id="'trail-' + index" v-model="selectedTrails" :value="trail.id" />
-        <label :for="'trail-' + index">{{ trail.name }}</label>
-      </div>
-      <button @click="fetchSelectedTrailsMap">Generate Map</button>
-      <div v-if="mapHtml" v-html="mapHtml"></div>
+        <div v-for="(trail, index) in trails" :key="index" class="trail-item">
+            <input type="checkbox" :id="'trail-' + index" v-model="selectedTrails" :value="trail.id" />
+            <label :for="'trail-' + index">{{ trail.name }}</label>
+            <!-- Add v-if directive to the button -->
+            <button v-if="selectedTrails.includes(trail.id)" @click="zoomToTrail(trail.id)">Zoom</button>
+        </div>
+        <div v-if="mapHtml" v-html="mapHtml"></div>
     </div>
-  </template>
+</template>
   
   <script>
   import axiosAuth from "@/api/axios-auth";
@@ -23,12 +24,17 @@
     },
     async mounted() {
       try {
-        // Fetch the user's trails from the server
         const response = await axiosAuth.get('/trail/get-all');
         this.trails = response.data.trails;
       } catch (error) {
         console.error('Error fetching trails:', error);
       }
+    },
+    watch: {
+      selectedTrails: {
+        handler: 'fetchSelectedTrailsMap',
+        immediate: true,
+      },
     },
     methods: {
       async fetchSelectedTrailsMap() {
@@ -41,13 +47,23 @@
           console.error('Error fetching selected trails map:', error);
         }
       },
+      async zoomToTrail(trailId) {
+        try {
+          const response = await axiosAuth.post('/trail/zoom-to-trail', {
+            trailID: trailId,
+          });
+          this.mapHtml = response.data.mapHtml;
+        } catch (error) {
+          console.error('Error zooming to trail:', error);
+        }
+      },
     },
   };
   </script>
   
   <style scoped>
   .map-container {
-    width: 100%;
-    height: 600px;
+    width: 70%;
+    height: 20%;
   }
   </style>
