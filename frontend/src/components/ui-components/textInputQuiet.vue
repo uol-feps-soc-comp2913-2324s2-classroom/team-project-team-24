@@ -2,6 +2,7 @@
 export default {
     name: 'TextInputQuiet',
     props: {
+        id: {},
         placeHolder: {
             type: String,
             default: '',
@@ -41,6 +42,7 @@ export default {
 <template>
     <p>{{ formLabel }}</p>
     <input
+        :id="id"
         :style="{ width: width }"
         :type="type"
         v-model="inputValue"
