@@ -34,6 +34,13 @@
     --selectionRailColor: #dfdfdf;
     --selectionTrainColor: #000000;
     --topNavElementUnselectedTextColor: #797979; 
+
+    --loud-text-input-border-color: #767676;
+    --loud-text-input-border-color-hover: #3d3d3d;
+    --loud-text-input-border-color-focused: #181818;
+
+    /* Used in modal component*/
+    --backdrop-filter-blur: 3px;
 }
 
 @media screen and (max-width: 600px){
@@ -59,4 +66,11 @@ body{
 
 .overflowScroll{
     overflow-y: scroll !important;
+}
+
+.horizontalLine {
+    width: 100%;
+    height: 1px;
+    background-color: var(--selectionRailColor);
+    transition: background-color 0.2s;
 }
