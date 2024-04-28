@@ -8,11 +8,11 @@
 </template>
 
 <script>
-// import PieChart from '@/components/PieChart.vue'
+import PieChart from '@/components/PieChart.vue'
 
 export default {
     name: 'UserInfo',
-    // components: { PieChart },
+    components: { PieChart },
     props: {
         numberOfUsers: {
             type: Number,

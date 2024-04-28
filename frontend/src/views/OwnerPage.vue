@@ -1,24 +1,12 @@
 <template>
     <div>
-        <!-- 页面上方的黑色容器 -->
         <div class="header">
             <h4>Admin</h4>
         </div>
-        <!-- <div>
-            <button @click="setCurrentView('UserInfo')">User Info</button>
-            <button @click="setCurrentView('Revenue')">Revenue</button>
-        </div> -->
         <div style="display: flex">
             <button @click="showUsers">Users Info</button>
             <button @click="showRevenue">Revenue</button>
         </div>
-        <!-- 动态显示组件 -->
-        <!-- <div v-if="userInfoIsShowing === 'UserInfo'">
-            <UserInfo :numberOfUsers="numberOfUsers" />
-        </div>
-        <div v-if="revenueIsShowing === 'Revenue'">
-            <RevenueComponent />
-        </div> -->
         <div v-if="userInfoIsShowing">
             <UserInfo :numberOfUsers="numberOfUsers" />
         </div>
