@@ -92,7 +92,9 @@ def get_test_user_headers(username, password, membership=True):
             if len(memberships) != 0:
                 u.membership_id = memberships[0].id
             else:
-                create_membership_plan("tst", "weekly", 12.50)
+                create_membership_plan("Weekly", "weekly", 4.50)
+                create_membership_plan("Monthly", "monthly", 12.50)
+                create_membership_plan("Annual", "yearly", 99.50)
                 u.membership_id = MembershipPlan.query.all()[0].id
                 
         db_add(u)
