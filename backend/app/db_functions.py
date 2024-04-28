@@ -53,6 +53,14 @@ def create_route_from_file(file_path, name, exercise_type, user_id):
     # return route ID
     return Route.query.filter_by(user_id=user_id, name=name).first().id
 
+def clear_db():
+    delete_all(MembershipPlan)
+    delete_all(Owner)
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(Route)
+    delete_all(User)
+
 def delete_all(c):
     with app.app_context():
         for rec in c.query.all():
