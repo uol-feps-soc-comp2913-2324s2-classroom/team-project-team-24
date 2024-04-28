@@ -12,21 +12,34 @@
 </template>
   
 <script>
+import axiosAuth from "@/api/axios-auth.js"
 export default {
   name: "OverallTrailStatsComponent",
   data() {
     return {
       totalDuration: {
-        hours: 10,
-        minutes: 10
+        hours: 0,
+        minutes: 0
       },
       longestTime: {
-        hours: 5,
-        minutes: 30
+        hours: 0,
+        minutes: 0
       },
     };
   },
-  methods: {},
+  methods: {
+    getPageData() {
+      axiosAuth.get('/trail/get-overall-stats').then(
+        response => {
+          this.totalDuration = response.data.totalDuration;
+          this.longestTime = response.data.longestTime;
+        }
+      )
+    }
+  },
+  created() {
+    this.getPageData();
+  }
 };
 </script>
   
