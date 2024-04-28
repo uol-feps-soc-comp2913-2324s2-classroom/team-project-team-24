@@ -26,6 +26,5 @@ export default {
     </div>
 </template>
 <style scoped>
-.myTrailsPageContainer {
-}
+
 </style>

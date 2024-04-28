@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import WelcomePage from "../views/Welcome.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import apiTests from "../views/apiTests.vue";
@@ -15,6 +16,11 @@ import UploadTrail from "@/views/UploadTrail.vue";
 import axiosAuth from "@/api/axios-auth";
 
 const routes = [
+    {
+        path: "/welcome",
+        name: "Welcome",
+        component: WelcomePage,
+    },
     {
         path: "/login",
         name: "Login",
@@ -94,7 +100,9 @@ router.beforeEach((to, from, next) => {
     let token = localStorage.getItem('token');
     let requireAuth = to.matched.some(record => record.meta.requiresAuth);
     let requireMembership = to.matched.some(record => record.meta.requiresMembership);
-    
+    if (to.path === '/'){
+        next('/welcome');
+    }
     if (to.path === '/login') {
         if (token) {
             axiosAuth.post('/auth/verify-token').then(() => {
@@ -126,13 +134,13 @@ router.beforeEach((to, from, next) => {
                     if (response.data.membership !== null) {
                         next();
                     } else {
-                        next('/membership');
+                        next('/welcome');
                     }
                 }
             ).catch(
                 error => {
                     if (error.response.status !== 200) {
-                        next('/membership');
+                        next('/welcome');
                     } else {
                         console.log(error);
                     }
