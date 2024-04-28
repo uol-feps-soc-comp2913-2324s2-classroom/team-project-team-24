@@ -159,25 +159,28 @@ def get_trail_data():
 @jwt_required()
 @membership_required
 def get_trail_map():
-    # recieve route ID
+    # Receive route ID
     user_id = get_current_user().id
     trail_id = request.get_json().get("trailID")
     if trail_id is None:
         return jsonify({"error": "Missing trail ID"}), 400
     
-    # ensure route ID is valid
+    # Ensure route ID is valid
     route = Route.query.filter_by(id=trail_id).first()
-    if route == None or route.user_id != user_id:
+    if route is None or route.user_id != user_id:
         return jsonify({"error": f"Invalid trail ID {trail_id}"}), 400
 
-    # get route
+    # Get route
     route = Route.query.filter_by(id=trail_id).first()
     
-    if route.data == None:
+    if route.data is None:
         return jsonify({"error": "Invalid trail data"}), 400
     
+    # Create GPX object and generate map HTML
     gpx = GPX(route.data)
     map_html = gpx.display()
+    
+    # Return map HTML as response
     return Response(map_html, mimetype='text/html')
 
 @bp.route('/delete', methods=['POST'])

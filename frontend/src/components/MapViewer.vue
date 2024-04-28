@@ -1,59 +1,49 @@
 <template>
     <div class="map-container">
-        <iframe  scrolling="no" :src="mapUrl" frameborder="0" style="width: 100%; height: 500px; overflow: hidden; "></iframe>
+      <div v-for="(mapHtml, index) in mapHtmls" :key="index">
+        <input type="checkbox" :id="'map-' + index" v-model="selectedMaps" :value="index" />
+        <label :for="'map-' + index">Trail {{ index + 1 }}</label>
+        <div v-if="selectedMaps.includes(index)" v-html="mapHtml"></div>
+      </div>
     </div>
-</template>
-
-<script>
-import axiosAuth from "@/api/axios-auth"
-
-export default {
+  </template>
+  
+  <script>
+  import axiosAuth from "@/api/axios-auth";
+  
+  export default {
     name: 'MapViewerComponent',
-    props: {
-        trailID: {
-            
-        }
-    },
     data() {
-        return {
-            mapUrl: null,
-        };
+      return {
+        mapHtmls: [],
+        selectedMaps: [],
+      };
     },
     async mounted() {
-        try {
-            console.log(this.trailID);
-            const response = await axiosAuth.post(`/trail/get-map`, {
-                trailID: this.trailID,
-            }).catch(
-                error => {
-                    console.log(error);
-                }
-            );
-            const mapHtml = response.data;
-            const blob = new Blob([mapHtml], { type: 'text/html' });
-            this.mapUrl = URL.createObjectURL(blob);
-        } catch (error) {
-            console.error('Error fetching map:', error);
+      try {
+        // Fetch the user's trails from the server
+        const response = await axiosAuth.get('/trail/get-all');
+        const trailIDs = response.data.trails;
+  
+        // Iterate over each trail ID and fetch the map HTML
+        for (const trailID of trailIDs) {
+          const mapResponse = await axiosAuth.post('/trail/get-map', {
+            trailID: trailID,
+          });
+  
+          const mapHtml = mapResponse.data;
+          this.mapHtmls.push(mapHtml);
         }
-        try {
-            console.log(this.trailID);
-            const response = await axiosAuth.post(`/trail/get-map`, {
-                trailID: this.trailID,
-            }).catch(
-                error => {
-                    console.log(error);
-                }
-            );
-            const mapHtml = response.data;
-            const blob = new Blob([mapHtml], { type: 'text/html' });
-            this.mapUrl = URL.createObjectURL(blob);
-        } catch (error) {
-            console.error('Error fetching map:', error);
-        }
+      } catch (error) {
+        console.error('Error fetching trail maps:', error);
+      }
     },
-};
-</script>
-
-<style scoped>
-
-</style>
+  };
+  </script>
+  
+  <style scoped>
+  .map-container {
+    width: 100%;
+    height: 600px;
+  }
+  </style>
