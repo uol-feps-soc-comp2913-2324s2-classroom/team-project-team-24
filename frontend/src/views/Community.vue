@@ -4,7 +4,7 @@ import ListComponent from "@/components/lists/List.vue";
 import GroupListItemComponent from "@/components/lists/GroupListItem.vue";
 import NewFriendsComponent from "@/components/NewFriends.vue";
 import topNavRailed from '@/components/ui-components/topNavRailedCommunity.vue';
-// import CreateGroupComponent from "@/components/forms/CreateGroup.vue";
+import CreateGroupComponent from "@/components/forms/CreateGroup.vue";
 import axiosAuth from "@/api/axios-auth.js";
 
 
@@ -14,7 +14,7 @@ export default {
         return {
             friendsIsShowing: true,
             groupsIsShowing: false,
-            createGroupIsShowing: false, // This is now handled by the groupIsShowing
+            createGroupIsShowing: false, // For the modal
             friendRequestsIsShowing: false,
             friends: [],
             groups: [],
@@ -89,16 +89,16 @@ export default {
             this.friendRequestsIsShowing = false;
             this.addFriendsIsShowing = true;
         },
-        createGroup() { // Deprecated
+        createGroup() { // will be Deprecated
             /* For now, i hide groups and friends coz its easier,
              * but in future, we should have this overlay */
-            this.groupsIsShowing = false;
-            this.friendsIsShowing = false;
+            // this.groupsIsShowing = false;
+            // this.friendsIsShowing = false;
             this.createGroupIsShowing = true;
         },
         closeCreateGroup() {
-            this.groupsIsShowing = true;
-            this.friendsIsShowing = false;
+            // this.groupsIsShowing = true;
+            // this.friendsIsShowing = false;
             this.createGroupIsShowing = false;
         },
         async removeFriend(userID) {
@@ -118,7 +118,7 @@ export default {
         ListComponent,
         NewFriendsComponent,
         topNavRailed,
-        // CreateGroupComponent,
+        CreateGroupComponent,
         GroupListItemComponent,
     },
 };
@@ -129,19 +129,32 @@ export default {
         <topNavRailed @NavElementClicked="navElementClicked"/>
         <div class="columns">
             <div>
-                <div style="display:flex;">
+                <!-- <div style="display:flex;">
                     <button @click="showFriends">Friends</button>
                     <button @click="showGroups">Groups</button>
+                </div> -->
+
+                <h4 class="mt-4 mb-3" v-if="friendsIsShowing">My friends</h4>
+                <div class="groupNavigations mt-4 mb-3" v-if="groupsIsShowing">
+                    <h4 class="">My groups</h4>
+                    <button @click="createGroup" style="float:right; margin-right: 30px;" class="btn-primary createGroupButton">
+                        <div class="buttonText">
+                            <img src="../assets/add.svg" class="addIcon" alt="plus icon">
+                            <p>Create group</p>
+                        </div>
+                    </button>
                 </div>
+
+                <!-- <h4 class="mt-4 mb-3" v-if="addFriendsIsShowing">Find new friends</h4> -->
+
                 <ListComponent v-if="friendsIsShowing" v-bind:dataArray="friends" v-slot="slotProps">
                     <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict"/>
                 </ListComponent>
                 
-                <button @click="createGroup" v-if="groupsIsShowing" style="float:right; margin-right: 30px;">+</button>
                 <ListComponent v-if="groupsIsShowing" v-bind:dataArray="groups" v-slot="slotProps">
                     <GroupListItemComponent v-bind:group="slotProps.data"/>
                 </ListComponent>
-                <CreateGroupComponent v-if="createGroupIsShowing"/>
+                <CreateGroupComponent :modal-state="createGroupIsShowing"/>
 
                 <NewFriendsComponent v-if="addFriendsIsShowing"/>
 
@@ -154,8 +167,35 @@ export default {
 </template>
 
 <style scoped>
-.columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.addIcon {
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+}
+
+.buttonText {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.buttonText p {
+    margin: 0;
+}
+
+.createGroupButton {
+}
+
+.groupNavigations {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+h4{
+    margin: 0;
+    padding: 0;
 }
 </style>

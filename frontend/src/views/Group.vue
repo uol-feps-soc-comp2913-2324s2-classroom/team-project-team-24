@@ -100,14 +100,18 @@ export default {
 
 <template>
     <div class="myGroupPageContainer">
-        <h1>{{ name }}</h1>
-        <button @click="addRoutes" style="float:right;">Add routes</button>
+        <div class="groupViewHeading">
+            <h1>{{ name }}</h1>
+            <button @click="addRoutes" style="float:right;">Add routes</button>
+        </div>
         <PopupComponent :closeWindow="closeTrailsPopup" style="float:right;" v-if="showTrails">
             <ListComponent v-bind:dataArray="trails" v-slot="slotProps">
                 <AddTrailListItemComponent v-bind:trailID="slotProps.data" :groupID="groupID"/>
             </ListComponent>
         </PopupComponent>
-        <MapViewerComponent />
+        <div class="groupMapView">
+            <MapViewerComponent />
+        </div>
         <div>
             <h3>Members</h3>
             <button @click="inviteFriends" style="float:right;">Invite</button>
@@ -124,4 +128,12 @@ export default {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.groupViewHeading{
+    background-color: var(--l1-color);
+}
+
+.groupMapView{
+    background-color: var(--l1-color);
+}
+</style>

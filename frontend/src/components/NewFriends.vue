@@ -1,17 +1,18 @@
 <template>
     <div>
-        <h3 class="my-4">Find new friends</h3>
-        <form @submit.prevent="addFriend">
-            <input id="friend-email" v-model="friend" type="text" placeholder="Enter their email" required />
+        <form @submit.prevent="addFriend" class="my-3 d-flex flex-row align-items-center">
+            <input id="friend-email" v-model="friend" type="text" class="text-input-loud me-3" placeholder="Enter a Walkeley username to send a friend request" required />
+            <button type="submit" class="btn-primary sendRequestButton">Send request</button>
             <h6 style="color:red" v-if="error">{{ error }}</h6>
             <h6 style="color:green" v-if="success">{{ success }}</h6>
             <br/>
-            <!-- <button type="submit">Add</button>
-             -->
+            
         </form>
-        <br/>
+        <!-- <br/> -->
         <!-- <h2>Friend Requests</h2> -->
         <!-- <UserListComponent v-bind:users="friendRequests" :addButtonShowing="true"/> -->
+        
+        <h4 class="mt-4 mb-3">Friend requests</h4>
         <ListComponent v-bind:dataArray="friendRequests" v-slot="slotProps">
             <UserList2ButtonItemComponent v-bind:user="slotProps.data" :button1="acceptButtonDict" :button2="rejectButtonDict"/>
         </ListComponent>
@@ -92,4 +93,11 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.sendRequestButton{
+    white-space: nowrap;
+    width: auto;
+}
+</style>
 

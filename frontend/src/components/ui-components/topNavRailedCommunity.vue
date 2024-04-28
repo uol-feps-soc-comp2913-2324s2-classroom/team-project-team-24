@@ -122,7 +122,6 @@ export default {
             <router-link @click="handleClicked" to="#" id="0" class="topNavElement" :style="navStyles[0]">Friends</router-link>
             <router-link @click="handleClicked" to="#" id="1" class="topNavElement" :style="navStyles[1]">Groups</router-link>
             <router-link @click="handleClicked" to="#" id="2" class="topNavElement" :style="navStyles[2]">Add Friends</router-link>
-            <router-link @click="handleClicked" to="#" id="3" class="topNavElement" :style="navStyles[3]">Friend Requests</router-link>
 
             <!-- <topNavElement ref="navElement" @NavElementClicked="handleClicked" to="#" id="1">Friends</topNavElement>
             <topNavElement ref="navElement" @NavElementClicked="handleClicked" to="#" id="2">Groups</topNavElement>
@@ -143,7 +142,7 @@ export default {
     font-size: 20px;
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
 }
 
 .navElements {
