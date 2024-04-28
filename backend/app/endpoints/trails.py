@@ -240,6 +240,7 @@ def zoom_to_trail():
     
     map_obj = folium.Map(location=points[0], zoom_start=14)
     folium.PolyLine(points, color="red", weight=2.5, opacity=1).add_to(map_obj)
+    map_obj.fit_bounds([points[0], points[-1]])
     
     map_html = map_obj._repr_html_()
     

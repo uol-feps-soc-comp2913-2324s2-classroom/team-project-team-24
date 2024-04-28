@@ -1,14 +1,13 @@
 <template>
     <div class="map-container">
-        <div v-for="(trail, index) in trails" :key="index" class="trail-item">
-            <input type="checkbox" :id="'trail-' + index" v-model="selectedTrails" :value="trail.id" />
-            <label :for="'trail-' + index">{{ trail.name }}</label>
-            <!-- Add v-if directive to the button -->
-            <button v-if="selectedTrails.includes(trail.id)" @click="zoomToTrail(trail.id)">Zoom</button>
-        </div>
-        <div v-if="mapHtml" v-html="mapHtml"></div>
+      <div v-for="(trail, index) in trails" :key="index" class="trail-item">
+        <input type="checkbox" :id="'trail-' + index" v-model="selectedTrails" :value="trail.id" />
+        <label :for="'trail-' + index">{{ trail.name }}</label>
+        <button v-if="selectedTrails.includes(trail.id)" @click="zoomToTrail(trail.id)">Zoom</button>
+      </div>
+      <div v-if="mapHtml" v-html="mapHtml"></div>
     </div>
-</template>
+  </template>
   
   <script>
   import axiosAuth from "@/api/axios-auth";
