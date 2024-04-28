@@ -165,7 +165,8 @@ def test_send_friend_request_already_friends(client):
 
     response = client.post("/friends/send-request",
                            content_type='application/json',
-                           data={"receiveUserID": user_2.id}, headers=headers)
+                           data=json.dumps({"receiveUserID": user_2.id}),
+                           headers=headers)
     assert response.status_code == 400
     assert b"Users are already friends" in response.data
 

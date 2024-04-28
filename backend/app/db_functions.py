@@ -53,6 +53,13 @@ def create_route_from_file(file_path, name, exercise_type, user_id):
     # return route ID
     return Route.query.filter_by(user_id=user_id, name=name).first().id
 
+def clear_db():
+    delete_all(Owner)
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(Route)
+    delete_all(User)
+
 def delete_all(c):
     with app.app_context():
         for rec in c.query.all():
@@ -85,7 +92,9 @@ def get_test_user_headers(username, password, membership=True):
             if len(memberships) != 0:
                 u.membership_id = memberships[0].id
             else:
-                create_membership_plan("tst", "weekly", 12.50)
+                create_membership_plan("Weekly", "weekly", 4.50)
+                create_membership_plan("Monthly", "monthly", 12.50)
+                create_membership_plan("Annual", "yearly", 99.50)
                 u.membership_id = MembershipPlan.query.all()[0].id
                 
         db_add(u)
