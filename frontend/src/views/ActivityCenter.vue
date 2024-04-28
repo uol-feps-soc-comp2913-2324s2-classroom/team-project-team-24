@@ -56,52 +56,60 @@ export default {
             </div>
         </div>
         <div class="trails-container p-2">
-          <ListComponent v-bind:dataArray="trails" v-slot="slotProps">
-            <TrailListItemComponent :trailID="slotProps.data" />
-          </ListComponent>
+            <ListComponent v-bind:dataArray="trails" v-slot="slotProps">
+                <TrailListItemComponent :trailID="slotProps.data" />
+            </ListComponent>
         </div>
     </div>
 </template>
 
 <style scoped>
 .activityCenterPageContainer {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .main-container {
-  display: flex;
-  height: 80vh;
+    display: flex;
+    height: 80vh;
 }
 
 .map-view-column {
-  flex: 2; /* Occupy 2/3 of the container */
-  margin-right: 10px; /* Add some space between columns */
-  background-color: var(--l1-color);
-  border-radius: var(--border-radius);
-  width: 100%;
-  height: 100%;
+    flex: 2;
+    /* Occupy 2/3 of the container */
+    margin-right: 10px;
+    /* Add some space between columns */
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+    height: 100%;
 }
 
 .map-view-column iframe {
-  flex: 1; /* Allow the iframe to grow to fill available space */
-  width: 100%; /* Ensure the iframe takes full width of its container */
-  border: none; /* Remove iframe border */
+    flex: 1;
+    /* Allow the iframe to grow to fill available space */
+    width: 100%;
+    /* Ensure the iframe takes full width of its container */
+    border: none;
+    /* Remove iframe border */
 }
 
 .track-stats-column {
-  flex: 1; /* Occupy 1/3 of the container */
-  margin-right: 10px; /* Add some space between columns */
-  background-color: var(--l1-color);
-  border-radius: var(--border-radius);
+    flex: 1;
+    /* Occupy 1/3 of the container */
+    margin-right: 10px;
+    /* Add some space between columns */
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
 }
 
 .trails-container {
-  margin-top: 20px;
-  margin-right: 10px; /* Add some space between columns */
-  background-color: var(--l1-color);
-  border-radius: var(--border-radius);
-  width: 100%;
-  height: 100%;
+    margin-top: 20px;
+    margin-right: 10px;
+    /* Add some space between columns */
+    background-color: var(--l1-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+    height: 100%;
 }
 </style>
