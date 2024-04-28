@@ -1,10 +1,11 @@
 <template>
     <div class="map-container">
-      <div v-for="(mapHtml, index) in mapHtmls" :key="index">
-        <input type="checkbox" :id="'map-' + index" v-model="selectedMaps" :value="index" />
-        <label :for="'map-' + index">Trail {{ index + 1 }}</label>
-        <div v-if="selectedMaps.includes(index)" v-html="mapHtml"></div>
+      <div v-for="(trail, index) in trails" :key="index">
+        <input type="checkbox" :id="'trail-' + index" v-model="selectedTrails" :value="trail.id" />
+        <label :for="'trail-' + index">{{ trail.name }}</label>
       </div>
+      <button @click="fetchSelectedTrailsMap">Generate Map</button>
+      <div v-if="mapHtml" v-html="mapHtml"></div>
     </div>
   </template>
   
@@ -15,28 +16,31 @@
     name: 'MapViewerComponent',
     data() {
       return {
-        mapHtmls: [],
-        selectedMaps: [],
+        trails: [],
+        selectedTrails: [],
+        mapHtml: '',
       };
     },
     async mounted() {
       try {
         // Fetch the user's trails from the server
         const response = await axiosAuth.get('/trail/get-all');
-        const trailIDs = response.data.trails;
-  
-        // Iterate over each trail ID and fetch the map HTML
-        for (const trailID of trailIDs) {
-          const mapResponse = await axiosAuth.post('/trail/get-map', {
-            trailID: trailID,
-          });
-  
-          const mapHtml = mapResponse.data;
-          this.mapHtmls.push(mapHtml);
-        }
+        this.trails = response.data.trails;
       } catch (error) {
-        console.error('Error fetching trail maps:', error);
+        console.error('Error fetching trails:', error);
       }
+    },
+    methods: {
+      async fetchSelectedTrailsMap() {
+        try {
+          const response = await axiosAuth.post('/trail/get-selected-map', {
+            trailIDs: this.selectedTrails,
+          });
+          this.mapHtml = response.data.mapHtml;
+        } catch (error) {
+          console.error('Error fetching selected trails map:', error);
+        }
+      },
     },
   };
   </script>

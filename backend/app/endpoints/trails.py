@@ -8,6 +8,7 @@ from app.gpx import GPX
 import gpxpy
 from app.decorators import *
 from sqlalchemy import and_
+import folium
 
 bp = Blueprint('trails', __name__, url_prefix="/trail")
 
@@ -87,6 +88,7 @@ def get_longest_trail():
         "trailID": longest["trailID"]
     })
 
+
 @bp.route('/get-all', methods=['GET'])
 @jwt_required()
 @membership_required
@@ -97,20 +99,22 @@ def get_trails():
     user_id = get_current_user().id
     if user_id is None:
         return jsonify({"error": "Missing user ID"}), 400
-
+    
     # ensure user ID is valid
-    if User.query.filter_by(id=user_id).first() == None:
+    if User.query.filter_by(id=user_id).first() is None:
         return jsonify({"error": "Invalid user ID"}), 400
-
     # get trails from user ID
     trails = get_routes_by_user_id(user_id)
+    trail_data = []
+    for trail in trails:
+        trail_data.append({
+            "id": trail.id,
+            "name": trail.name,
+            "exercise_type": trail.exercise_type
+        })
 
-    # get trail IDs from trails
-    trail_ids = [trail.id for trail in trails]
-    print(trail_ids)
-    # return trails
     return jsonify({
-        "trails": trail_ids
+        "trails": trail_data
     })
 
 @bp.route('/get-data', methods=['POST'])
@@ -169,19 +173,45 @@ def get_trail_map():
     route = Route.query.filter_by(id=trail_id).first()
     if route is None or route.user_id != user_id:
         return jsonify({"error": f"Invalid trail ID {trail_id}"}), 400
-
     # Get route
-    route = Route.query.filter_by(id=trail_id).first()
-    
     if route.data is None:
         return jsonify({"error": "Invalid trail data"}), 400
     
-    # Create GPX object and generate map HTML
+    # Display map
     gpx = GPX(route.data)
     map_html = gpx.display()
     
-    # Return map HTML as response
     return Response(map_html, mimetype='text/html')
+
+@bp.route('/get-selected-map', methods=['POST'])
+@jwt_required()
+@membership_required
+def get_selected_trails_map():
+    user_id = get_current_user().id
+    trail_ids = request.get_json().get("trailIDs")
+    
+    if not trail_ids:
+        return jsonify({"error": "No trail IDs provided"}), 400
+    
+    routes = Route.query.filter(Route.id.in_(trail_ids), Route.user_id == user_id).all()
+    
+    if not routes:
+        return jsonify({"error": "No valid routes found"}), 400
+    
+    map_obj = folium.Map(location=[0, 0], zoom_start=2)
+    
+    for route in routes:
+        gpx = GPX(route.data)
+        points = []
+        for track in gpx.gpx.tracks:
+            for segment in track.segments:
+                for point in segment.points:
+                    points.append(tuple([point.latitude, point.longitude]))
+        folium.PolyLine(points, color="red", weight=2.5, opacity=1).add_to(map_obj)
+    
+    map_html = map_obj._repr_html_()
+    
+    return jsonify({"mapHtml": map_html})
 
 @bp.route('/delete', methods=['POST'])
 @jwt_required()
