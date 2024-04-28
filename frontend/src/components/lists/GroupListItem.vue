@@ -27,12 +27,8 @@ export default {
 </script>
 
 <style scoped>
-/* .outer {
-    display: flex;
+.outer {
     cursor: pointer;
-} */
-
-.outer{
     width: 100%;
     display: flex;
     flex-direction: column;

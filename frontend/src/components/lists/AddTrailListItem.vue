@@ -1,10 +1,13 @@
 <template>
-    <div class="outer">
-        <div>
-            <h3>{{ name }}</h3>
-            <p>{{ date }}</p>
+    <div class="trailListItem">
+        <div class="d-flex flex-row align-items-center justify-content-between my-2">
+            <div class="d-flex flex-row align-items-center justify-content-between nameAndDate me-5">
+                <p class="my-0">{{ name }}</p> 
+                <p class="my-0">{{ date }}</p>
+            </div>
+            <button @click.stop="addTrailToGroup" class="btn-quiet">Add</button>
         </div>
-        <button @click.stop="addTrailToGroup">Add</button>
+        <div class="horizontalLine"></div>
     </div>
 </template>
 
@@ -40,7 +43,7 @@ export default {
         addTrailToGroup() {
             axiosAuth.post('/groups/add-route', {
                 groupID: this.groupID,
-                trailID: this.trailID,
+                routeID: this.trailID,
             })
         }
         
@@ -52,8 +55,24 @@ export default {
 </script>
 
 <style>
-.outer {
+.nameAndDate{
+    width: 100%;
+}
+.trailListItem {
+    width: 100%;
     display: flex;
-    cursor: pointer;
+    flex-direction: column;
+    /* justify-items: flex-start; */
+    box-shadow: 0 0 0 var(--selectionRailColor);
+    transition: box-shadow 5s;
+    transition: background-color 0.2s;
+}
+
+.trailListItem:hover {
+    box-shadow: 0 0 2px var(--selectionRailColor);
+}
+
+p {
+    margin: 0;
 }
 </style>
