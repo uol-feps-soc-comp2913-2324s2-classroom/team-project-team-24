@@ -4,7 +4,6 @@ import folium
 import os
 
 class GPX:
-    
     def __init__(self, gpx_string):
         '''
         Initialize the GPX object with a given filename.
@@ -41,7 +40,6 @@ class GPX:
         map_html = map._repr_html_()
         return map_html
 
-
     def get_total_distance_km(self):
         """
         Get total distance of GPX route
@@ -74,16 +72,13 @@ class GPX:
         for track in self.gpx.tracks:
             for segment in track.segments:
                 for point in segment.points:
-                    times.append(point.time)
+                    if point.time != None:
+                        times.append(point.time)
                     
-        # This is not the fix! It is just to stop it crashing
-        try:
-            return (times[-1] - times[0]).total_seconds()
-        
-        except:
-            return 1
-        
-        
+        if len(times) == 0:
+            return 0
+
+        return (max(times) - min(times)).total_seconds()
 
     def get_speed(self):
         """
@@ -92,12 +87,27 @@ class GPX:
         Returns:
             (float): overall speed in km/h
         """
+        if self.get_duration() == 0:
+            return 0
+
         distance_km = self.get_total_distance_km()
         duration_hours = self.get_duration() / 3600
         return distance_km / duration_hours
 
 if __name__ =="__main__":
-    with open("example_data/track1.gpx", "r") as file:
+    with open("../example_data/track1.gpx", "r") as file:
+        data = file.read()
+
+    gpx = GPX(data)
+    print(str(gpx.time))
+    print(gpx.get_total_distance_km())
+    hours = int(gpx.get_duration() / 3600)
+    minutes = int(gpx.get_duration() % 3600 / 60)
+    seconds = int(gpx.get_duration() % 60)
+    print(hours, minutes, seconds)
+    print(gpx.get_speed())
+
+    with open("../example_data/track2.gpx", "r") as file:
         data = file.read()
 
     gpx = GPX(data)

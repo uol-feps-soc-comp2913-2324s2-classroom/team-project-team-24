@@ -7,11 +7,11 @@
             <p>Total distance</p>
             
         </div>
-        <div>
+        <div v-if="hasTimeData">
             <h4>{{ time.hours }}h {{ time.minutes }}m {{ time.seconds }}s</h4>
             <p>Time spent</p>
         </div>
-        <div>
+        <div v-if="hasTimeData">
             <h4>{{ speed }} km/h</h4>
             <p>Average speed</p>
         </div>
@@ -34,7 +34,8 @@ export default {
                 seconds: 0,
             },
             speed: 0.0,
-            calories: 0
+            calories: 0,
+            hasTimeData: true
         };
     },
     methods: {
@@ -48,6 +49,9 @@ export default {
                     this.distance = response.data.distance.toFixed(1);
                     this.time = response.data.time;
                     this.speed = response.data.speed.toFixed(2);
+                    if (this.time == 0 || this.speed == 0) {
+                        this.hasTimeData = false;
+                    }
                 }
             ).catch(error => {
                 console.log("error");
