@@ -22,7 +22,7 @@ export default {
             if (token) {
                 axiosAuth.post('/auth/verify-token').then(() => {
                     this.$router.push('/activitycenter');
-                })
+                }).catch(() => {});
             }
         }
     },
