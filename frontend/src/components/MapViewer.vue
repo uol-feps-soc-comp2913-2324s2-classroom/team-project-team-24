@@ -1,6 +1,6 @@
 <template>
     <div class="map-container">
-        <iframe  scrolling="no" :src="mapUrl" frameborder="0" style="width: 100%; height: 500px; overflow: hidden; "></iframe>
+        <iframe  scrolling="no" :src="mapUrl" frameborder="0" style="width: 100%; height: 450px; overflow: hidden; "></iframe>
     </div>
 </template>
 

@@ -79,8 +79,6 @@ export default {
   margin-right: 10px; /* Add some space between columns */
   background-color: var(--l1-color);
   border-radius: var(--border-radius);
-  width: 100%;
-  height: 100%;
 }
 
 .map-view-column iframe {

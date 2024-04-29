@@ -82,6 +82,7 @@ class User(db.Model):
     gender = db.Column(db.String(32))
     age = db.Column(db.Integer)
     membership_id = db.Column(db.Integer, db.ForeignKey("membership_plan.id"))
+    membership_start_date = db.Column(db.DateTime)
     
     membership = db.relationship("MembershipPlan", foreign_keys=[membership_id])
     groups = db.relationship('Group', secondary=userInGroup, back_populates="members")
