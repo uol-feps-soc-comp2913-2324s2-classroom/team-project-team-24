@@ -190,24 +190,25 @@ def get_selected_trails_map():
     user_id = get_current_user().id
     trail_ids = request.get_json().get("trailIDs")
     
-    if not trail_ids:
-        return jsonify({"error": "No trail IDs provided"}), 400
-    
-    routes = Route.query.filter(Route.id.in_(trail_ids), Route.user_id == user_id).all()
-    
-    if not routes:
-        return jsonify({"error": "No valid routes found"}), 400
-    
     map_obj = folium.Map(location=[0, 0], zoom_start=2)
     
-    for route in routes:
-        gpx = GPX(route.data)
-        points = []
-        for track in gpx.gpx.tracks:
-            for segment in track.segments:
-                for point in segment.points:
-                    points.append(tuple([point.latitude, point.longitude]))
-        folium.PolyLine(points, color="red", weight=2.5, opacity=1).add_to(map_obj)
+    if trail_ids:
+        routes = Route.query.filter(Route.id.in_(trail_ids), Route.user_id == user_id).all()
+        
+        if routes:
+            bounds = []
+            for route in routes:
+                gpx = GPX(route.data)
+                points = []
+                for track in gpx.gpx.tracks:
+                    for segment in track.segments:
+                        for point in segment.points:
+                            points.append(tuple([point.latitude, point.longitude]))
+                            bounds.append([point.latitude, point.longitude])
+                folium.PolyLine(points, color="red", weight=2.5, opacity=1).add_to(map_obj)
+            
+            if bounds:
+                map_obj.fit_bounds(bounds)
     
     map_html = map_obj._repr_html_()
     
@@ -272,17 +273,17 @@ def zoom_to_trail():
 def delete_trail():
     # delete a trail from the database
 
-    # recieve user ID and trail ID
+    # receive user ID and trail ID
     user_id = get_current_user().id
     trail_id = request.get_json().get("trailID")
 
-    # ensure route ID is valid
-    route = Route.query.filter_by(id=trail_id).first()
-    if route == None or route.user_id != user_id:
+    # ensure trail ID is valid
+    route = Route.query.filter_by(id=trail_id, user_id=user_id).first()
+    if route is None:
         return jsonify({"error": "Invalid trail ID"}), 400
 
     # delete route from database
-    Route.query.filter_by(id=trail_id).delete()
+    Route.query.filter_by(id=trail_id, user_id=user_id).delete()
     db.session.commit()
 
     return Response(f"Route {trail_id} successfully deleted", 200)
