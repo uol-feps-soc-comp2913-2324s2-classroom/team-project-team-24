@@ -7,8 +7,8 @@
                 v-model="selectedTrails"
                 :value="trail.id"
             />
-            <label :for="'trail-' + index">{{ trail.name }}</label>
-            <button
+            <label :for="'trail-' + index" class = trail-label>{{ trail.name }}</label>
+            <button class="btn-tertiary zoom-button"
                 v-if="selectedTrails.includes(trail.id)"
                 @click="zoomToTrail(trail.id)"
             >
@@ -78,5 +78,17 @@ export default {
 .map-container {
     width: 70%;
     height: 20%;
+}
+
+.trail-item {
+    margin-bottom: 8px;
+}
+
+.trail-label {
+    margin-right: 6px; /* adjust spacing between zoom and route name */
+}
+
+.zoom-button {
+    margin-left: 6px; /* also to adjust spacing between zoom and route name */
 }
 </style>
