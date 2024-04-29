@@ -121,43 +121,44 @@ def get_trails():
 @jwt_required()
 @membership_required
 def get_trail_data():
-    # get data for a given trail ID
-    
-    # recieve route ID
-    user_id = get_current_user().id
-    trail_id = request.get_json().get("trailID")
-    if trail_id is None:
-        return jsonify({"error": "Missing trail ID"}), 400
+    try:
+        # get data for a given trail ID
+        
+        # receive route ID
+        user_id = get_current_user().id
+        data = request.get_json()
+        trail_id = data.get("trailID")
+        
+        if trail_id is None:
+            return jsonify({"error": "Missing trail ID"}), 400
 
-    # ensure route ID is valid
-    route = Route.query.filter_by(id=trail_id).first()
-    if route == None or route.user_id != user_id:
-        return jsonify({"error": "Invalid trail ID"}), 400
+        # ensure route ID is valid
+        route = Route.query.filter_by(id=trail_id, user_id=user_id).first()
+        if route is None:
+            return jsonify({"error": "Invalid trail ID"}), 400
 
-    # get route
-    route = Route.query.filter_by(id=trail_id).first()
-    
-    if route.data == None:
-        return jsonify({"error": "Invalid trail data"}), 400
+        # get route data and return it
+        gpx = GPX(route.data)
+        duration = gpx.get_duration()
+        hours = int(duration / 3600)
+        minutes = int((duration % 3600) / 60)
+        seconds = int(duration % 60)
 
-    gpx = GPX(route.data)
-    duration = gpx.get_duration()
-    hours = int(duration / 3600)
-    minutes = int((duration % 3600) / 60)
-    seconds = int(duration % 60)
+        # TODO: calorie calculation
 
-    # TODO: calorie calculation
+        return jsonify({
+            "name": route.name,
+            "date": gpx.time.strftime("%d/%m/%Y"),
+            "type": route.exercise_type,
+            "distance": gpx.get_total_distance_km(),    # In Km
+            "time": {"hours": hours, "minutes": minutes, "seconds": seconds},
+            "speed": gpx.get_speed(),   # In Km/h
+            "calories": 0,
+        })
 
-    # return trails
-    return jsonify({
-        "name": route.name,
-        "date": gpx.time.strftime("%d/%m/%Y"),
-        "type": route.exercise_type,
-        "distance": gpx.get_total_distance_km(),    # In Km
-        "time": {"hours": hours, "minutes": minutes, "seconds": seconds},
-        "speed": gpx.get_speed(),   # In Km/h
-        "calories": 0,
-    })
+    except Exception as e:
+        app.logger.error(f"Error fetching trail data: {e}")
+        return jsonify({"error": "An error occurred while fetching the trail data"}), 500
 
 @bp.route('/get-map', methods=['POST'])
 @jwt_required()
@@ -271,22 +272,26 @@ def zoom_to_trail():
 @jwt_required()
 @membership_required
 def delete_trail():
-    # delete a trail from the database
+    try:
+        user_id = get_current_user().id
+        data = request.get_json()
+        trail_id = data.get("trailID")
 
-    # receive user ID and trail ID
-    user_id = get_current_user().id
-    trail_id = request.get_json().get("trailID")
+        if trail_id is None:
+            return jsonify({"error": "Missing trail ID"}), 400
 
-    # ensure trail ID is valid
-    route = Route.query.filter_by(id=trail_id, user_id=user_id).first()
-    if route is None:
-        return jsonify({"error": "Invalid trail ID"}), 400
+        route = Route.query.filter_by(id=trail_id, user_id=user_id).first()
+        if route is None:
+            return jsonify({"error": "Invalid trail ID"}), 400
 
-    # delete route from database
-    Route.query.filter_by(id=trail_id, user_id=user_id).delete()
-    db.session.commit()
+        db.session.delete(route)
+        db.session.commit()
 
-    return Response(f"Route {trail_id} successfully deleted", 200)
+        return jsonify({"message": f"Route {trail_id} successfully deleted"}), 200
+
+    except Exception as e:
+        app.logger.error(f"Error deleting trail: {e}")
+        return jsonify({"error": "An error occurred while deleting the trail"}), 500
 
 @bp.route('/upload', methods=('POST',))
 @jwt_required()
