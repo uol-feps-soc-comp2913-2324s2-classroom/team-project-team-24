@@ -7,60 +7,60 @@ import ListComponent from "@/components/lists/List.vue";
 import axiosAuth from "@/api/axios-auth.js";
 
 export default {
-    name: "ActivityCenter",
-    data() {
-        return {
-            trails: [],
-            longestTrailID: null,
-        };
-    },
-    methods: {
-        async getPageData() {
-            await axiosAuth.get('/trail/get-all').then(
-                response => {
-                    this.trails = response.data.trails;
-                }
-            )
-            // TODO: Get this to update the map element once completed
-            await axiosAuth.get('/trail/get-longest').then(
-                response => {
-                    this.longestTrailID = response.data.trailID;
+  name: "ActivityCenter",
+  data() {
+    return {
+      trails: [],
+      longestTrailID: null,
+    };
+  },
+  methods: {
+    async getPageData() {
+      try {
+        const response1 = await axiosAuth.get('/trail/get-all');
+        this.trails = response1.data.trails;
 
-                    console.log(this.longestTrail);
-                }
-            )
-        }
+        const response2 = await axiosAuth.get('/trail/get-longest');
+        this.longestTrailID = response2.data.trailID;
+      } catch (error) {
+        console.error('Error fetching page data:', error);
+      }
     },
-    components: {
-        MapViewerComponent,
-        GoalComponent,
-        OverallTrailStatsComponent,
-        TrailListItemComponent,
-        ListComponent,
+    handleTrailDeleted(trailId) {
+      // Remove the deleted trail from the trails array
+      this.trails = this.trails.filter(trail => trail.id !== trailId);
     },
-    created() {
-        this.getPageData();
-    }
+  },
+  components: {
+    MapViewerComponent,
+    GoalComponent,
+    OverallTrailStatsComponent,
+    TrailListItemComponent,
+    ListComponent,
+  },
+  created() {
+    this.getPageData();
+  }
 };
 </script>
 
 <template>
-    <div class="activityCenterPageContainer p-2">
-        <div class="main-container">
-            <div class="map-view-column p-3">
-                <GoalComponent />
-                <MapViewerComponent v-bind:trailID="longestTrailID" :key="longestTrailID" />
-            </div>
-            <div class="track-stats-column p-3">
-                <OverallTrailStatsComponent />
-            </div>
-        </div>
-        <div class="trails-container p-2">
-          <ListComponent v-bind:dataArray="trails" v-slot="slotProps">
-            <TrailListItemComponent :trailID="slotProps.data" />
-          </ListComponent>
-        </div>
+  <div class="activityCenterPageContainer p-2">
+    <div class="main-container">
+      <div class="map-view-column p-3">
+        <GoalComponent />
+        <MapViewerComponent v-bind:trailID="longestTrailID" :key="longestTrailID" />
+      </div>
+      <div class="track-stats-column p-3">
+        <OverallTrailStatsComponent />
+      </div>
     </div>
+    <div class="trails-container p-2">
+      <ListComponent v-bind:dataArray="trails" v-slot="slotProps">
+        <TrailListItemComponent :trail="slotProps.data" @trail-deleted="handleTrailDeleted" />
+      </ListComponent>
+    </div>
+  </div>
 </template>
 
 <style scoped>
