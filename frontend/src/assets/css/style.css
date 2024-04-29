@@ -26,6 +26,7 @@
     --tertiary-button-grey-active: #c4c4c4;
     --button-padding-vertical: 0.25rem;
     --button-padding-horizontal: 1rem;
+    --grey-font-color: #646464;
 
     /* Used in My Accounts Table*/
     --table-border-width: 1px;
@@ -73,4 +74,8 @@ body{
     height: 1px;
     background-color: var(--selectionRailColor);
     transition: background-color 0.2s;
+}
+
+.greyText{
+    color: var(--grey-font-color);
 }

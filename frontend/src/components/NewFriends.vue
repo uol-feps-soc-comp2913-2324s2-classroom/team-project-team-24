@@ -1,10 +1,12 @@
 <template>
     <div>
         <form @submit.prevent="addFriend" class="my-3 d-flex flex-row align-items-center">
-            <input id="friend-email" v-model="friend" type="text" class="text-input-loud me-3" placeholder="Enter a Walkley username to send a friend request" required />
-            <button type="submit" class="btn-primary sendRequestButton">Send request</button>
-            <h6 style="color:red" v-if="error">{{ error }}</h6>
-            <h6 style="color:green" v-if="success">{{ success }}</h6>
+            <div class="sendRequestField d-flex flex-column me-3">
+                <input id="friend-email" v-model="friend" type="text" class="text-input-loud me-3" placeholder="Enter a Walkley username to send a friend request" required />
+                <h6 style="color:red" class="mt-1" v-if="error">{{ error }}</h6>
+                <h6 style="color:green" class="mt-1" v-if="success">{{ success }}</h6>
+            </div>
+            <button type="submit" class="btn-primary sendRequestButton align-self-start">Send request</button>
             <br/>
             
         </form>
@@ -13,9 +15,10 @@
         <!-- <UserListComponent v-bind:users="friendRequests" :addButtonShowing="true"/> -->
         
         <h4 class="mt-4 mb-3">Friend requests</h4>
-        <ListComponent v-bind:dataArray="friendRequests" v-slot="slotProps">
+        <ListComponent v-bind:dataArray="friendRequests" v-slot="slotProps" v-if="friendRequests.length > 0">
             <UserList2ButtonItemComponent v-bind:user="slotProps.data" :button1="acceptButtonDict" :button2="rejectButtonDict"/>
         </ListComponent>
+        <p v-if="friendRequests.length == 0" class="greyText">You have no incoming friend requests</p>
     </div>
 </template>
 
@@ -95,6 +98,10 @@ export default {
 </script>
 
 <style scoped>
+.sendRequestField{
+    width: 100%;
+}
+
 .sendRequestButton{
     white-space: nowrap;
     width: auto;

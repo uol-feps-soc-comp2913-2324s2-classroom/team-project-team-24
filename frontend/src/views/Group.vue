@@ -6,6 +6,7 @@ import ListComponent from "@/components/lists/List.vue";
 import UserListItemComponent from "@/components/lists/UserListItem.vue";
 import AddTrailListItemComponent from "@/components/lists/AddTrailListItem.vue";
 import axiosAuth from "@/api/axios-auth.js";
+import topNavRailedGroupMembers from "@/components/ui-components/topNavRailedGroupMembers.vue";
 
 export default {
     name: "MyGroup",
@@ -20,36 +21,63 @@ export default {
                 action: this.inviteFriend,
             },
             friends: [],
+            friendsNonMembers: [],
             showFriends: false,
             showTrails: false,
+            groupModalShowMembers: true,
+            groupModalShowAddMembers: false,
+            username: "",
+            loading: true,
         };
     },
     methods: {
         async getPageData() {
-            axiosAuth.post('/groups/get-members', {
+            const getMembersPromise = axiosAuth.post('/groups/get-members', {
                 groupID: this.groupID
             }).then(
                 response => {
                     this.members = response.data.members;
                 }
             );
-            axiosAuth.post('/groups/get-name', {
+
+            const getNamePromise = axiosAuth.post('/groups/get-name', {
                 groupID: this.groupID
             }).then(
                 response => {
                     this.name = response.data.name;
                 }
             );
-            axiosAuth.get('/friends/get-all').then(
+
+            const getAllFriendsPromise = axiosAuth.get('/friends/get-all').then(
                 response => {
                     this.friends = response.data.friends;
                 }
             );
-            await axiosAuth.get('/trail/get-all').then(
+
+            const getTrailsPromise = axiosAuth.get('/trail/get-all').then(
                 response => {
                     this.trails = response.data.trails;
                 }
             );
+
+            const getCurrentUsernamePromise = axiosAuth.get('/account/get-details').then(
+                response => {
+                    this.username = response.data.name;
+                }
+            );
+
+            await Promise.all([getMembersPromise, getNamePromise, getAllFriendsPromise, getTrailsPromise, getCurrentUsernamePromise]);
+
+            // Filter out friends that are already in the group
+            this.friendsNonMembers = this.friends.filter(friend => {
+                return !this.members.some(member => member.userID === friend.userID);
+            });
+
+            // Filter out the current user from the members list
+            this.members = this.members.filter( member => {
+                return member.name !== this.username;
+            });
+
         },
         toggle(bool) {
             if (bool) {
@@ -84,7 +112,32 @@ export default {
         },
         closeTrailsPopup() {
             this.showTrails = false;
+        },
+        groupModalShowAddMembersHandle() {
+            this.groupModalShowMembers = false;
+            this.groupModalShowAddMembers = true;
+        },
+        groupModalShowMembersHandle() {
+            this.groupModalShowMembers = true;
+            this.groupModalShowAddMembers = false;
+        },
+        handleNavElementClicked(id) {
+            id = parseInt(id);
+            switch (id) {
+                case 0:
+                    this.groupModalShowMembersHandle();
+                    console.log("Showing members")
+                    break;
+                case 1:
+                    this.groupModalShowAddMembersHandle();
+                    console.log("Showing add members")
+                    break;
+                default:
+                    console.log("Unknown");
+                    break;
+            }
         }
+
     },
     components: {
         MapViewerComponent,
@@ -93,6 +146,7 @@ export default {
         ModalComponent,
         // PopupComponent,
         AddTrailListItemComponent,
+        topNavRailedGroupMembers,
     },
     created() {
         this.getPageData();
@@ -115,29 +169,46 @@ export default {
             </div>
             <!-- <PopupComponent :closeWindow="closeTrailsPopup" style="float:right;" v-if="showTrails"> -->
             <ModalComponent :is-open="showTrails" @update:is-open="showTrails = $event">
-                <h3>Add Trails</h3>
-                <div class="horizontalLine mb-3"></div>
-                <div class="scrollableTrailsList mb-4">
-                    <ListComponent v-bind:dataArray="trails" v-slot="slotProps" class="addTrailsModalWindow">
-                        <AddTrailListItemComponent class="slightlySmaller" v-bind:trailID="slotProps.data" :groupID="groupID"/>
-                    </ListComponent>
+                <div class="addTrailsModalWindow d-flex flex-column">
+                    <h3>Add Trails</h3>
+                    <div class="horizontalLine mb-3"></div>
+                    <div class="scrollableList mb-4">
+                        <ListComponent v-bind:dataArray="trails" v-slot="slotProps" v-if="trails.length > 0">
+                            <AddTrailListItemComponent class="slightlySmaller" v-bind:trailID="slotProps.data" :groupID="groupID"/>
+                        </ListComponent>
+                        <p v-if="trails.length == 0" class="greyText align-self-start">No trails available</p>
+                    </div>
+                    <button @click="closeTrailsPopup" class="btn-secondary align-self-end mt-2">Close</button>
                 </div>
-                <button @click="closeTrailsPopup" class="btn-secondary align-self-end mt-2">Close</button>
             </ModalComponent>
             <!-- </PopupComponent> -->
 
             <!-- <PopupComponent :closeWindow="closeFriendsPopup" style="float:right;" v-if="showFriends"> -->
             <ModalComponent :is-open="showFriends" @update:is-open="showFriends = $event">
-                <div>
-                    <h3>Members</h3>
-                    <button @click="leaveGroup" class="btn-quiet-danger">Leave group</button>
-                    <ListComponent v-bind:dataArray="members" v-slot="slotProps">
-                        <UserListItemComponent v-bind:user="slotProps.data"/>
-                    </ListComponent>
+                <div class="groupMembersModalWindow d-flex flex-column">
+                    <topNavRailedGroupMembers @NavElementClicked="handleNavElementClicked" class="mb-3"/>
+                    <div v-if="groupModalShowMembers">
+                        <div class="scrollableList mb-4">
+                            <div style="display: flex;" class="friendItem slightlySmaller">
+                                <div class="friendNameandAction my-2 px-4">
+                                    <p>{{ this.username }} (Me)</p>
+                                    <button @click="leaveGroup" class="btn-quiet-danger">Leave group</button>
+                                </div>
+                                <div class="horizontalLine"></div>
+                            </div>
+                            <ListComponent v-bind:dataArray="members" v-slot="slotProps" class="width100">
+                                <UserListItemComponent v-bind:user="slotProps.data" class="slightlySmaller"/>
+                            </ListComponent>
+                        </div>
+                    </div>
+                    <div v-if="groupModalShowAddMembers">
+                        <ListComponent v-bind:dataArray="friendsNonMembers" v-slot="slotProps" v-if="friendsNonMembers.length > 0">
+                            <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict"/>
+                        </ListComponent>
+                        <p v-if="friendsNonMembers.length == 0" class="greyText">You have added all your friends to this group</p>
+                    </div>
+                    <button @click="closeFriendsPopup" class="btn-secondary align-self-end mt-2">Close</button>
                 </div>
-                <ListComponent v-bind:dataArray="friends" v-slot="slotProps">
-                    <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict"/>
-                </ListComponent>
             </ModalComponent>
             <!-- </PopupComponent> -->
         </div>
@@ -149,6 +220,41 @@ export default {
 </template>
 
 <style scoped>
+p {
+    margin: 0;
+
+}
+
+.friendItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s;
+    transition: background-color 0.2s;
+}
+
+.friendItem:hover {
+    box-shadow: 0 0 2px var(--selectionRailColor);
+}
+
+.friendNameandAction {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+
+.width100{
+    width: 100%;
+}
+
+.groupMembersModalWindow{
+    width: 33vw;
+}
+
 h2{
     margin: 0;
 
@@ -159,7 +265,7 @@ h2{
     margin-left: 1px;
 }
 
-.scrollableTrailsList {
+.scrollableList {
     max-height: 35vh;
     overflow-y: auto;
     width: 100%;

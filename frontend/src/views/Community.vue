@@ -27,7 +27,6 @@ export default {
     },
     methods: {
         navElementClicked(id) {
-            console.log(id);
             id = parseInt(id);
             switch (id) {
                 case 0:
@@ -137,7 +136,7 @@ export default {
                 <h4 class="mt-4 mb-3" v-if="friendsIsShowing">My friends</h4>
                 <div class="groupNavigations mt-4 mb-3" v-if="groupsIsShowing">
                     <h4 class="">My groups</h4>
-                    <button @click="createGroup" style="float:right; margin-right: 30px;" class="btn-primary createGroupButton">
+                    <button @click="createGroup" class="btn-primary createGroupButton">
                         <div class="buttonText">
                             <img src="../assets/add.svg" class="addIcon" alt="plus icon">
                             <p>Create group</p>
@@ -147,13 +146,15 @@ export default {
 
                 <!-- <h4 class="mt-4 mb-3" v-if="addFriendsIsShowing">Find new friends</h4> -->
 
-                <ListComponent v-if="friendsIsShowing" v-bind:dataArray="friends" v-slot="slotProps">
+                <ListComponent v-if="friendsIsShowing && friends.length > 0" v-bind:dataArray="friends" v-slot="slotProps">
                     <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict"/>
                 </ListComponent>
+                <p v-if="friendsIsShowing && friends.length == 0" class="greyText">You haven't add anyone as friends yet...</p>
                 
                 <ListComponent v-if="groupsIsShowing" v-bind:dataArray="groups" v-slot="slotProps">
                     <GroupListItemComponent v-bind:group="slotProps.data"/>
                 </ListComponent>
+                <p v-if="groupsIsShowing && groups.length == 0" class="greyText">You haven't joined any groups yet. Create a group and start sharing your trails!</p>
                 <CreateGroupComponent :modal-state="createGroupIsShowing"/>
 
                 <NewFriendsComponent v-if="addFriendsIsShowing"/>
