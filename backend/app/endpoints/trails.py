@@ -189,40 +189,59 @@ def get_trail_map():
 @membership_required
 def get_selected_trails_map():
     user_id = get_current_user().id
+    
+    # Get the trail IDs from the request
     trail_ids = request.get_json().get("trailIDs")
     
+    # Make a new folium map
     map_obj = folium.Map(location=[0, 0], zoom_start=2)
     
     if trail_ids:
+        # Get the routes for the trail IDs
         routes = Route.query.filter(Route.id.in_(trail_ids), Route.user_id == user_id).all()
         
         if routes:
             bounds = []
             for route in routes:
+                # Get the points from the route data
                 gpx = GPX(route.data)
                 points = []
                 for track in gpx.gpx.tracks:
                     for segment in track.segments:
                         for point in segment.points:
+                            # Add latitude and longitude of each point to the points list
                             points.append(tuple([point.latitude, point.longitude]))
                             bounds.append([point.latitude, point.longitude])
+                # Add a polyline to the map object using the points list
                 folium.PolyLine(points, color="red", weight=2.5, opacity=1).add_to(map_obj)
             
             if bounds:
+                # Fit the map to the bounds of the routes
                 map_obj.fit_bounds(bounds)
     
+    # Get the html representation of the map object
     map_html = map_obj._repr_html_()
     
+    # Return map html as a json
     return jsonify({"mapHtml": map_html})
 
 @bp.route('/zoom-to-trail', methods=['POST'])
 @jwt_required()
 @membership_required
 def zoom_to_trail():
+    """
+    Zooms to a specific trail on a map. 
+    Similar to get_selected_trails_map, but zooms to a specific trail.
+
+    Returns:
+        A json containing the html representation (repr) of the map.
+    """
+    
     user_id = get_current_user().id
     trail_id = request.get_json().get("trailID")
     selected_trail_ids = request.get_json().get("selectedTrailIDs")
     
+    #Error handling 
     if not trail_id:
         return jsonify({"error": "No trail ID provided"}), 400
     
@@ -241,6 +260,7 @@ def zoom_to_trail():
     
     map_obj = folium.Map(location=[0, 0], zoom_start=2)
     
+    # Essentially: use bounds to define where to zoom 
     bounds = []
     for route in routes:
         gpx = GPX(route.data)
@@ -274,22 +294,27 @@ def zoom_to_trail():
 def delete_trail():
     try:
         user_id = get_current_user().id
+        # Get trail id from request data
         data = request.get_json()
         trail_id = data.get("trailID")
 
         if trail_id is None:
             return jsonify({"error": "Missing trail ID"}), 400
 
+        # Check if route exists and belongs to user
         route = Route.query.filter_by(id=trail_id, user_id=user_id).first()
         if route is None:
             return jsonify({"error": "Invalid trail ID"}), 400
 
+        # Delete route from database, easier than old filter method
         db.session.delete(route)
         db.session.commit()
 
+        # Success message
         return jsonify({"message": f"Route {trail_id} successfully deleted"}), 200
 
     except Exception as e:
+        # Log error and return error message
         app.logger.error(f"Error deleting trail: {e}")
         return jsonify({"error": "An error occurred while deleting the trail"}), 500
 
