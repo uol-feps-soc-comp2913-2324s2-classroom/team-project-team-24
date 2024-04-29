@@ -136,6 +136,9 @@ export default {
                     console.log("Unknown");
                     break;
             }
+        },
+        returnToCommunity() {
+            this.$router.push({path: "/community"});
         }
 
     },
@@ -157,7 +160,10 @@ export default {
 <template>
     <div class="myGroupPageContainer">
         <div class="groupViewHeading d-flex flex-row justify-content-between align-items-center p-3">
-            <h2>{{ name }}</h2>
+            <div class="d-flex flex-row align-items-center">
+                <img src="../assets/back_button.svg" class="backButton me-3" alt="back arrow icon" @click="returnToCommunity" >
+                <h3>{{ name }}</h3>
+            </div>
             <div>
                 <button @click="addRoutes" class="btn-primary me-3">
                     <div class="buttonText">
@@ -220,6 +226,12 @@ export default {
 </template>
 
 <style scoped>
+.backButton{
+    width: 23px;
+    height: 23px;
+    cursor: pointer;
+}
+
 p {
     margin: 0;
 
@@ -255,7 +267,7 @@ p {
     width: 33vw;
 }
 
-h2{
+h3{
     margin: 0;
 
 }
