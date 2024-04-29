@@ -16,6 +16,7 @@
             </button>
         </div>
         <div v-if="mapHtml" v-html="mapHtml"></div>
+
     </div>
 </template>
 

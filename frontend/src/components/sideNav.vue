@@ -20,7 +20,7 @@ export default {
     <nav class="sideNav">
         <ul class="navList">
             <li class="navItem navItemLogo">
-                <router-link to="/" class="navLink">
+                <router-link :to="{ name: 'UploadTrail' }" class="navLink">
                     <img src="../assets/Logo.svg" alt="Logo" class="navLogo">
                     <span class="navText logoText">Walkley</span>
                 </router-link>
