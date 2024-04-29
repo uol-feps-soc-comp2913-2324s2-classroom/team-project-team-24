@@ -30,15 +30,23 @@ def get_overall_stats():
     trails = get_routes_by_user_id(user_id)
 
     durations = [GPX(trail.data).get_duration() for trail in trails]
-    totalDuration = sum(durations)
-    totalDuration_h = int(totalDuration / 3600)
-    totalDuration_m = int((totalDuration % 3600) / 60)
-    totalDuration_s = int(totalDuration % 60)
+    if durations != []:
+        totalDuration = sum(durations)
+        totalDuration_h = int(totalDuration / 3600)
+        totalDuration_m = int((totalDuration % 3600) / 60)
+        totalDuration_s = int(totalDuration % 60)
 
-    longestDuration = max(durations)
-    longestDuration_h = int(longestDuration / 3600)
-    longestDuration_m = int((longestDuration % 3600) / 60)
-    longestDuration_s = int(longestDuration % 60)
+        longestDuration = max(durations)
+        longestDuration_h = int(longestDuration / 3600)
+        longestDuration_m = int((longestDuration % 3600) / 60)
+        longestDuration_s = int(longestDuration % 60)
+    else:
+        longestDuration_h = 0
+        longestDuration_m = 0
+        longestDuration_s = 0
+        totalDuration_h = 0
+        totalDuration_m = 0
+        totalDuration_s = 0
 
     # TODO: calorie calculation
 

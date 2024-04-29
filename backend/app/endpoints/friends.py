@@ -104,13 +104,16 @@ def remove_friend():
 @membership_required
 def send_friend_request():
     user_id = get_current_user().id
-    to_id = request.get_json().get("receiveUserID")
+    to_user_name = request.get_json().get("receiveUserID")
+    to_user = User.query.filter_by(username=to_user_name).first()
+
+    if to_user_name == None:
+        return jsonify({"error": "Receive user not given"}), 400
 
     if to_user == None:
-        return jsonify({"error": "Receive user ID not given"}), 400
-    
-    if to_id == None:
         return jsonify({"error": "User not found"}), 400
+
+    to_id = to_user.id
 
     if check_for_friendship(user_id, to_id):
         return jsonify({"error": "Users are already friends"}), 400
