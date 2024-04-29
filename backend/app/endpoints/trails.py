@@ -219,28 +219,48 @@ def get_selected_trails_map():
 def zoom_to_trail():
     user_id = get_current_user().id
     trail_id = request.get_json().get("trailID")
+    selected_trail_ids = request.get_json().get("selectedTrailIDs")
     
     if not trail_id:
         return jsonify({"error": "No trail ID provided"}), 400
     
-    route = Route.query.filter_by(id=trail_id, user_id=user_id).first()
+    if not selected_trail_ids:
+        return jsonify({"error": "No selected trail IDs provided"}), 400
     
-    if not route:
+    routes = Route.query.filter(Route.id.in_(selected_trail_ids), Route.user_id == user_id).all()
+    
+    if not routes:
+        return jsonify({"error": "No valid routes found"}), 400
+    
+    zoom_route = next((route for route in routes if route.id == trail_id), None)
+    
+    if not zoom_route:
         return jsonify({"error": "Invalid trail ID"}), 400
     
-    gpx = GPX(route.data)
-    points = []
-    for track in gpx.gpx.tracks:
+    map_obj = folium.Map(location=[0, 0], zoom_start=2)
+    
+    bounds = []
+    for route in routes:
+        gpx = GPX(route.data)
+        points = []
+        for track in gpx.gpx.tracks:
+            for segment in track.segments:
+                for point in segment.points:
+                    points.append(tuple([point.latitude, point.longitude]))
+                    bounds.append([point.latitude, point.longitude])
+        folium.PolyLine(points, color="red", weight=2.5, opacity=1).add_to(map_obj)
+    
+    zoom_points = []
+    zoom_gpx = GPX(zoom_route.data)
+    for track in zoom_gpx.gpx.tracks:
         for segment in track.segments:
             for point in segment.points:
-                points.append(tuple([point.latitude, point.longitude]))
+                zoom_points.append(tuple([point.latitude, point.longitude]))
     
-    if not points:
-        return jsonify({"error": "No track points found"}), 400
-    
-    map_obj = folium.Map(location=points[0], zoom_start=14)
-    folium.PolyLine(points, color="red", weight=2.5, opacity=1).add_to(map_obj)
-    map_obj.fit_bounds([points[0], points[-1]])
+    if zoom_points:
+        map_obj.fit_bounds([zoom_points[0], zoom_points[-1]])
+    elif bounds:
+        map_obj.fit_bounds(bounds)
     
     map_html = map_obj._repr_html_()
     

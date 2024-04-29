@@ -48,14 +48,15 @@
       },
       async zoomToTrail(trailId) {
         try {
-          const response = await axiosAuth.post('/trail/zoom-to-trail', {
+            const response = await axiosAuth.post('/trail/zoom-to-trail', {
             trailID: trailId,
-          });
-          this.mapHtml = response.data.mapHtml;
+            selectedTrailIDs: this.selectedTrails,
+            });
+            this.mapHtml = response.data.mapHtml;
         } catch (error) {
-          console.error('Error zooming to trail:', error);
+            console.error('Error zooming to trail:', error);
         }
-      },
+        },
     },
   };
   </script>
