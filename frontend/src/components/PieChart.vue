@@ -1,30 +1,17 @@
 <template>
     <div>
-        <pie-chart
-            :data="chartData"
-            :options="chartOptions"
-            ref="chart"
-        ></pie-chart>
+        <canvas id="pieChart"></canvas>
     </div>
 </template>
 
 <script>
-import { Pie } from 'vue-chartjs'
+import Chart from 'chart.js/auto'
+import config from '@/components/chart/pieChartConfig.js'
 
 export default {
-    extends: Pie,
-    props: {
-        chartData: {
-            type: Object,
-            required: true,
-        },
-        chartOptions: {
-            type: Object,
-            default: () => {},
-        },
-    },
     mounted() {
-        this.renderChart(this.chartData, this.chartOptions)
+        const ctx = document.getElementById('pieChart').getContext('2d')
+        new Chart(ctx, config)
     },
 }
 </script>

@@ -3,7 +3,7 @@
         <div class="header">
             <h4>Admin</h4>
         </div>
-        <div style="display: flex">
+        <div class="button" style="display: flex">
             <button @click="showUsers">Users Info</button>
             <button @click="showRevenue">Revenue</button>
         </div>
@@ -13,7 +13,6 @@
         <div v-if="revenueIsShowing">
             <RevenueComponent />
         </div>
-        <p>worked</p>
     </div>
 </template>
 
@@ -62,11 +61,20 @@ export default {
 <style>
 /* Your existing styles */
 .header {
-    background-color: black; /* Set the background color to black */
-    color: white; /* Set text color to white for better contrast */
-    padding: 5px 20px; /* Add some padding */
-    width: 100%; /* Make sure it spans the full width */
-    box-sizing: border-box; /* Include padding in the width calculation */
+    background-color: black;
+    color: white;
+    padding: 5px 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.button {
+    margin-right: 10px;
+    padding: 10px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-bottom: 1px solid black;
+    border: none;
 }
 .numOfUsers {
     display: flex;
