@@ -49,13 +49,13 @@ const routes = [
         path: "/activitycenter",
         name: "Activity",
         component: ActivityCenter,
-        meta: { requiresAuth: authRequired, requiresMembership: true },
+        meta: { requiresAuth: true, requiresMembership: true },
     },
     {
         path: "/community",
         name: "Community",
         component: Community,
-        meta: { requiresAuth: authRequired, requiresMembership: true },
+        meta: { requiresAuth: true, requiresMembership: true },
     },
     {
         path: "/membership",
@@ -67,7 +67,7 @@ const routes = [
         path: "/group",
         name: "Group",
         component: MyGroup,
-        meta: { requiresAuth: authRequired, requiresMembership: true },
+        meta: { requiresAuth: true, requiresMembership: true },
     },
     {
         path: "/myaccount",
@@ -79,13 +79,13 @@ const routes = [
         path: "/mytrail",
         name: "MyTrail",
         component: MyTrail,
-        meta: { requiresAuth: authRequired, requiresMembership: true },
+        meta: { requiresAuth: true, requiresMembership: true },
     },
     {
         path: "/uploadtrail",
         name: "UploadTrail",
         component: UploadTrail,
-        meta: { requiresAuth: authRequired, requiresMembership: true },
+        meta: { requiresAuth: true, requiresMembership: true },
     },
     {
         path: "/resetpassword",
@@ -114,7 +114,7 @@ router.beforeEach((to, from, next) => {
         if (token) {
             axiosAuth.post('/auth/verify-token').then(() => {
                 next('/activitycenter');
-            })
+            }).catch(() => {});
         }
     }
     

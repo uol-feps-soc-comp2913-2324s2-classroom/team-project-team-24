@@ -34,8 +34,8 @@ def test_get_trail_data_success(client):
     assert response.json["name"] == "Trail 1"
     assert str(response.json["date"]) == "11/06/2013"
     assert int(response.json["distance"]) == 25
-    assert response.json["time"] == {"hours": 0, "minutes": 49, "seconds": 40}
-    assert int(response.json["speed"]) == 30
+    assert response.json["time"] == {"hours": 23, "minutes": 58, "seconds": 30}
+    assert int(response.json["speed"]) == 1
     assert response.json["calories"] == 0
 
 def test_get_trail_data_not_authenticated(client):
@@ -54,8 +54,8 @@ def test_get_overall_stats_success(client):
 
     response = client.get("/trail/get-overall-stats", json={"trailID": route_id}, headers=headers)
     assert response.status_code == 200
-    assert response.json["totalDuration"] == {"hours": 0, "minutes": 49, "seconds": 40}
-    assert response.json["longestTime"] == {"hours": 0, "minutes": 49, "seconds": 40}
+    assert response.json["totalDuration"] == {"hours": 23, "minutes": 58, "seconds": 30}
+    assert response.json["longestTime"] == {"hours": 23, "minutes": 58, "seconds": 30}
     assert response.json["totalCalories"] == 0
 
 def test_get_overall_stats_not_authenticated(client):

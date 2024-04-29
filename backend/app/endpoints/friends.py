@@ -65,7 +65,7 @@ def get_friend_requests():
 @membership_required
 def add_friend():
     user_id = get_current_user().id
-    user_2_id = request.form.get("userID2")
+    user_2_id = request.get_json().get("userID2")
 
     if user_2_id == None:
         return jsonify({"error": "User 2 ID not given"}), 400
@@ -104,9 +104,7 @@ def remove_friend():
 @membership_required
 def send_friend_request():
     user_id = get_current_user().id
-    to_user = request.get_json().get("receiveUserID")
-    to_id = User.query.filter_by(username=to_user).first().id
-    print(to_id)
+    to_id = request.get_json().get("receiveUserID")
 
     if to_user == None:
         return jsonify({"error": "Receive user ID not given"}), 400

@@ -20,7 +20,7 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-from app.endpoints import auth, core, trails, friends, groups, memberships, account
+from app.endpoints import auth, core, trails, friends, groups, memberships, account, owner
 
 app.register_blueprint(auth.bp)
 app.register_blueprint(core.bp)
@@ -29,6 +29,7 @@ app.register_blueprint(friends.bp)
 app.register_blueprint(groups.bp)
 app.register_blueprint(memberships.bp)
 app.register_blueprint(account.bp)
+app.register_blueprint(owner.bp)
 
 
 jwt = JWTManager(app)
