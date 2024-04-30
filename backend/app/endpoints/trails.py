@@ -209,6 +209,25 @@ def delete_trail():
 
     return Response(f"Route {trail_id} successfully deleted", 200)
 
+@bp.route('/download', methods=['GET'])
+@jwt_required()
+@membership_required
+def download_trail():
+    # download a trail from the database
+
+    # recieve user ID and trail ID
+    user_id = get_current_user().id
+    trail_id = request.get_json().get("trailID")
+
+    # ensure route ID is valid
+    route = Route.query.filter_by(id=trail_id).first()
+    if route == None or route.user_id != user_id:
+        return jsonify({"error": "Invalid trail ID"}), 400
+
+    return jsonify({
+        "data": route.data
+    })
+
 @bp.route('/upload', methods=('POST',))
 @jwt_required()
 @membership_required

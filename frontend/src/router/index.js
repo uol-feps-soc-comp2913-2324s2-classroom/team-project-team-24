@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import WelcomePage from "../views/Welcome.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import apiTests from "../views/apiTests.vue";
@@ -27,8 +28,9 @@ console.log(process.env.VUE_APP_DISABLE_LOGIN);
 
 const routes = [
     {
-        path: "/",
-        redirect: "/activitycenter",
+        path: "/welcome",
+        name: "Welcome",
+        component: WelcomePage,
     },
     {
         path: "/login",
@@ -109,7 +111,9 @@ router.beforeEach((to, from, next) => {
     let token = localStorage.getItem('token');
     let requireAuth = to.matched.some(record => record.meta.requiresAuth);
     let requireMembership = to.matched.some(record => record.meta.requiresMembership);
-    
+    if (to.path === '/'){
+        next('/welcome');
+    }
     if (to.path === '/login') {
         if (token) {
             axiosAuth.post('/auth/verify-token').then(() => {
@@ -157,6 +161,7 @@ router.beforeEach((to, from, next) => {
             next('/login');
         })
     }
+
 });
 
 export default router

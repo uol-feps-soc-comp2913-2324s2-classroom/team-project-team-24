@@ -245,6 +245,7 @@ def create_membership_plan(name: str, regularity: str, price: float):
 def set_user_membership_plan(user_id: int, membership_id: int):
     user = User.query.filter_by(id=user_id).first()
     user.membership_id = membership_id
+    user.membership_start_date = datetime.date.today()
     db.session.commit()
 
 def delete_user_membership(user_id: int):
