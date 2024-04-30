@@ -1,6 +1,6 @@
 <template>
     <div :class="'membership-option'" :style="{ backgroundColor: color }">
-        <h3>{{ membership.regularity }}</h3>
+        <h3>{{ membership.name }}</h3>
         <ul>
             <li v-for="(point) in membership.points" :key="point">{{point}}</li>
         </ul>

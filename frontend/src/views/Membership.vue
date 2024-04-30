@@ -60,7 +60,7 @@ export default {
             We've detected you haven't subscribed to Walkley. To get access to Walkley, please choose your payment subscription option
         </p>
         <p v-else>
-            Hello Member! You are subscribed to the <b>{{ currentPlan.regularity }}</b> plan.
+            Hello Member! You are subscribed to the <b>{{ currentPlan.name }}</b> plan.
         </p>
         <div class="membership-options-container">
             <MembershipOptionComponent v-for="(membership, x) in membershipOptions" 
