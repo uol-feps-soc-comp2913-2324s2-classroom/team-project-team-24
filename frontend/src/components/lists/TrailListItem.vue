@@ -15,10 +15,10 @@
     </div>
     <div class="button-container">
       <button
-        class="btn-tertiary zoom-button"
-        :disabled="!isSelected"
-        @click="zoomToTrail"
-      >
+    class="btn-tertiary zoom-button"
+    v-if="isSelected"
+    @click="zoomToTrail"
+  >
         Zoom
       </button>
       <button class="btn-primary" @click.stop="downloadTrail">Download</button>
