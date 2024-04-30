@@ -34,6 +34,8 @@ class GPX:
         if not map:
             map = folium.Map(location=[latitude,longitude],zoom_start=zoom)
         folium.PolyLine(points, color="red", weight=2.5, opacity=1).add_to(map)
+        map_html = map._repr_html_()
+        return map_html
         #return map - displays map directly in browser
 
         # Render the map to an HTML string
