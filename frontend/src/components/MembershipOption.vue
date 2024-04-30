@@ -7,7 +7,16 @@
         </ul>
         <div class="option-details">
             <h4>£{{ membership.price }} {{ membership.regularity }}</h4>
-            <button class="btn-primary" @click="buyMembership">Buy Now</button>
+        
+            <template v-if="currentPlan===membership.regularity">
+                <button class="dummy-button">Current Plan</button>
+            </template>
+            <template v-else>
+                <button class="btn-primary" @click="buyMembership">Buy Now</button>
+            </template>
+        
+            
+            
         </div>
     </div>
 </template>
@@ -76,5 +85,22 @@ export default {
   margin: 0;
 }
 
-
+.dummy-button {
+    background-color: var(--tertiary-button-grey);
+    border-style: solid;
+    border-color: var(--tertiary-button-grey);
+    border-width: 3px;
+    font-weight: bold;
+    color: var(--secondary-button-offBlack);
+    padding-top: var(--button-padding-vertical);
+    padding-bottom: var(--button-padding-vertical);
+    padding-left: var(--button-padding-horizontal);
+    padding-right: var(--button-padding-horizontal);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    cursor: pointer;
+    border-radius: 99999px;
+}
 </style>
