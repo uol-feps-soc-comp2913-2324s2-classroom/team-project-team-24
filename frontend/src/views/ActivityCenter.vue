@@ -1,93 +1,89 @@
 <template>
     <div class="activityCenterPageContainer p-2">
-      <div class="main-container">
-        <div class="map-view-column p-3">
-          <GoalComponent />
-          <MapViewerComponent :selected-trails="selectedTrails" />
+        <div class="main-container">
+            <div class="map-view-column p-3">
+                <GoalComponent />
+                <MapViewerComponent :selected-trails="selectedTrails" />
+            </div>
+            <div class="track-stats-column p-3">
+                <OverallTrailStatsComponent />
+            </div>
         </div>
-        <div class="track-stats-column p-3">
-          <OverallTrailStatsComponent />
+        <div class="trails-container p-2">
+            <ListComponent v-bind:dataArray="trails" v-slot="slotProps">
+                <TrailListItemComponent
+                    :trail="slotProps.data"
+                    @trail-deleted="handleTrailDeleted"
+                    @trail-selected="handleTrailSelected"
+                    @zoom-to-trail="handleZoomToTrail"
+                />
+            </ListComponent>
         </div>
-      </div>
-      <div class="trails-container p-2">
-        <ListComponent v-bind:dataArray="trails" v-slot="slotProps">
-          <TrailListItemComponent
-            :trail="slotProps.data"
-            @trail-deleted="handleTrailDeleted"
-            @trail-selected="handleTrailSelected"
-            @zoom-to-trail="handleZoomToTrail"
-          />
-        </ListComponent>
-      </div>
     </div>
-  </template>
-  
-  <script>
-  import MapViewerComponent from "@/components/MapViewer.vue";
-  import GoalComponent from "@/components/Goal.vue";
-  import OverallTrailStatsComponent from "@/components/OverallTrailStats.vue";
-  import TrailListItemComponent from "@/components/lists/TrailListItem.vue";
-  import ListComponent from "@/components/lists/List.vue";
-  import axiosAuth from "@/api/axios-auth.js";
-  
-  export default {
-    name: "ActivityCenter",
-    data() {
-      return {
-        trails: [],
-        longestTrailID: null,
-        selectedTrails: [],
-      };
-    },
-    methods: {
-      async getPageData() {
-        try {
-          const response1 = await axiosAuth.get("/trail/get-all");
-          this.trails = response1.data.trails;
-  
-          const response2 = await axiosAuth.get("/trail/get-longest");
-          this.longestTrailID = response2.data.trailID;
-        } catch (error) {
-          console.error("Error fetching page data:", error);
-        }
-      },
-      handleTrailDeleted(trailId) {
-        this.trails = this.trails.filter((trail) => trail.id !== trailId);
-      },
-      handleZoomToTrail(trailId) {
-        // Emit an event to the MapViewer component with the trail ID to zoom to
-        this.$refs.mapViewer.zoomToTrail(trailId);
-      },
-      methods: {
-  handleTrailSelected({ trailId, checked }) {
-    console.log('ActivityCenter: handleTrailSelected called with trailId:', trailId, 'checked:', checked);
-    console.log('ActivityCenter: selectedTrails before update:', this.selectedTrails);
+</template>
 
-    if (checked) {
-      // Trail not already in the array, add it
-      this.selectedTrails = [...this.selectedTrails, trailId];
-    } else {
-      // Trail already in the array, remove it
-      this.selectedTrails = this.selectedTrails.filter(id => id !== trailId);
-    }
+<script>
+import MapViewerComponent from "@/components/MapViewer.vue";
+import GoalComponent from "@/components/Goal.vue";
+import OverallTrailStatsComponent from "@/components/OverallTrailStats.vue";
+import TrailListItemComponent from "@/components/lists/TrailListItem.vue";
+import ListComponent from "@/components/lists/List.vue";
+import axiosAuth from "@/api/axios-auth.js";
 
-    console.log('ActivityCenter: selectedTrails after update:', this.selectedTrails);
+export default {
+  name: "ActivityCenter",
+  data() {
+    return {
+      trails: [],
+      longestTrailID: null,
+      selectedTrails: [],
+    };
   },
-},
+  methods: {
+    async getPageData() {
+      try {
+        const response1 = await axiosAuth.get("/trail/get-all");
+        this.trails = response1.data.trails;
+
+        const response2 = await axiosAuth.get("/trail/get-longest");
+        this.longestTrailID = response2.data.trailID;
+      } catch (error) {
+        console.error("Error fetching page data:", error);
+      }
     },
-    components: {
-      MapViewerComponent,
-      GoalComponent,
-      OverallTrailStatsComponent,
-      TrailListItemComponent,
-      ListComponent,
+    handleTrailDeleted(trailId) {
+      this.trails = this.trails.filter((trail) => trail.id !== trailId);
     },
-    created() {
-      this.getPageData();
+    handleZoomToTrail(trailId) {
+      this.$refs.mapViewer.zoomToTrail(trailId);
     },
-  };
-  </script>
-  
+    handleTrailSelected({ trailId, checked }) {
+      console.log('ActivityCenter: handleTrailSelected called with trailId:', trailId, 'checked:', checked);
+      console.log('ActivityCenter: selectedTrails before update:', this.selectedTrails);
+
+      if (checked) {
+        // Trail not already in the array, add it
+        this.selectedTrails = [...this.selectedTrails, trailId];
+      } else {
+        // Trail already in the array, remove it
+        this.selectedTrails = this.selectedTrails.filter(id => id !== trailId);
+      }
+
+      console.log('ActivityCenter: selectedTrails after update:', this.selectedTrails);
+    },
+  },
+  components: {
+    MapViewerComponent,
+    GoalComponent,
+    OverallTrailStatsComponent,
+    TrailListItemComponent,
+    ListComponent,
+  },
+  created() {
+    this.getPageData();
+  },
+};
+</script>
 
 <style scoped>
 .activityCenterPageContainer {
