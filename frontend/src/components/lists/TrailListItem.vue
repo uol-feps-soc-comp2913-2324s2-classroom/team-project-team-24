@@ -1,11 +1,13 @@
 <template>
   <div class="trail-list-item" @click="viewTrail">
+    <input type="checkbox" class="routes-checkbox" :value="trail.id" v-model="isSelected" @change="onCheckboxChange" />
     <div class="trail-info">
       <h3>{{ trail.name }}</h3>
       <p>{{ trail.date }}</p>
       <p>{{ trail.type }}</p>
     </div>
     <div class="button-container">
+      <button class="btn-tertiary zoom-button" :disabled="!isSelected" @click="zoomToTrail">Zoom</button>
       <button class="btn-primary" @click.stop="downloadTrail">Download</button>
       <button class="btn-danger" @click.stop="deleteTrail">Delete</button>
     </div>
@@ -24,6 +26,9 @@ export default {
     },
   },
   methods: {
+    zoomToTrail() {
+      this.$emit('zoom-to-trail', this.trail.id);
+    },
     viewTrail() {
       this.$router.push({ path: "/mytrail", query: { trailID: this.trail.id } });
     },
@@ -63,6 +68,14 @@ export default {
 .button-container {
   display: flex;
   gap: 10px;
+}
+
+.zoom-button {
+  margin-left: 3px;
+}
+
+.routes-checkbox {
+  margin-right: 10px;
 }
 
 
