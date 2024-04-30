@@ -13,9 +13,13 @@ def test_get_trails_success(client):
     r1 = create_route_from_file("example_data/track1.gpx", "Trail 1", "Running", user_id)
     r2 = create_route_from_file("example_data/track2.gpx", "Trail 2", "Running", user_id)
 
+    r1 = Route.query.filter_by(id=r1).first()
+    r2 = Route.query.filter_by(id=r2).first()
+
     response = client.get("/trail/get-all", headers=headers)
     assert response.status_code == 200
-    assert r1 in response.json["trails"] and r2 in response.json["trails"]
+    assert {"id": r1.id, "name": r1.name, "exercise_type": r1.exercise_type} in response.json["trails"]
+    assert {"id": r2.id, "name": r2.name, "exercise_type": r2.exercise_type} in response.json["trails"]
 
 def test_get_trails_not_authenticated(client):
     response = client.get("/trail/get-all")
