@@ -18,7 +18,8 @@
         <ListComponent v-bind:dataArray="friendRequests" v-slot="slotProps" v-if="friendRequests.length > 0">
             <UserList2ButtonItemComponent v-bind:user="slotProps.data" :button1="acceptButtonDict" :button2="rejectButtonDict"/>
         </ListComponent>
-        <p v-if="friendRequests.length == 0" class="greyText">You have no incoming friend requests</p>
+        <p v-if="friendRequests.length == 0 && !loadingFriendRequests" class="greyText">You have no incoming friend requests</p>
+        <p v-if="loadingFriendRequests" class="greyText">Loading friend requests...</p>
     </div>
 </template>
 
@@ -41,7 +42,8 @@ export default {
             rejectButtonDict: {
                 action: this.rejectRequest,
                 text: "Reject",
-            }
+            },
+            loadingFriendRequests: true,
         };
     },
     methods: {
@@ -50,6 +52,7 @@ export default {
                 response => {
                     this.friendRequests = response.data.requests;
                     console.log("FriendRequests: " + this.friendRequests);
+                    this.loadingFriendRequests = false;
                 }
             )
         },

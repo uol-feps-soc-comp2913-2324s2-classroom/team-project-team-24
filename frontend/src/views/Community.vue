@@ -23,6 +23,8 @@ export default {
                 text: "Remove",
                 action: this.removeFriend
             },
+            loadingFriendsList: true,
+            loadingGroupsList: true,
         };
     },
     methods: {
@@ -49,20 +51,25 @@ export default {
                     console.log("Unknown");
                     break;
             }
-            // console.log(event);
         },
         getPageData() {
+            this.loadingFriendsList = true;
+            this.loadingGroupsList = true;
+            
             axiosAuth.get('/friends/get-all').then(
                 response => {
                     this.friends = response.data.friends;
                     console.log("Friends:", this.friends);
+                    this.loadingFriendsList = false;
                 }
             );
             axiosAuth.get('/groups/get-all').then(
                 response => {
                     this.groups = response.data.groups;
+                    this.loadingGroupsList = false;
                 }
             );
+
         },
         showFriends() {
             this.friendsIsShowing = true;
@@ -88,16 +95,10 @@ export default {
             this.friendRequestsIsShowing = false;
             this.addFriendsIsShowing = true;
         },
-        createGroup() { // will be Deprecated
-            /* For now, i hide groups and friends coz its easier,
-             * but in future, we should have this overlay */
-            // this.groupsIsShowing = false;
-            // this.friendsIsShowing = false;
+        createGroup() {
             this.createGroupIsShowing = true;
         },
         closeCreateGroup() {
-            // this.groupsIsShowing = true;
-            // this.friendsIsShowing = false;
             this.createGroupIsShowing = false;
         },
         async removeFriend(userID) {
@@ -128,11 +129,6 @@ export default {
         <topNavRailed @NavElementClicked="navElementClicked"/>
         <div class="columns">
             <div>
-                <!-- <div style="display:flex;">
-                    <button @click="showFriends">Friends</button>
-                    <button @click="showGroups">Groups</button>
-                </div> -->
-
                 <h4 class="mt-4 mb-3" v-if="friendsIsShowing">My friends</h4>
                 <div class="groupNavigations mt-4 mb-3" v-if="groupsIsShowing">
                     <h4 class="">My groups</h4>
@@ -144,22 +140,20 @@ export default {
                     </button>
                 </div>
 
-                <!-- <h4 class="mt-4 mb-3" v-if="addFriendsIsShowing">Find new friends</h4> -->
-
                 <ListComponent v-if="friendsIsShowing && friends.length > 0" v-bind:dataArray="friends" v-slot="slotProps">
                     <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict"/>
                 </ListComponent>
-                <p v-if="friendsIsShowing && friends.length == 0" class="greyText">You haven't add anyone as friends yet...</p>
+                <p v-if="friendsIsShowing && friends.length == 0 && !loadingFriendsList" class="greyText">You haven't add anyone as friends yet...</p>
+                <p v-if="friendsIsShowing && loadingFriendsList" class="greyText">Loading friends...</p>
                 
                 <ListComponent v-if="groupsIsShowing" v-bind:dataArray="groups" v-slot="slotProps">
                     <GroupListItemComponent v-bind:group="slotProps.data"/>
                 </ListComponent>
-                <p v-if="groupsIsShowing && groups.length == 0" class="greyText">You haven't joined any groups yet. Create a group and start sharing your trails!</p>
+                <p v-if="groupsIsShowing && groups.length == 0 && !loadingGroupsList" class="greyText">You haven't joined any groups yet. Create a group and start sharing your trails!</p>
                 <CreateGroupComponent :modal-state="createGroupIsShowing"/>
 
                 <NewFriendsComponent v-if="addFriendsIsShowing"/>
 
-                <!-- friend requests compnent should go here-->
             </div>
         </div>
         

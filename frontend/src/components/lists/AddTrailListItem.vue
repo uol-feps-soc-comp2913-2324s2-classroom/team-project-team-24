@@ -37,6 +37,8 @@ export default {
                 response => {
                     this.name = response.data.name;
                     this.date = response.data.date;
+                    console.log("trailItemDataUpdated")
+                    this.$emit('trailItemDataUpdated')
                 }
             )
         },
@@ -50,7 +52,7 @@ export default {
     },
     created() {
         this.getPageData();
-    }
+    },
 };
 </script>
 
