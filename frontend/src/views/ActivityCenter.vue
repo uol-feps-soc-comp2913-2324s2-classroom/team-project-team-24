@@ -3,7 +3,8 @@
         <div class="main-container">
             <div class="map-view-column p-3">
                 <GoalComponent />
-                <MapViewerComponent :selected-trails="selectedTrails" />
+                <MapViewerComponent :selected-trails="selectedTrails"
+                ref="mapViewer" />
             </div>
             <div class="track-stats-column p-3">
                 <OverallTrailStatsComponent />
@@ -55,7 +56,17 @@ export default {
       this.trails = this.trails.filter((trail) => trail.id !== trailId);
     },
     handleZoomToTrail(trailId) {
-      this.$refs.mapViewer.zoomToTrail(trailId);
+      axiosAuth
+        .post("/trail/zoom-to-trail", {
+          trailID: trailId,
+          selectedTrailIDs: this.selectedTrails,
+        })
+        .then((response) => {
+          this.$refs.mapViewer.mapHtml = response.data.mapHtml;
+        })
+        .catch((error) => {
+          console.error("Error zooming to trail:", error);
+        });
     },
     handleTrailSelected({ trailId, checked }) {
       console.log('ActivityCenter: handleTrailSelected called with trailId:', trailId, 'checked:', checked);

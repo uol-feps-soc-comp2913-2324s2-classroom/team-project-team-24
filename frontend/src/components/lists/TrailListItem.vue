@@ -43,6 +43,11 @@ export default {
       checked: false,
     };
   },
+  computed: {
+    isSelected() {
+      return this.checked;
+    },
+  },
   methods: {
     onCheckboxChange() {
     console.log('TrailListItem: onCheckboxChange called with trailId:', this.trail.id, 'checked:', this.checked);
