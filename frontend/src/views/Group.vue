@@ -1,6 +1,5 @@
 <script>
 import MapViewerComponent from "@/components/MapViewer.vue";
-// import PopupComponent from "@/components/Popup.vue";
 import ModalComponent from "@/components/Modal.vue";
 import ListComponent from "@/components/lists/List.vue";
 import UserListItemComponent from "@/components/lists/UserListItem.vue";
@@ -37,12 +36,18 @@ export default {
         };
     },
     methods: {
+        clearArrays() {
+            this.members = [];
+            this.trails = [];
+            this.friends = [];
+            this.friendsNonMembers = [];
+        },
         async getPageData() {
+            console.log("GETTING PAGE DATA")
             this.loadingTrailList = true;
             this.loadingMembersList = true;
             this.loadingFriendsList = true;
             this.loadingTrailName = true;
-
 
             const getMembersPromise = axiosAuth.post('/groups/get-members', {
                 groupID: this.groupID
@@ -64,6 +69,7 @@ export default {
             const getAllFriendsPromise = axiosAuth.get('/friends/get-all').then(
                 response => {
                     this.friends = response.data.friends;
+                    // friendsRaw = response.data.friends;
                 }
             );
 
@@ -82,10 +88,14 @@ export default {
 
             await Promise.all([getMembersPromise, getAllFriendsPromise, getCurrentUsernamePromise]);
 
-            // Filter out friends that are already in the group
-            this.friendsNonMembers = this.friends.filter(friend => {
-                return !this.members.some(member => member.userID === friend.userID);
-            });
+            const membersSet = new Set(this.members.map(member => member.name));
+
+            for(let i = 0; i < this.friends.length; i++) {
+                if (!membersSet.has(this.friends[i].name)) {
+                    this.friendsNonMembers.push(this.friends[i]);
+                }
+            }
+
             this.loadingMembersList = false;
 
             // Filter out the current user from the members list
@@ -93,7 +103,6 @@ export default {
                 return member.name !== this.username;
             });
             this.loadingFriendsList = false;
-
         },
         toggle(bool) {
             if (bool) {
@@ -114,6 +123,9 @@ export default {
                 groupID: this.groupID,
                 friendID: friendID,
             });
+            
+            // Not the most efficient nor the nicest user experience, but it works
+            this.clearArrays();
             this.getPageData();
         },
         leaveGroup() {
@@ -166,6 +178,15 @@ export default {
             console.log("========================== RESETING TRAIL ITEM DATA ==========================")
             this.trailItemFullyLoadedCount = 0;
             this.trailItemLoaded = false;
+        },
+        updateFriendsAndMembers(){
+            console.log("CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED ")
+            // this.loadingFriendsList = true;
+            // this.loadingMembersList = true;
+            // this.loadingTrailList = true;
+            // this.loadingTrailName = true;
+            
+            // this.getPageData();
         }
 
     },
@@ -174,7 +195,6 @@ export default {
         UserListItemComponent,
         ListComponent,
         ModalComponent,
-        // PopupComponent,
         AddTrailListItemComponent,
         topNavRailedGroupMembers,
     },
@@ -201,7 +221,7 @@ export default {
                 </button>
                 <button @click="inviteFriends" class="btn-secondary">Group members</button>
             </div>
-            <!-- <PopupComponent :closeWindow="closeTrailsPopup" style="float:right;" v-if="showTrails"> -->
+
             <ModalComponent :is-open="showTrails" @update:is-open="showTrails = $event">
                 <div class="addTrailsModalWindow d-flex flex-column">
                     <h3>Add Trails</h3>
@@ -216,9 +236,7 @@ export default {
                     <button @click="closeTrailsPopup" class="btn-secondary align-self-end mt-2">Close</button>
                 </div>
             </ModalComponent>
-            <!-- </PopupComponent> -->
 
-            <!-- <PopupComponent :closeWindow="closeFriendsPopup" style="float:right;" v-if="showFriends"> -->
             <ModalComponent :is-open="showFriends" @update:is-open="showFriends = $event">
                 <div class="groupMembersModalWindow d-flex flex-column">
                     <topNavRailedGroupMembers @NavElementClicked="handleNavElementClicked" class="mb-3"/>
@@ -236,16 +254,19 @@ export default {
                             </ListComponent>
                         </div>
                     </div>
-                    <div v-if="groupModalShowAddMembers">
-                        <ListComponent v-bind:dataArray="friendsNonMembers" v-slot="slotProps" v-if="friendsNonMembers.length > 0">
-                            <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict"/>
-                        </ListComponent>
-                        <p v-if="friendsNonMembers.length == 0" class="greyText">You have added all your friends to this group</p>
+                    <div v-if="groupModalShowAddMembers" class="mb-4">
+                        <div class="scrollableList" v-if="!loadingFriendsList">
+                            <ListComponent v-bind:dataArray="friendsNonMembers" v-slot="slotProps" v-if="friendsNonMembers.length > 0" class="width100">
+                                <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict" class="slightlySmaller" @invitingFriendToGroup="updateFriendsAndMembers"/>
+                            </ListComponent>
+                        </div>
+                        <p v-if="friendsNonMembers.length == 0 && !loadingFriendsList" class="greyText">You have added all your friends to this group</p>
+                        <p v-if="loadingFriendsList" class="greyText">Loading friends... </p>
                     </div>
                     <button @click="closeFriendsPopup" class="btn-secondary align-self-end mt-2">Close</button>
                 </div>
             </ModalComponent>
-            <!-- </PopupComponent> -->
+
         </div>
 
         <div class="groupMapView">

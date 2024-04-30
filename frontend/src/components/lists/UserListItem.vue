@@ -32,6 +32,9 @@ export default {
     },
     methods: {
         blank() {},
+        invitingFriendToGroup() {
+            this.$emit('invitingFriendToGroup')
+        }
     },
 };
 </script>

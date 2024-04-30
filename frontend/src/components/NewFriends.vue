@@ -8,7 +8,6 @@
             </div>
             <button type="submit" class="btn-primary sendRequestButton align-self-start">Send request</button>
             <br/>
-            
         </form>
         <!-- <br/> -->
         <!-- <h2>Friend Requests</h2> -->
