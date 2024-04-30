@@ -13,8 +13,7 @@ export default {
                 "#0A481F",
                 // Add more colors as needed
             ],
-            isMember: true, // for member or not
-            currentPlan: "Monthly" // Simulate currentPlan state
+            currentPlan: {"id": -1, "name": "", "regularity": "", "price": 0}, // Simulate currentPlan state
         };
     },
     computed: {
@@ -35,7 +34,9 @@ export default {
             axiosAuth.get('/membership/get-current').then(
                 response => {
                     if (response.data.membership !== null) {
-                        this.currentMembershipID = response.data.membership.id;
+                        this.currentPlan = response.data.membership;
+                    } else {
+                        this.currentPlan.id = -1;
                     }
                 }
             )
@@ -55,18 +56,17 @@ export default {
         <div class="page-heading-container">
             <h1>Membership</h1>
         </div>
-        <p v-if="!isMember">
+        <p v-if="currentPlan.id===-1">
             We've detected you haven't subscribed to Walkley. To get access to Walkley, please choose your payment subscription option
         </p>
         <p v-else>
-            Hello Member! You are subscribed to the {{ currentPlan }} plan.
+            Hello Member! You are subscribed to the <b>{{ currentPlan.regularity }}</b> plan.
         </p>
         <div class="membership-options-container">
             <MembershipOptionComponent v-for="(membership, x) in membershipOptions" 
             :key="membership" v-bind:membership="membership" 
             :color="membershipColors[x]"
-            :isMember="isMember"
-            :currentPlan="currentPlan"
+            v-bind:currentPlan="currentPlan"
             />    
         </div>
         
