@@ -1,13 +1,26 @@
 <template>
-  <div class="trail-list-item" @click="viewTrail">
-    <input type="checkbox" class="routes-checkbox" :value="trail.id" v-model="isSelected" @change="onCheckboxChange" />
-    <div class="trail-info">
+  <div class="trail-list-item">
+    <div class="trail-info" @click="viewTrail">
+      <input
+        type="checkbox"
+        class="routes-checkbox"
+        :value="trail.id"
+        v-model="checked"
+        @click.stop
+        @change="onCheckboxChange"
+      />
       <h3>{{ trail.name }}</h3>
       <p>{{ trail.date }}</p>
       <p>{{ trail.type }}</p>
     </div>
     <div class="button-container">
-      <button class="btn-tertiary zoom-button" :disabled="!isSelected" @click="zoomToTrail">Zoom</button>
+      <button
+        class="btn-tertiary zoom-button"
+        :disabled="!isSelected"
+        @click="zoomToTrail"
+      >
+        Zoom
+      </button>
       <button class="btn-primary" @click.stop="downloadTrail">Download</button>
       <button class="btn-danger" @click.stop="deleteTrail">Delete</button>
     </div>
@@ -25,9 +38,21 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      checked: false,
+    };
+  },
   methods: {
+    onCheckboxChange() {
+    console.log('TrailListItem: onCheckboxChange called with trailId:', this.trail.id, 'checked:', this.checked);
+    this.$emit('trail-selected', {
+      trailId: this.trail.id,
+      checked: this.checked,
+    });
+  },
     zoomToTrail() {
-      this.$emit('zoom-to-trail', this.trail.id);
+      this.$emit("zoom-to-trail", this.trail.id);
     },
     viewTrail() {
       this.$router.push({ path: "/mytrail", query: { trailID: this.trail.id } });
@@ -50,6 +75,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 .trail-list-item {
