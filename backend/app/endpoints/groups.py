@@ -117,8 +117,7 @@ def get_group_members():
         member = User.query.filter_by(id=member_id).first()
         members_info.append({
             "id": member_id,
-            "name": member.username,
-            "profilePhoto": member.profile_picture
+            "name": member.username
         })
 
     return jsonify({"members": members_info})

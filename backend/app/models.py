@@ -74,7 +74,6 @@ class User(db.Model):
     username = db.Column(db.String(32), unique=True, nullable=False)
     password = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(32))
-    profile_picture = db.Column(db.LargeBinary)
     gender = db.Column(db.String(32))
     age = db.Column(db.Integer)
     membership_id = db.Column(db.Integer, db.ForeignKey("membership_plan.id"))
