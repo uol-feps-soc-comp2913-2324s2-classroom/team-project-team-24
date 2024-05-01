@@ -4,8 +4,10 @@ import ModalComponent from "@/components/Modal.vue";
 import ListComponent from "@/components/lists/List.vue";
 import UserListItemComponent from "@/components/lists/UserListItem.vue";
 import AddTrailListItemComponent from "@/components/lists/AddTrailListItem.vue";
+import SharedTrailListItemComponent from "@/components/lists/SharedTrailListItem.vue";
 import axiosAuth from "@/api/axios-auth.js";
 import topNavRailedGroupMembers from "@/components/ui-components/topNavRailedGroupMembers.vue";
+import topNavRailedGroupTrails from "@/components/ui-components/topNavRailedGroupTrails.vue";
 
 export default {
     name: "MyGroup",
@@ -14,6 +16,8 @@ export default {
             name: "",
             members: [],
             trails: [],
+            groupTrails: [],
+            shareableTrails: [],
             groupID: this.$route.query.groupID,
             buttonDict: {
                 text: "Invite",
@@ -30,9 +34,15 @@ export default {
             loadingMembersList: true,
             loadingFriendsList: true,
             loadingTrailName: true,
+            loadingGroupTrails: true,
 
+            // Used to show the loading message when the user's trails are still being rendered
             trailItemFullyLoadedCount: 0,
             trailItemLoaded: false,
+
+            trailsModalShowSharedTrails: true,
+            trailsModalShowAddTrails: false,
+            lastTrailsModalView: 0,
         };
     },
     methods: {
@@ -41,13 +51,16 @@ export default {
             this.trails = [];
             this.friends = [];
             this.friendsNonMembers = [];
+            this.shareableTrails = [];
+            this.groupTrails = [];
+
         },
         async getPageData() {
-            console.log("GETTING PAGE DATA")
             this.loadingTrailList = true;
             this.loadingMembersList = true;
             this.loadingFriendsList = true;
             this.loadingTrailName = true;
+            this.loadingGroupTrails = true;
 
             const getMembersPromise = axiosAuth.post('/groups/get-members', {
                 groupID: this.groupID
@@ -73,10 +86,10 @@ export default {
                 }
             );
 
-            axiosAuth.get('/trail/get-all').then(
+            const getAllTrailsPromise = axiosAuth.get('/trail/get-all').then(
                 response => {
                     this.trails = response.data.trails;
-                    this.loadingTrailList = false;
+                    // this.loadingTrailList = false;
                 }
             );
 
@@ -86,24 +99,56 @@ export default {
                 }
             );
 
-            await Promise.all([getMembersPromise, getAllFriendsPromise, getCurrentUsernamePromise]);
-
-            const membersSet = new Set(this.members.map(member => member.name));
-
-            for(let i = 0; i < this.friends.length; i++) {
-                if (!membersSet.has(this.friends[i].name)) {
-                    this.friendsNonMembers.push(this.friends[i]);
+            axiosAuth.post('/groups/get-trails', {
+                groupID: this.groupID
+            }).then(
+                response => {
+                    this.groupTrailsIDOnly = response.data.trails;
+                    // this.loadingGroupTrails = false;
                 }
-            }
+            );
 
-            this.loadingMembersList = false;
+            const getGroupTrailsPromise = axiosAuth.post('groups/get-trails-complete', {
+                groupID: this.groupID
+            }).then(
+                response => {
+                    this.groupTrails = response.data.trails;
+                    // this.groupTrailsIDOnly = response.data.trails.map(trail => trail.id);
+                    // console.log("Group trail IDs: ", this.groupTrailsIDOnly);
+                    this.loadingGroupTrails = false;
+                }
+            );
 
-            // Filter out the current user from the members list
-            this.members = this.members.filter( member => {
-                return member.name !== this.username;
+            await Promise.all([getMembersPromise, getAllFriendsPromise, getCurrentUsernamePromise]).then(() => {
+                const membersSet = new Set(this.members.map(member => member.name));
+
+                for (let i = 0; i < this.friends.length; i++) {
+                    if (!membersSet.has(this.friends[i].name)) {
+                        this.friendsNonMembers.push(this.friends[i]);
+                    }
+                }
+
+                this.loadingMembersList = false;
+
+                // Filter out the current user from the members list
+                this.members = this.members.filter(member => {
+                    return member.name !== this.username;
+                });
+                this.loadingFriendsList = false;
             });
-            this.loadingFriendsList = false;
+
+            await Promise.all([getAllTrailsPromise, getGroupTrailsPromise]).then(() => {
+                const groupTrailsSet = new Set(this.groupTrails.map(trail => trail.id));
+                this.shareableTrails = this.trails.filter(trail => !groupTrailsSet.has(trail.id));
+                this.loadingTrailList = false;
+                if (this.shareableTrails.length === 0) {
+                    this.trailItemLoaded = true;
+                }
+
+            });
+
         },
+
         toggle(bool) {
             if (bool) {
                 return false;
@@ -123,7 +168,7 @@ export default {
                 groupID: this.groupID,
                 friendID: friendID,
             });
-            
+
             // Not the most efficient nor the nicest user experience, but it works
             this.clearArrays();
             this.getPageData();
@@ -132,7 +177,7 @@ export default {
             axiosAuth.post('/groups/leave', {
                 groupID: this.groupID
             }).then(
-                this.$router.push({path: "/community"}),
+                this.$router.push({ path: "/community" }),
             )
         },
         closeFriendsPopup() {
@@ -140,6 +185,7 @@ export default {
         },
         closeTrailsPopup() {
             this.showTrails = false;
+            console.log("Closing trails popup")
         },
         groupModalShowAddMembersHandle() {
             this.groupModalShowMembers = false;
@@ -166,12 +212,32 @@ export default {
             }
         },
         returnToCommunity() {
-            this.$router.push({path: "/community"});
+            this.$router.push({ path: "/community" });
         },
         handleTrailItemDataUpdated() {
             this.trailItemFullyLoadedCount++;
-            if (this.trailItemFullyLoadedCount === this.trails.length) {
+            console.log("Trail item fully loaded count: ", this.trailItemFullyLoadedCount);
+            console.log("Expected count: ", this.shareableTrails.length);
+            if (this.trailItemFullyLoadedCount === this.shareableTrails.length) {
                 this.trailItemLoaded = true;
+                console.log("All trail items fully loaded");
+            }
+        },
+        handleNavElementClickedTrails(id) {
+            id = parseInt(id);
+            this.lastTrailsModalView = id;
+            switch (id) {
+                case 0:
+                    this.trailsModalShowSharedTrails = true;
+                    this.trailsModalShowAddTrails = false;
+                    break;
+                case 1:
+                    this.trailsModalShowSharedTrails = false;
+                    this.trailsModalShowAddTrails = true;
+                    break;
+                default:
+                    console.log("Unknown");
+                    break;
             }
         },
         resetTrailItemDataUpdated() {
@@ -179,13 +245,12 @@ export default {
             this.trailItemFullyLoadedCount = 0;
             this.trailItemLoaded = false;
         },
-        updateFriendsAndMembers(){
-            console.log("CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED CLICKED ")
+        updateFriendsAndMembers() { // Deprecated
             // this.loadingFriendsList = true;
             // this.loadingMembersList = true;
             // this.loadingTrailList = true;
             // this.loadingTrailName = true;
-            
+
             // this.getPageData();
         }
 
@@ -197,6 +262,8 @@ export default {
         ModalComponent,
         AddTrailListItemComponent,
         topNavRailedGroupMembers,
+        topNavRailedGroupTrails,
+        SharedTrailListItemComponent,
     },
     created() {
         this.getPageData();
@@ -205,41 +272,56 @@ export default {
 </script>
 
 <template>
-    <div class="myGroupPageContainer">
+    <div class="myGroupPageContainer d-flex flex-column">
         <div class="groupViewHeading d-flex flex-row justify-content-between align-items-center p-3">
             <div class="d-flex flex-row align-items-center">
-                <img src="../assets/back_button.svg" class="backButton me-3" alt="back arrow icon" @click="returnToCommunity" >
+                <img src="../assets/back_button.svg" class="backButton me-3" alt="back arrow icon"
+                    @click="returnToCommunity">
                 <h3 v-if="!loadingTrailName">{{ name }}</h3>
                 <h3 v-if="loadingTrailName">Loading...</h3>
             </div>
             <div>
                 <button @click="addRoutes" class="btn-primary me-3">
                     <div class="buttonText">
-                        <img src="../assets/add.svg" class="addIcon" alt="plus icon">
-                        <p>Add routes</p>
+                        <p>Manage routes</p>
                     </div>
                 </button>
                 <button @click="inviteFriends" class="btn-secondary">Group members</button>
             </div>
 
-            <ModalComponent :is-open="showTrails" @update:is-open="showTrails = $event">
+            <ModalComponent :is-open="showTrails" @update:is-open="showTrails = $event; closeTrailsPopup">
                 <div class="addTrailsModalWindow d-flex flex-column">
-                    <h3>Add Trails</h3>
-                    <div class="horizontalLine mb-3"></div>
-                    <div class="scrollableList mb-4" v-show="!loadingTrailList && trailItemLoaded">
-                        <ListComponent v-bind:dataArray="trails" v-slot="slotProps" v-if="trails.length > 0" @listComponentUnmounted="resetTrailItemDataUpdated">
-                            <AddTrailListItemComponent class="slightlySmaller" v-bind:trailID="slotProps.data" :groupID="groupID" @trailItemDataUpdated="handleTrailItemDataUpdated"/>
-                        </ListComponent>
-                        <p v-if="trails.length == 0" class="greyText align-self-start">No trails available</p>
+                    <topNavRailedGroupTrails @NavElementClicked="handleNavElementClickedTrails" class="mb-3" />
+                    <div v-if="trailsModalShowSharedTrails" class="mb-4">
+                        <div class="scrollable mb-4">
+                            <ListComponent v-bind:dataArray="groupTrails" v-slot="slotProps"
+                                v-if="groupTrails.length > 0" class="width100">
+                                <SharedTrailListItemComponent v-bind:trail="slotProps.data" class="slightlySmaller" />
+                            </ListComponent>
+                            <p v-if="groupTrails.length == 0 && !loadingGroupTrails" class="greyText">You haven't shared
+                                any trails yet...</p>
+                            <p v-if="loadingGroupTrails" class="greyText">Loading shared trails...</p>
+                        </div>
                     </div>
-                    <p v-if="loadingTrailList || !trailItemLoaded" class="greyText mb-4">Loading trails...</p>
+                    <div v-if="trailsModalShowAddTrails">
+                        <div class="scrollableList mb-4" v-show="!loadingTrailList && trailItemLoaded">
+                            <ListComponent v-bind:dataArray="shareableTrails" v-slot="slotProps"
+                                v-if="shareableTrails.length > 0" @listComponentUnmounted="resetTrailItemDataUpdated"
+                                class="width100">
+                                <AddTrailListItemComponent class="slightlySmaller" v-bind:trail="slotProps.data"
+                                    :groupID="groupID" @trailItemDataUpdated="handleTrailItemDataUpdated" />
+                            </ListComponent>
+                            <p v-if="shareableTrails.length == 0" class="greyText align-self-start">No trails available</p>
+                        </div>
+                        <p v-if="loadingTrailList || !trailItemLoaded" class="greyText mb-4">Loading trails...</p>
+                    </div>
                     <button @click="closeTrailsPopup" class="btn-secondary align-self-end mt-2">Close</button>
                 </div>
             </ModalComponent>
 
             <ModalComponent :is-open="showFriends" @update:is-open="showFriends = $event">
                 <div class="groupMembersModalWindow d-flex flex-column">
-                    <topNavRailedGroupMembers @NavElementClicked="handleNavElementClicked" class="mb-3"/>
+                    <topNavRailedGroupMembers @NavElementClicked="handleNavElementClicked" class="mb-3" />
                     <div v-if="groupModalShowMembers">
                         <div class="scrollableList mb-4">
                             <div style="display: flex;" class="friendItem slightlySmaller">
@@ -250,17 +332,20 @@ export default {
                                 <div class="horizontalLine"></div>
                             </div>
                             <ListComponent v-bind:dataArray="members" v-slot="slotProps" class="width100">
-                                <UserListItemComponent v-bind:user="slotProps.data" class="slightlySmaller"/>
+                                <UserListItemComponent v-bind:user="slotProps.data" class="slightlySmaller" />
                             </ListComponent>
                         </div>
                     </div>
                     <div v-if="groupModalShowAddMembers" class="mb-4">
                         <div class="scrollableList" v-if="!loadingFriendsList">
-                            <ListComponent v-bind:dataArray="friendsNonMembers" v-slot="slotProps" v-if="friendsNonMembers.length > 0" class="width100">
-                                <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict" class="slightlySmaller" @invitingFriendToGroup="updateFriendsAndMembers"/>
+                            <ListComponent v-bind:dataArray="friendsNonMembers" v-slot="slotProps"
+                                v-if="friendsNonMembers.length > 0" class="width100">
+                                <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict"
+                                    class="slightlySmaller" />
                             </ListComponent>
                         </div>
-                        <p v-if="friendsNonMembers.length == 0 && !loadingFriendsList" class="greyText">You have added all your friends to this group</p>
+                        <p v-if="friendsNonMembers.length == 0 && !loadingFriendsList" class="greyText">You have added
+                            all your friends to this group</p>
                         <p v-if="loadingFriendsList" class="greyText">Loading friends... </p>
                     </div>
                     <button @click="closeFriendsPopup" class="btn-secondary align-self-end mt-2">Close</button>
@@ -270,13 +355,13 @@ export default {
         </div>
 
         <div class="groupMapView">
-            <MapViewerComponent />
+            <MapViewerComponent :selected-trails="groupTrails.map( trail => trail.id )" />
         </div>
     </div>
 </template>
 
 <style scoped>
-.backButton{
+.backButton {
     width: 23px;
     height: 23px;
     cursor: pointer;
@@ -309,20 +394,20 @@ p {
 }
 
 
-.width100{
+.width100 {
     width: 100%;
 }
 
-.groupMembersModalWindow{
+.groupMembersModalWindow {
     width: 33vw;
 }
 
-h3{
+h3 {
     margin: 0;
 
 }
 
-.slightlySmaller{
+.slightlySmaller {
     width: 99.5%;
     margin-left: 1px;
 }
@@ -352,17 +437,20 @@ h3{
     margin: 0;
 }
 
-.groupViewHeading{
+.groupViewHeading {
     background-color: var(--l1-color);
     border-radius: var(--border-radius);
     margin-bottom: 0.5rem;
 }
 
-.groupMapView{
+.groupMapView {
     background-color: var(--l1-color);
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--border-radius);
 }
 
-.addTrailsModalWindow{
+.addTrailsModalWindow {
     width: 33vw;
 }
 </style>

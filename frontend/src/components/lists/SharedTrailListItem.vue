@@ -5,14 +5,12 @@
                 <p class="my-0">{{ trail.name }}</p> 
                 <p class="my-0">{{ trail.date }}</p>
             </div>
-            <button @click.stop="addTrailToGroup" class="btn-quiet">Add</button>
         </div>
         <div class="horizontalLine"></div>
     </div>
 </template>
 
 <script>
-import axiosAuth from "@/api/axios-auth.js";
 export default {
     name: "AddTrailListItemComponent",
     props: {
@@ -31,13 +29,6 @@ export default {
             console.log("=================", this.trail);
             this.$emit('trailItemDataUpdated')
         },
-        addTrailToGroup() {
-            axiosAuth.post('/groups/add-route', {
-                groupID: this.groupID,
-                routeID: this.trail.id,
-            })
-        }
-        
     },
     created() {
         this.getPageData();
