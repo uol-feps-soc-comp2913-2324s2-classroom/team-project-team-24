@@ -8,7 +8,7 @@ def test_get_owner_membership_data_success(client):
     delete_all(User)
     delete_all(MembershipPlan)
     
-    headers = get_test_user_headers("u1", "pwd")
+    headers = get_test_user_headers("u1", "pwd", is_owner=True)
     m1 = MembershipPlan.query.filter_by(id=create_membership_plan("A", "weekly", 2.50)).first()
     m2 = MembershipPlan.query.filter_by(id=create_membership_plan("B", "monthly", 25.00)).first()
     m3 = MembershipPlan.query.filter_by(id=create_membership_plan("C", "yearly", 250.00)).first()
@@ -38,11 +38,17 @@ def test_get_owner_membership_data_not_authenticated(client):
     response = client.get("/owner/get-owner-membership-data")
     assert response.status_code == 401
 
+def test_get_owner_membership_data_not_owner(client):
+    headers = get_test_user_headers("u1", "pwd", is_owner=False)
+    response = client.get("/owner/get-owner-membership-data", headers=headers)
+    assert response.status_code == 400
+    assert b"Not authorised" in response.data
+
 def test_get_future_revenue_success(client):
     delete_all(User)
     delete_all(MembershipPlan)
     
-    headers = get_test_user_headers("u1", "pwd")
+    headers = get_test_user_headers("u1", "pwd", is_owner=True)
     m1 = MembershipPlan.query.filter_by(id=create_membership_plan("A", "weekly", 2.50)).first()
     m2 = MembershipPlan.query.filter_by(id=create_membership_plan("B", "monthly", 25.00)).first()
     m3 = MembershipPlan.query.filter_by(id=create_membership_plan("C", "yearly", 250.00)).first()
@@ -79,3 +85,9 @@ def test_get_future_revenue_success(client):
 def test_get_future_revenue_not_authenticated(client):
     response = client.get("/owner/get-future-revenue")
     assert response.status_code == 401
+
+def test_get_future_revenue_not_owner(client):
+    headers = get_test_user_headers("u1", "pwd", is_owner=False)
+    response = client.get("/owner/get-future-revenue", headers=headers)
+    assert response.status_code == 400
+    assert b"Not authorised" in response.data

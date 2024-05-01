@@ -33,8 +33,7 @@ def get_friends():
         friend = User.query.filter_by(id=friend_id).first()
         friends_info.append({
             "id": friend_id,
-            "name": friend.username,
-            "profilePhoto": friend.profile_picture
+            "name": friend.username
         })
 
     return jsonify({"friends": friends_info})
@@ -54,8 +53,7 @@ def get_friend_requests():
     for friend in user_friends:
         friends_info.append({
             "id": friend.id,
-            "name": friend.username,
-            "profilePhoto": friend.profile_picture
+            "name": friend.username
         })
 
     return jsonify({"requests": friends_info})
