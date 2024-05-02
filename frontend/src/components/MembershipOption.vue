@@ -46,6 +46,12 @@ export default {
             //     membershipID: this.membership.id
             // });
             // this.$parent.getPageData();
+        },
+        async cancelMembership() {
+            await axiosAuth.get('/membership/cancel').catch(
+                response => {console.log("Response:", response)}
+            );
+            this.$parent.getPageData();
         }
 
     },

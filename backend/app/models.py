@@ -83,6 +83,7 @@ class User(db.Model):
     membership_id = db.Column(db.Integer, db.ForeignKey("membership_plan.id"))
     membership_start_date = db.Column(db.DateTime)
     is_owner = db.Column(db.Boolean, default=False)
+    stripe_subscription = db.Column(db.String(64))
     
     membership = db.relationship("MembershipPlan", foreign_keys=[membership_id])
     groups = db.relationship('Group', secondary=userInGroup, back_populates="members")

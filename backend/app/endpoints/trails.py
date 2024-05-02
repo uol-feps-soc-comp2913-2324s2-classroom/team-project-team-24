@@ -36,10 +36,16 @@ def get_overall_stats():
     totalDuration_m = int((totalDuration % 3600) / 60)
     totalDuration_s = int(totalDuration % 60)
 
-    longestDuration = max(durations)
-    longestDuration_h = int(longestDuration / 3600)
-    longestDuration_m = int((longestDuration % 3600) / 60)
-    longestDuration_s = int(longestDuration % 60)
+    if durations != []:
+        longestDuration = max(durations)
+        longestDuration_h = int(longestDuration / 3600)
+        longestDuration_m = int((longestDuration % 3600) / 60)
+        longestDuration_s = int(longestDuration % 60)
+    else:
+        longestDuration = 0
+        longestDuration_h = 0
+        longestDuration_m = 0
+        longestDuration_s = 0
 
     # TODO: calorie calculation
 

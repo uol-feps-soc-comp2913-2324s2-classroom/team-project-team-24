@@ -73,6 +73,11 @@ def cancel_membership():
         return jsonify({"error": "User is not a member"}), 400
 
     delete_user_membership(user.id)
+    stripe.Subscription.modify(
+        user.stripe_subscription,
+        cancel_at_period_end=True,
+    )
+    user.stripe_subscription = None
     return Response("Cancelled user membership", 200)
 
 @bp.route('/purchase', methods=['POST'])
@@ -141,12 +146,24 @@ def webhook_received():
     metadata = data_object["metadata"]
 
     if event_type == 'checkout.session.completed':
-        print("success")
         # ensure that user is not a member
         if get_user_membership_id(int(metadata["userID"])) == int(metadata["membershipID"]):
             return jsonify({"error": "User is already on this membership tier"}), 400
-
+        
+        # Cancel a previous membership
+        user = User.query.filter_by(id=int(metadata["userID"])).first()
+        print(user.stripe_subscription)
+        if user.stripe_subscription != None:
+            stripe.Subscription.modify(
+                user.stripe_subscription,
+                cancel_at_period_end=True,
+            )
+            user.stripe_subscription = None
+        
         set_user_membership_plan(int(metadata["userID"]), int(metadata["membershipID"]))
+        user.stripe_subscription = data_object["subscription"]
+        db.session.add(user)
+        db.session.commit()
     
     elif event_type == 'invoice.paid':
         pass
@@ -154,8 +171,5 @@ def webhook_received():
     elif event_type == 'invoice.payment_failed':
         if get_membership_price(int(metadata["userID"])) != 0:
             delete_user_membership(int(metadata["userID"]))
-        
-    else:
-        print('Unhandled event type {}'.format(event_type))
 
     return jsonify({'status': 'success'})
