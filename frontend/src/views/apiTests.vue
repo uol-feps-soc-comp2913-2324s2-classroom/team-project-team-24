@@ -19,8 +19,6 @@ export default {
                     `/`
                 );
                 this.APIResponse = response.data;
-                console.log(this.APIResponse);
-                console.log(process.env.VUE_APP_BACKEND_PORT);
             } catch (error) {
                 this.APIResponse = "Error: " + error;
                 console.error(error);

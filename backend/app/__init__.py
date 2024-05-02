@@ -42,7 +42,6 @@ from app import views, models
 def user_identity_lookup(user):
     return user.id
 
-# print([x.username for x in models.User.query.all()])
 @jwt.user_lookup_loader
 def user_lookup_callback(_jwt_header, jwt_data):
     identity = jwt_data["sub"]

@@ -141,7 +141,6 @@ router.beforeEach((to, from, next) => {
         axiosAuth.post('/auth/verify-token').then(() => {
             axiosAuth.get('/membership/get-current').then(
                 response => {
-                    console.log(response.data.membership !== null);
                     if (response.data.membership !== null) {
                         next();
                     } else {
@@ -152,8 +151,6 @@ router.beforeEach((to, from, next) => {
                 error => {
                     if (error.response.status !== 200) {
                         next('/membership');
-                    } else {
-                        console.log(error);
                     }
                 }
             )
