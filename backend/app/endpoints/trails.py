@@ -31,6 +31,7 @@ def get_overall_stats():
     trails = get_routes_by_user_id(user_id)
 
     durations = [GPX(trail.data).get_duration() for trail in trails]
+    
     if durations != []:
         totalDuration = sum(durations)
         totalDuration_h = int(totalDuration / 3600)
@@ -42,14 +43,15 @@ def get_overall_stats():
         longestDuration_m = int((longestDuration % 3600) / 60)
         longestDuration_s = int(longestDuration % 60)
     else:
+        totalDuration = 0
         longestDuration_h = 0
         longestDuration_m = 0
         longestDuration_s = 0
         totalDuration_h = 0
         totalDuration_m = 0
         totalDuration_s = 0
+        longestDuration = 0
 
-    # TODO: calorie calculation
 
     return jsonify({
         # Total time spent doing activities in a period of time
