@@ -66,13 +66,11 @@ const handleFileUpload = event => {
 };
 
 const uploadData = () => {
-    console.log('Uploading data...');
     // Here you would typically handle the file upload to your backend
     var formData = new FormData();
     formData.append("file", selectedFile.value);
     formData.append("routeName", routeName.value);
     formData.append("exerciseType", exerciseType.value);
-    console.log(formData);
 
     axiosAuth.post(`/trail/upload`, formData,
         {
@@ -80,7 +78,6 @@ const uploadData = () => {
         })
         .then(
             function (response) {
-                console.log("response:", response);
                 router.push({
                     path: "/mytrail",
                     query: {trailID: response.data.trailID}

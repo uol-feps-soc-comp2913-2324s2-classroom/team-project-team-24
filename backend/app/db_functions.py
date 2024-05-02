@@ -127,7 +127,6 @@ def remove_friendship(user1_id: int, user2_id: int):
                 and_(Friend.user_1_id==user2_id, Friend.user_2_id==user1_id)
             )).first()
         
-        # print(friendship)
         db.session.delete(friendship)
         db.session.commit()
 
