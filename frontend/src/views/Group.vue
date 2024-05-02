@@ -244,7 +244,6 @@ export default {
             }
         },
         resetTrailItemDataUpdated() {
-            console.log("========================== RESETING TRAIL ITEM DATA ==========================")
             this.trailItemFullyLoadedCount = 0;
             this.trailItemLoaded = false;
         },

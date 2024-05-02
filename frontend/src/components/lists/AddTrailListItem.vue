@@ -5,8 +5,7 @@
                 <p class="my-0">{{ trail.name }}</p> 
                 <p class="my-0">{{ trail.date }}</p>
             </div>
-            <button v-if="!addedToGroup" @click.stop="addTrailToGroup" class="btn-tertiary">Add</button>
-            <button v-if="addedToGroup" @click.stop="" class="btn-quiet disabled">Added</button>
+            <button @click.stop="addTrailToGroup" class="btn-tertiary">Add</button>
         </div>
         <div class="horizontalLine"></div>
     </div>
