@@ -25,6 +25,7 @@
     --scrollbar-thumb: #b9ffa8;
     --transition-speed: 100ms;
     --secondary-button-offBlack: #383838;
+    --secondary-button-offBlack-disabled: #616161;
     --secondary-button-offBlack-active: #1b1b1b;
     --tertiary-button-grey: #ebebeb;
     --tertiary-button-grey-hover: #dcdcdc;

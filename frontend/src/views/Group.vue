@@ -410,7 +410,6 @@ export default {
 
 p {
     margin: 0;
-
 }
 
 .friendItem {
@@ -434,7 +433,6 @@ p {
     width: 100%;
 }
 
-
 .width100 {
     width: 100%;
 }
@@ -449,6 +447,7 @@ h3 {
 }
 
 .scrollableList {
+    padding-top: 1px;
     max-height: 35vh;
     overflow-y: auto;
     width: 100%;
