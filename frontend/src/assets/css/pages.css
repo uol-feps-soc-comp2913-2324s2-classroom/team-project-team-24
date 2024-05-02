@@ -40,3 +40,8 @@
     height: 100%;
     overflow-y: scroll;
 }
+
+.myGroupPageContainer{
+    width: 100%;
+    height: 100%;
+}

@@ -1,18 +1,24 @@
 <template>
     <div>
-        <h2>Find New Friends</h2>
-        <form @submit.prevent="addFriend">
-            <input id="friend-email" v-model="friend" type="text" placeholder="Enter their email" required />
-            <h6 style="color:red" v-if="error">{{ error }}</h6>
-            <h6 style="color:green" v-if="success">{{ success }}</h6>
+        <form @submit.prevent="addFriend" class="my-3 d-flex flex-row align-items-center">
+            <div class="sendRequestField d-flex flex-column me-3">
+                <input id="friend-email" v-model="friend" type="text" class="text-input-loud me-3" placeholder="Enter a Walkley username to send a friend request" required />
+                <h6 style="color:red" class="mt-1" v-if="error">{{ error }}</h6>
+                <h6 style="color:green" class="mt-1" v-if="success">{{ success }}</h6>
+            </div>
+            <button type="submit" class="btn-primary sendRequestButton align-self-start">Send request</button>
             <br/>
-            <button type="submit">Add</button>
         </form>
-        <br/>
-        <h2>Friend Requests</h2>
-        <ListComponent v-bind:dataArray="friendRequests" v-slot="slotProps">
+        <!-- <br/> -->
+        <!-- <h2>Friend Requests</h2> -->
+        <!-- <UserListComponent v-bind:users="friendRequests" :addButtonShowing="true"/> -->
+        
+        <h4 class="mt-4 mb-3">Friend requests</h4>
+        <ListComponent v-bind:dataArray="friendRequests" v-slot="slotProps" v-if="friendRequests.length > 0">
             <UserList2ButtonItemComponent v-bind:user="slotProps.data" :button1="acceptButtonDict" :button2="rejectButtonDict"/>
         </ListComponent>
+        <p v-if="friendRequests.length == 0 && !loadingFriendRequests" class="greyText">You have no incoming friend requests</p>
+        <p v-if="loadingFriendRequests" class="greyText">Loading friend requests...</p>
     </div>
 </template>
 
@@ -35,7 +41,8 @@ export default {
             rejectButtonDict: {
                 action: this.rejectRequest,
                 text: "Reject",
-            }
+            },
+            loadingFriendRequests: true,
         };
     },
     methods: {
@@ -43,6 +50,7 @@ export default {
             axiosAuth.get('/friends/get-requests').then(
                 response => {
                     this.friendRequests = response.data.requests;
+                    this.loadingFriendRequests = false;
                 }
             )
         },
@@ -82,4 +90,15 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.sendRequestField{
+    width: 100%;
+}
+
+.sendRequestButton{
+    white-space: nowrap;
+    width: auto;
+}
+</style>
 
