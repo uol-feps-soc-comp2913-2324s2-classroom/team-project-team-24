@@ -19,7 +19,17 @@ export default {
         async handleRegister() {
             if (this.password !== this.confirmPassword) {
                 this.errorText = "Passwords do not match";
-                return
+                return;
+            }
+            
+            else if (this.username.length < 6) {
+                this.errorText = "Username must be at least 6 characters";
+                return;
+            }
+            
+            else if (this.password.length < 8) {
+                this.errorText = "Password must be at least 8 characters";
+                return;
             }
 
             let formData = {
