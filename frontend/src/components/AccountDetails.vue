@@ -26,9 +26,6 @@ export default {
                 }
             )
         },
-        changePassword() {
-            
-        },
         deleteAccount() {
             axiosAuth.get('/account/delete').then(
                 response => {
@@ -76,7 +73,7 @@ export default {
                 <td>
                     <div class="d-flex flex-row justify-content-between align-items-center">
                         <span class="bold">********</span>
-                        <span class="pe-5"><button class="btn-secondary" @click="changePassword">Change</button></span>
+                        
                         
                     </div>
                 </td>
