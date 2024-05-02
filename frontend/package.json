@@ -8,6 +8,7 @@
         "lint": "vue-cli-service lint"
     },
     "dependencies": {
+        "@canvasjs/vue-charts": "^1.0.4",
         "apexcharts": "^3.49.0",
         "axios": "^1.6.7",
         "bootstrap": "^5.3.3",
@@ -18,7 +19,6 @@
         "vue-chartjs": "^5.3.1",
         "vue-router": "^4.3.0",
         "vue3-apexcharts": "^1.5.2",
-        "vue3-chart-v2": "^0.8.3",
         "vuex": "^4.0.2"
     },
     "devDependencies": {
