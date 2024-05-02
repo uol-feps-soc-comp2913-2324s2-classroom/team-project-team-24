@@ -37,6 +37,11 @@ bp = Blueprint('owner', __name__, url_prefix='/owner')
 @jwt_required()
 @membership_required
 def get_owner_membership_data():
+    user = get_current_user()
+
+    if not user.is_owner:
+        return jsonify({"error": "Not authorised"}), 400
+
     response = {}
     response["numUsers"] = len(User.query.all())
 
@@ -74,6 +79,10 @@ def get_owner_membership_data():
 @jwt_required()
 @membership_required
 def get_future_revenue():
+    user = get_current_user()
+    if not user.is_owner:
+        return jsonify({"error": "Not authorised"}), 400
+
     response = {}
 
     # set up data list with valid dates
