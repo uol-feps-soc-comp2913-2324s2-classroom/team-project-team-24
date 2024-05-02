@@ -1,107 +1,111 @@
-<script>
+<template>
+  <div class="trail-list-item">
+    <div class="trail-info" @click="viewTrail">
+      <input
+        type="checkbox"
+        class="routes-checkbox"
+        :value="trail.id"
+        v-model="checked"
+        @click.stop
+        @change="onCheckboxChange"
+      />
+      <h3>{{ trail.name }}</h3>
+      <p>{{ trail.date }}</p>
+      <p>{{ trail.type }}</p>
+    </div>
+    <div class="button-container">
+      <button
+    class="btn-tertiary zoom-button"
+    v-if="isSelected"
+    @click="zoomToTrail"
+  >
+        Zoom
+      </button>
+      <button class="btn-primary" @click.stop="downloadTrail">Download</button>
+      <button class="btn-danger" @click.stop="deleteTrail">Delete</button>
+    </div>
+  </div>
+</template>
 
+<script>
 import axiosAuth from "@/api/axios-auth.js";
+
 export default {
-    name: "TrailListItemComponent",
-    props: {
-        trailID: {
-            type: Number
-        }
+  name: "TrailListItem",
+  props: {
+    trail: {
+      type: Object,
+      required: true,
     },
-    data() {
-        return {
-            name: "",
-            date: "",
-            type: "",
-        };
+  },
+  data() {
+    return {
+      checked: false,
+    };
+  },
+  computed: {
+    isSelected() {
+      return this.checked;
     },
-    methods: {
-        getPageData() {
-            axiosAuth.post('/trail/get-data', {
-                trailID: this.trailID,
-            }).then(
-                response => {
-                    this.name = response.data.name;
-                    this.date = response.data.date;
-                    this.type = response.data.type;
-                }
-            )
-        },
-        viewTrail() {
-            this.$router.push({path: "/mytrail", query: {trailID: this.trailID}});
-        },
-        downloadTrail() {
-            console.log("downloadTrail");
-        },
-        deleteTrail() {
-            axiosAuth.post('/trail/delete', {
-                trailID: this.trailID,
-            }).then(
-                response => {
-                    console.log(response.status);
-                    this.$parent.$parent.getPageData();
-                }
-            )
-            
-        }
+  },
+  methods: {
+    onCheckboxChange() {
+    this.$emit('trail-selected', {
+      trailId: this.trail.id,
+      checked: this.checked,
+    });
+  },
+    zoomToTrail() {
+      this.$emit("zoom-to-trail", this.trail.id);
     },
-    created() {
-        this.getPageData();
+    viewTrail() {
+      this.$router.push({ path: "/mytrail", query: { trailID: this.trail.id } });
     },
-    components: {
-    }
+    downloadTrail() {
+      // Implement the logic to download the trail data
+      
+    },
+    deleteTrail() {
+      axiosAuth
+        .post("/trail/delete", { trailID: this.trail.id })
+        .then(() => {
+          this.$emit("trail-deleted", this.trail.id);
+        })
+        .catch((error) => {
+          console.error("Error deleting trail:", error);
+        });
+    },
+  },
 };
 </script>
 
-<template>
-  <div class="outer" @click="viewTrail">
-      <div class="name-type">
-        <h3>{{ name }}</h3>
-        <h5>{{ type }}</h5>
-      </div>
-      <div class="trail-date">
-        <h5>{{ date }}</h5>
-      </div>
-      <div class="button-container">
-        <button class="btn-primary" @click.stop="downloadTrail">Download</button>
-        <button class="btn-danger" @click.stop="deleteTrail">Delete</button>
-      </div>
-  </div>
-</template>
-  
+
 <style scoped>
-.outer {
+.trail-list-item {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #ddd; /* Add a border bottom for separation */
+  border-bottom: 1px solid #ddd;
   cursor: pointer;
 }
 
-.name-type {
-  display: flex;
-  align-items: flex-start; /* Align items vertically at the start */
-  align-items: center; /* Align buttons vertically */
+.trail-info {
+  flex-grow: 1;
 }
 
-.name-type h3 {
-  margin-right: 20px; /* Add space between trailName and trailType */
-  align-items: center; /* Align buttons vertically */
-}
-
-.trail-date {
-  align-items: center; /* Align buttons vertically */
-}
 .button-container {
   display: flex;
-  align-items: center; /* Align items vertically */
+  gap: 10px;
 }
-.btn-primary {
-  margin-right: 15px; /* Add margin to the right of the primary button */
+
+.zoom-button {
+  margin-left: 3px;
 }
-.btn-danger {
-  margin-left: 7px; /* Add margin to the left of the danger button */
+
+.routes-checkbox {
+  margin-right: 10px;
 }
+
 
 </style>

@@ -4,10 +4,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+import stripe
 
 app = Flask(__name__)
 CORS(app)
 
+stripe.api_key = "sk_test_51PBedsRq4UQ9omwxmLSrDcG9TL8bmhprG5G7LFiCszpoghpS2QTZjjimEO4571P4h40WQNgv8pOhiVXHvi2wuGq60093lrCCiF"
 # Load environment variables from .env file (used for SECRET_KEY)
 load_dotenv()
 
@@ -40,7 +42,6 @@ from app import views, models
 def user_identity_lookup(user):
     return user.id
 
-print([x.username for x in models.User.query.all()])
 @jwt.user_lookup_loader
 def user_lookup_callback(_jwt_header, jwt_data):
     identity = jwt_data["sub"]

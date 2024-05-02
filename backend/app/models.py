@@ -12,10 +12,6 @@ routeInGroup = db.Table('route_in_group', db.Model.metadata,
                         db.Column('group_id', db.Integer, db.ForeignKey("group.id"), primary_key=True))
 
 # NORMAL ORM CLASSES
-class Owner(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(32), unique=True, nullable=False)
-    password = db.Column(db.String(64), nullable=False)
 
 class Friend(db.Model):
     user_1_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
@@ -69,6 +65,10 @@ class MembershipPlan(db.Model):
     cost = db.Column(db.Float)
     payment_regularity = db.Column(db.String(32))
     
+    # For the stripe payment
+    stripe_product = db.Column(db.String(64))
+    stripe_price = db.Column(db.String(64))
+    
     # lazy="dynamic" means that to use this parameter, you need to call methods on it
     # like m.members.all() or m.members.first() etc.
     members = db.relationship("User", back_populates="membership", lazy="dynamic")
@@ -78,10 +78,12 @@ class User(db.Model):
     username = db.Column(db.String(32), unique=True, nullable=False)
     password = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(32))
-    profile_picture = db.Column(db.LargeBinary)
     gender = db.Column(db.String(32))
     age = db.Column(db.Integer)
     membership_id = db.Column(db.Integer, db.ForeignKey("membership_plan.id"))
+    membership_start_date = db.Column(db.DateTime)
+    is_owner = db.Column(db.Boolean, default=False)
+    stripe_subscription = db.Column(db.String(64))
     
     membership = db.relationship("MembershipPlan", foreign_keys=[membership_id])
     groups = db.relationship('Group', secondary=userInGroup, back_populates="members")

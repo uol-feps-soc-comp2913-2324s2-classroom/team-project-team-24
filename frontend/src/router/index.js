@@ -1,21 +1,38 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'
-import apiTests from '../views/apiTests.vue'
-import ActivityCenter from '../views/ActivityCenter.vue'
-import Community from '../views/Community.vue'
-import Membership from '../views/Membership.vue'
-import MyAccount from '../views/MyAccount.vue'
-import MyTrail from '../views/MyTrail.vue'
-import StylingGuide from '../views/StylingGuide.vue'
-import MyGroup from '@/views/Group.vue'
-import ResetPassword from '@/views/ResetPassword.vue'
-import UploadTrail from '@/views/UploadTrail.vue'
-import OwnerPage from '@/views/OwnerPage.vue'
-import axiosAuth from '@/api/axios-auth'
+import WelcomePage from "../views/Welcome.vue";
+import Login from "../views/Login.vue";
+import Register from "../views/Register.vue";
+import apiTests from "../views/apiTests.vue";
+import ActivityCenter from "../views/ActivityCenter.vue";
+import Community from "../views/Community.vue";
+import Membership from "../views/Membership.vue";
+import MyAccount from "../views/MyAccount.vue";
+import MyTrail from "../views/MyTrail.vue";
+import StylingGuide from "../views/StylingGuide.vue";
+import MyGroup from "@/views/Group.vue";
+import ResetPassword from "@/views/ResetPassword.vue";
+import UploadTrail from "@/views/UploadTrail.vue";
+import OwnerPage from "@/views/OwnerPage.vue";
+import axiosAuth from "@/api/axios-auth";
+
+// Defines a variable using environment variables to disable
+// logins for development purposes.
+// Checks if environment variable VUE_APP_DISABLE_LOGIN exists
+// If it exists takes its boolean value to disable or enable login
+// Defaults to true if the variable doesn't exist (requiring login)
+const authRequired =
+  process.env.VUE_APP_DISABLE_LOGIN !== undefined
+    ? !JSON.parse(process.env.VUE_APP_DISABLE_LOGIN)
+    : true;
+console.log(process.env.VUE_APP_DISABLE_LOGIN);
 
 const routes = [
+    {
+        path: '/welcome',
+        name: 'Welcome',
+        component: WelcomePage,
+    },
     {
         path: '/login',
         name: 'Login',
@@ -47,7 +64,7 @@ const routes = [
         path: '/membership',
         name: 'Membership',
         component: Membership,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
     {
         path: '/group',
@@ -59,7 +76,7 @@ const routes = [
         path: '/myaccount',
         name: 'Account',
         component: MyAccount,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
     {
         path: '/mytrail',
@@ -82,7 +99,7 @@ const routes = [
         path: '/stylingguide',
         name: 'StylingGuide',
         component: StylingGuide,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
     {
         path: '/owner',
@@ -100,7 +117,9 @@ router.beforeEach((to, from, next) => {
     let token = localStorage.getItem('token');
     let requireAuth = to.matched.some(record => record.meta.requiresAuth);
     let requireMembership = to.matched.some(record => record.meta.requiresMembership);
-    
+    if (to.path === '/'){
+        next('/welcome');
+    }
     if (to.path === '/login') {
         if (token) {
             axiosAuth.post('/auth/verify-token').then(() => {
@@ -128,7 +147,6 @@ router.beforeEach((to, from, next) => {
         axiosAuth.post('/auth/verify-token').then(() => {
             axiosAuth.get('/membership/get-current').then(
                 response => {
-                    console.log(response.data.membership !== null);
                     if (response.data.membership !== null) {
                         next();
                     } else {
@@ -139,8 +157,6 @@ router.beforeEach((to, from, next) => {
                 error => {
                     if (error.response.status !== 200) {
                         next('/membership');
-                    } else {
-                        console.log(error);
                     }
                 }
             )
@@ -148,6 +164,7 @@ router.beforeEach((to, from, next) => {
             next('/login');
         })
     }
-})
+
+});
 
 export default router

@@ -34,6 +34,8 @@ class GPX:
         if not map:
             map = folium.Map(location=[latitude,longitude],zoom_start=zoom)
         folium.PolyLine(points, color="red", weight=2.5, opacity=1).add_to(map)
+        map_html = map._repr_html_()
+        return map_html
         #return map - displays map directly in browser
 
         # Render the map to an HTML string
@@ -93,28 +95,3 @@ class GPX:
         distance_km = self.get_total_distance_km()
         duration_hours = self.get_duration() / 3600
         return distance_km / duration_hours
-
-if __name__ =="__main__":
-    with open("../example_data/track1.gpx", "r") as file:
-        data = file.read()
-
-    gpx = GPX(data)
-    print(str(gpx.time))
-    print(gpx.get_total_distance_km())
-    hours = int(gpx.get_duration() / 3600)
-    minutes = int(gpx.get_duration() % 3600 / 60)
-    seconds = int(gpx.get_duration() % 60)
-    print(hours, minutes, seconds)
-    print(gpx.get_speed())
-
-    with open("../example_data/track2.gpx", "r") as file:
-        data = file.read()
-
-    gpx = GPX(data)
-    print(str(gpx.time))
-    print(gpx.get_total_distance_km())
-    hours = int(gpx.get_duration() / 3600)
-    minutes = int(gpx.get_duration() % 3600 / 60)
-    seconds = int(gpx.get_duration() % 60)
-    print(hours, minutes, seconds)
-    print(gpx.get_speed())

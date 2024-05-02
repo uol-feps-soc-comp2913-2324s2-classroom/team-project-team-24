@@ -17,11 +17,12 @@ def hash_pwd(password):
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(encode, salt)
 
-def create_user(username, password, email=None):
+def create_user(username, password, email=None, is_owner: None=False):
     u = User()
     u.username = username
     u.password = hash_pwd(password)
     u.email = email
+    u.is_owner = is_owner
     db_add(u)
     return u
 
@@ -54,7 +55,6 @@ def create_route_from_file(file_path, name, exercise_type, user_id):
     return Route.query.filter_by(user_id=user_id, name=name).first().id
 
 def clear_db():
-    delete_all(Owner)
     delete_all(FriendRequest)
     delete_all(Friend)
     delete_all(Route)
@@ -82,11 +82,12 @@ def get_routes_by_user_id(id: int) -> list:
 
     return Route.query.filter_by(user_id=id)
 
-def get_test_user_headers(username, password, membership=True):
+def get_test_user_headers(username, password, membership=True, is_owner: None=False):
     if User.query.filter_by(username=username).first() == None:
         u = User()
         u.username = "u1"
         u.password = hash_pwd("pwd")
+        u.is_owner = is_owner
         if membership:
             memberships = MembershipPlan.query.all()
             if len(memberships) != 0:
@@ -126,7 +127,6 @@ def remove_friendship(user1_id: int, user2_id: int):
                 and_(Friend.user_1_id==user2_id, Friend.user_2_id==user1_id)
             )).first()
         
-        # print(friendship)
         db.session.delete(friendship)
         db.session.commit()
 
@@ -245,6 +245,7 @@ def create_membership_plan(name: str, regularity: str, price: float):
 def set_user_membership_plan(user_id: int, membership_id: int):
     user = User.query.filter_by(id=user_id).first()
     user.membership_id = membership_id
+    user.membership_start_date = datetime.date.today()
     db.session.commit()
 
 def delete_user_membership(user_id: int):

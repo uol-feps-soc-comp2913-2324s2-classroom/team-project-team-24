@@ -12,8 +12,6 @@ export default {
     },
     methods: {
         async handleRegister() {
-            console.log("Registering...");
-            console.log("age", this.age);
             await axiosAuth.post('/account/set-details', {
                 gender: this.gender,
                 age: this.age,
