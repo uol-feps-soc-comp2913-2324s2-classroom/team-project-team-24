@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     onCheckboxChange() {
-    console.log('TrailListItem: onCheckboxChange called with trailId:', this.trail.id, 'checked:', this.checked);
     this.$emit('trail-selected', {
       trailId: this.trail.id,
       checked: this.checked,
@@ -64,13 +63,12 @@ export default {
     },
     downloadTrail() {
       // Implement the logic to download the trail data
-      console.log("Download trail:", this.trail.id);
+      
     },
     deleteTrail() {
       axiosAuth
         .post("/trail/delete", { trailID: this.trail.id })
-        .then((response) => {
-          console.log("Trail deleted:", response.data);
+        .then(() => {
           this.$emit("trail-deleted", this.trail.id);
         })
         .catch((error) => {

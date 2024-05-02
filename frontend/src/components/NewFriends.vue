@@ -50,7 +50,6 @@ export default {
             axiosAuth.get('/friends/get-requests').then(
                 response => {
                     this.friendRequests = response.data.requests;
-                    console.log("FriendRequests: " + this.friendRequests);
                     this.loadingFriendRequests = false;
                 }
             )
@@ -65,26 +64,19 @@ export default {
             }).catch(error => {
                 this.error = error.response.data.error;
                 this.success = null;
-                console.log(error.response.data.error);
             })
         },
         async acceptRequest(userID) {
-            console.log("ID: " + userID);
             await axiosAuth.post("/friends/accept-request",  {
                 fromUserID: userID,
-            }).catch(error => {
-                console.log(error.response.data.error);
-            })
+            }).catch(() => {});
             this.getPageData();
             this.$parent.getPageData();
         },
         async rejectRequest(userID) {
-            console.log("ID: " + userID);
             await axiosAuth.post("/friends/reject-request",  {
                 fromUserID: userID,
-            }).catch(error => {
-                console.log(error.response.data.error);
-            })
+            }).catch(() => {});
             this.getPageData();
             this.$parent.getPageData();
         },

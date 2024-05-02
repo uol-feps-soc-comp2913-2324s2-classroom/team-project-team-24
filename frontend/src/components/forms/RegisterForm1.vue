@@ -33,11 +33,9 @@ export default {
                     localStorage.setItem('token', response.data.token);
                     this.$parent.form1Submit();
                 } else {
-                    console.log("register error");
                     this.errorText = response.data.error;
                 }
             }).catch(error => {
-                console.log("register error", error);
                 this.errorText = error.response.data.error;
             });
         },

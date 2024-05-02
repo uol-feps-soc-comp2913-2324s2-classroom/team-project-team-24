@@ -15,9 +15,6 @@ export default {
             required: true,
         },
     },
-    created() {
-        console.log("MapViewerComponent: selectedTrails prop:", this.selectedTrails);
-    },
     data() {
         return {
             mapHtml: "",
@@ -31,17 +28,16 @@ export default {
     },
     methods: {
         async fetchSelectedTrails() {
-            try {
-                console.log('MapViewer: fetchSelectedTrails called with selectedTrails:', this.selectedTrails);
-                const response = await axiosAuth.post("/trail/get-selected-map", {
-                    trailIDs: this.selectedTrails,
-                });
-                this.mapHtml = response.data.mapHtml;
-            } catch (error) {
-                console.error("Error fetching selected trails map:", error);
-            }
-        },
-    },
+    try {
+      const response = await axiosAuth.post("/trail/get-selected-map", {
+        trailIDs: this.selectedTrails,
+      });
+      this.mapHtml = response.data.mapHtml;
+    } catch (error) {
+      console.error("Error fetching selected trails map:", error);
+    }
+  },
+  },
 }
 </script>
 

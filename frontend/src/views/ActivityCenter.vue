@@ -80,17 +80,6 @@ export default {
                 })
         },
         handleTrailSelected({ trailId, checked }) {
-            console.log(
-                'ActivityCenter: handleTrailSelected called with trailId:',
-                trailId,
-                'checked:',
-                checked
-            )
-            console.log(
-                'ActivityCenter: selectedTrails before update:',
-                this.selectedTrails
-            )
-
             if (checked) {
                 // Trail not already in the array, add it
                 this.selectedTrails = [...this.selectedTrails, trailId]
@@ -100,11 +89,6 @@ export default {
                     (id) => id !== trailId
                 )
             }
-
-            console.log(
-                'ActivityCenter: selectedTrails after update:',
-                this.selectedTrails
-            )
         },
     },
     components: {

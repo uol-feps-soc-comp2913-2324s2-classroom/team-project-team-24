@@ -55,10 +55,7 @@ export default {
                         this.hasTimeData = false;
                     }
                 }
-            ).catch(error => {
-                console.log("error");
-                console.log(error.response.data.error);
-            })
+            ).catch(() => {});
         }
     },
     created() {

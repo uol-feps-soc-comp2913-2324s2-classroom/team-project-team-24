@@ -90,7 +90,6 @@ def get_longest_trail():
 
 
     # get trail IDs from trails
-    print(longest)
     # return trails
     return jsonify({
         "trailID": longest["trailID"]
@@ -200,7 +199,6 @@ def get_selected_trails_map():
     
     # Get the trail IDs from the request
     trail_ids = request.get_json().get("trailIDs")
-    print("Received Trail IDs: ", trail_ids) # For Debugging
     
     # Make a new folium map
     map_obj = folium.Map(location=[0, 0], zoom_start=2)
@@ -230,7 +228,6 @@ def get_selected_trails_map():
     
     # Get the html representation of the map object
     map_html = map_obj._repr_html_()
-    print("Generated Map HTML. ") # For Debugging
     
     # Return map html as a json
     return jsonify({"mapHtml": map_html})
@@ -406,7 +403,6 @@ def upload():
     db.session.commit()
     
     routeID = Route.query.filter(and_(Route.name == route_name, Route.user_id == user_id)).first().id
-    print(routeID)
     return jsonify({
         "trailID": routeID,
     })
