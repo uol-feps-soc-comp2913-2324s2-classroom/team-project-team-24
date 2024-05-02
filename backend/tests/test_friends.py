@@ -170,6 +170,21 @@ def test_send_friend_request_already_friends(client):
     assert response.status_code == 400
     assert b"Users are already friends" in response.data
 
+def test_send_friend_request_to_self(client):
+    delete_all(FriendRequest)
+    delete_all(Friend)
+    delete_all(User)
+
+    headers = get_test_user_headers("u1", "pwd")
+    user_1 = User.query.filter_by(username="u1").first()
+
+    response = client.post("/friends/send-request",
+                           content_type='application/json',
+                           data=json.dumps({"receiveUserID": user_1.id}),
+                           headers=headers)
+    assert response.status_code == 400
+    assert b"Cannot send friend request to self" in response.data
+
 def test_send_friend_request_missing_id(client):
     delete_all(FriendRequest)
     delete_all(Friend)
