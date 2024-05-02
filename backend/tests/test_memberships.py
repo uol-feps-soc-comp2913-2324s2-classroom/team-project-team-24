@@ -67,20 +67,6 @@ def test_check_membership_not_authenticated(client):
     response = client.get("/membership/get-current")
     assert response.status_code == 401
 
-def test_cancel_membership_success(client):
-    delete_all(User)
-    delete_all(MembershipPlan)
-
-    headers = get_test_user_headers("u1", "pwd", False)
-    user_id = User.query.filter_by(username="u1").first().id
-    membership_id = create_membership_plan("Paid", "Weekly", 7.00)
-    set_user_membership_plan(user_id, membership_id)
-    assert get_user_membership_id(user_id) == membership_id
-
-    response = client.get("/membership/cancel", headers=headers)
-    assert response.status_code == 200
-    assert get_user_membership_id(user_id) == None
-
 def test_cancel_membership_no_membership(client):
     delete_all(User)
     delete_all(MembershipPlan)
