@@ -7,7 +7,10 @@
 export default {
     name: 'topNavRailedGroupMembers',
     props: {
-
+        lastSelectedElement: {
+            type: Number,
+            default: 0,
+        }
     },
     data() {
         return {
@@ -60,7 +63,6 @@ export default {
     },
     methods: {
         handleClicked(event) {
-
             const clickedElement = event.target.getBoundingClientRect();
             const parentElement = event.target.parentNode.getBoundingClientRect();
             this.selectionTrainStyle.width = `${clickedElement.width}px`
@@ -84,18 +86,38 @@ export default {
             }
 
             this.$emit('NavElementClicked', event.target.getAttribute('id'));
+        },
+        goToElement(lastElementId){
+            // Used if the user closes the modal and is still selected on not the first element
+            const clickedElement = document.getElementById(lastElementId).getBoundingClientRect();
+            const parentElement = document.getElementById(lastElementId).parentNode.getBoundingClientRect();
+            this.selectionTrainStyle.width = `${clickedElement.width}px`
+            this.selectionTrainStyle.transform = `translateX(${clickedElement.left - parentElement.left}px) translateY(-4px)`
+
+            const navElements = document.querySelectorAll('.navElements');
+            navElements.forEach((element) => {
+                element.style.color = 'var(--topNavElementUnselectedTextColor)';
+            });
+
+            for (let i = 0; i < this.navStyles.length; i++) {
+                if (i == lastElementId) {
+                    this.navStyles[i].color = 'var(--text-color)';
+                    continue;
+                } else {
+                    this.navStyles[i].color = 'var(--topNavElementUnselectedTextColor)';
+                }
+            }
+
+            this.$emit('NavElementClicked', lastElementId);
         }
     },
     components: {
         // topNavElement,
     },
     mounted() {
-
         this.$nextTick(() => {
+            // Initialize the rail and train
             const navElements = document.querySelectorAll('.navElements');
-
-            // // Set the current selection to the nav first element
-            console.log(this.$refs);
 
             // Set the width of the rail to the size of all the nav elements
             let width = 0;
@@ -105,7 +127,10 @@ export default {
             this.railStyle.width = `${width - 30}px`;
 
             // Set the width of the train to the size of the first nav element
-            this.selectionTrainStyle.width = `${navElements[0].children[0].getBoundingClientRect().width}px`;
+            // this.selectionTrainStyle.width = `${navElements[0].children[0].getBoundingClientRect().width}px`;
+
+            // Send the train to the last selected element
+            this.goToElement(this.lastSelectedElement);
         });
     },
 };
@@ -114,13 +139,8 @@ export default {
 <template>
     <div class="top-nav-railed">
         <div class="navElements mb-2">
-            <router-link @click="handleClicked" to="#" id="0" class="topNavElement" :style="navStyles[0]">Group Members</router-link>
-            <router-link @click="handleClicked" to="#" id="1" class="topNavElement" :style="navStyles[1]">Add Members</router-link>
-
-            <!-- <topNavElement ref="navElement" @NavElementClicked="handleClicked" to="#" id="1">Friends</topNavElement>
-            <topNavElement ref="navElement" @NavElementClicked="handleClicked" to="#" id="2">Groups</topNavElement>
-            <topNavElement ref="navElement" @NavElementClicked="handleClicked" to="#" id="3">Add Friends</topNavElement>
-            <topNavElement ref="navElement" @NavElementClicked="handleClicked" to="#" id="3">Friend Requests</topNavElement> -->
+            <div @click="handleClicked" id="0" class="topNavElement" :style="navStyles[0]">Group Members</div>
+            <div @click="handleClicked" id="1" class="topNavElement" :style="navStyles[1]">Add Members</div>
         </div>
         <div id="selection-rail" class="selectionRail" :style="railStyle"></div>
         <div id="selection-train" class="selectorTrain" :style="selectionTrainStyle"></div>
@@ -150,6 +170,7 @@ export default {
 
 .topNavElement{
     text-decoration: none;
+    cursor: pointer;
     /* color: var(--topNavElementUnselectedTextColor); */
 }
 </style>

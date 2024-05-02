@@ -38,6 +38,34 @@
     border-color: var(--app-green-pressed);
 }
 
+.btn-primary-action-blue {
+    background-color: var(--action-blue-lighter);
+    border: 3px solid var(--action-blue-lighter);
+    font-weight: bold;
+    color: white;
+    padding-top: var(--button-padding-vertical);
+    padding-bottom: var(--button-padding-vertical);
+    padding-left: var(--button-padding-horizontal);
+    padding-right: var(--button-padding-horizontal);
+    /* padding: 0.4rem 1.5rem; */
+    text-align: center;
+    text-decoration: none;
+    display: inline;
+    transition: background-color 0.2s, border-color 0.2s;
+    cursor: pointer;
+    border-radius: 99999px;
+}
+
+.btn-primary-action-blue:hover {
+    background-color: var(--action-blue-lighter-hover);
+    border-color: var(--action-blue-lighter-hover);
+}
+
+.btn-primary-action-blue:active {
+    background-color: var(--action-blue-ligther-pressed);
+    border-color: var(--action-blue-ligther-pressed);
+}
+
 /* Secondary button styles */
 .btn-secondary {
     background-color: var(--l1-color);
@@ -95,6 +123,36 @@
 }
 
 .btn-tertiary:active {
+    background-color: var(--tertiary-button-grey-active);
+    border-color: var(--tertiary-button-grey-active);
+}
+
+.btn-tertiary-blue {
+    background-color: var(--tertiary-button-grey);
+    border-style: solid;
+    border-color: var(--tertiary-button-grey);
+    border-width: 3px;
+    font-weight: bold;
+    color: var(--action-blue);
+    padding-top: var(--button-padding-vertical);
+    padding-bottom: var(--button-padding-vertical);
+    padding-left: var(--button-padding-horizontal);
+    padding-right: var(--button-padding-horizontal);
+    /* padding: 0.4rem 1.5rem; */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    cursor: pointer;
+    border-radius: 99999px;
+}
+
+.btn-tertiary-blue:hover {
+    background-color: var(--tertiary-button-grey-hover);
+    border-color: var(--tertiary-button-grey-hover);
+}
+
+.btn-tertiary-blue:active {
     background-color: var(--tertiary-button-grey-active);
     border-color: var(--tertiary-button-grey-active);
 }

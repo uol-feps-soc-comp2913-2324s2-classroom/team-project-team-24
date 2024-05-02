@@ -43,6 +43,7 @@ export default {
             trailsModalShowSharedTrails: true,
             trailsModalShowAddTrails: false,
             lastTrailsModalView: 0,
+            lastGroupMembersModalView: 0,
         };
     },
     methods: {
@@ -198,14 +199,14 @@ export default {
         },
         handleNavElementClicked(id) {
             id = parseInt(id);
+            // Commented out because turns out user experience is better without it
+            // this.lastGroupMembersModalView = id;
             switch (id) {
                 case 0:
                     this.groupModalShowMembersHandle();
-                    console.log("Showing members")
                     break;
                 case 1:
                     this.groupModalShowAddMembersHandle();
-                    console.log("Showing add members")
                     break;
                 default:
                     console.log("Unknown");
@@ -226,7 +227,8 @@ export default {
         },
         handleNavElementClickedTrails(id) {
             id = parseInt(id);
-            this.lastTrailsModalView = id;
+            // Commented out because turns out user experience is better without it
+            // this.lastTrailsModalView = id;
             switch (id) {
                 case 0:
                     this.trailsModalShowSharedTrails = true;
@@ -288,8 +290,7 @@ export default {
                 }
             });
 
-        }
-
+        },
     },
     components: {
         MapViewerComponent,
@@ -327,7 +328,7 @@ export default {
 
             <ModalComponent :is-open="showTrails" @update:is-open="showTrails = $event; closeTrailsPopup">
                 <div class="addTrailsModalWindow d-flex flex-column">
-                    <topNavRailedGroupTrails @NavElementClicked="handleNavElementClickedTrails" class="mb-3" />
+                    <topNavRailedGroupTrails @NavElementClicked="handleNavElementClickedTrails" class="mb-3" :lastSelectedElement="lastTrailsModalView"/>
                     <div v-if="trailsModalShowSharedTrails" class="mb-4">
                         <div class="scrollable mb-4">
                             <ListComponent v-bind:dataArray="groupTrails" v-slot="slotProps"
@@ -355,7 +356,7 @@ export default {
                 </div>
             </ModalComponent>
 
-            <ModalComponent :is-open="showFriends" @update:is-open="showFriends = $event">
+            <ModalComponent :is-open="showFriends" @update:is-open="showFriends = $event" :lastSelectedElement="lastGroupMembersModalView">
                 <div class="groupMembersModalWindow d-flex flex-column">
                     <topNavRailedGroupMembers @NavElementClicked="handleNavElementClicked" class="mb-3" />
                     <div v-if="groupModalShowMembers">
@@ -397,6 +398,11 @@ export default {
 </template>
 
 <style scoped>
+.slightlySmaller {
+    width: 99.5%;
+    margin-left: 1px;
+}
+
 .backButton {
     width: 23px;
     height: 23px;
@@ -441,11 +447,6 @@ p {
 h3 {
     margin: 0;
 
-}
-
-.slightlySmaller {
-    width: 99.5%;
-    margin-left: 1px;
 }
 
 .scrollableList {

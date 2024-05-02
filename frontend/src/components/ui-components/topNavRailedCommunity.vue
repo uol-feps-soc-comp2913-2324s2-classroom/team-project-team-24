@@ -119,14 +119,9 @@ export default {
 <template>
     <div class="top-nav-railed">
         <div class="navElements mb-2">
-            <router-link @click="handleClicked" to="#" id="0" class="topNavElement" :style="navStyles[0]">Friends</router-link>
-            <router-link @click="handleClicked" to="#" id="1" class="topNavElement" :style="navStyles[1]">Groups</router-link>
-            <router-link @click="handleClicked" to="#" id="2" class="topNavElement" :style="navStyles[2]">Add Friends</router-link>
-
-            <!-- <topNavElement ref="navElement" @NavElementClicked="handleClicked" to="#" id="1">Friends</topNavElement>
-            <topNavElement ref="navElement" @NavElementClicked="handleClicked" to="#" id="2">Groups</topNavElement>
-            <topNavElement ref="navElement" @NavElementClicked="handleClicked" to="#" id="3">Add Friends</topNavElement>
-            <topNavElement ref="navElement" @NavElementClicked="handleClicked" to="#" id="3">Friend Requests</topNavElement> -->
+            <div @click="handleClicked" id="0" class="topNavElement" :style="navStyles[0]">Friends</div>
+            <div @click="handleClicked" id="1" class="topNavElement" :style="navStyles[1]">Groups</div>
+            <div @click="handleClicked" id="2" class="topNavElement" :style="navStyles[2]">Add Friends</div>
         </div>
         <div id="selection-rail" class="selectionRail" :style="railStyle"></div>
         <div id="selection-train" class="selectorTrain" :style="selectionTrainStyle"></div>
@@ -156,6 +151,7 @@ export default {
 
 .topNavElement{
     text-decoration: none;
+    cursor: pointer;
     /* color: var(--topNavElementUnselectedTextColor); */
 }
 </style>

@@ -4,7 +4,7 @@
         <div class="userListUNameandButton my-2 px-4">
             <p>{{ this.user.name }}</p>
             <div class="2buttons">
-                <button v-if="this.button1.text !== null" class="btn-quiet-action-blue me-5" @click.prevent="this.button1.action(this.user.id)">{{ this.button1.text }}</button>
+                <button v-if="this.button1.text !== null" class="btn-quiet-action-blue me-3" @click.prevent="this.button1.action(this.user.id)">{{ this.button1.text }}</button>
                 <button v-if="this.button2.text !== null" class="btn-quiet-danger" @click.prevent="this.button2.action(this.user.id)">{{ this.button2.text }}</button>
             </div>
         </div>

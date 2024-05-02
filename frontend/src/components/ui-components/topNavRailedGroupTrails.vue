@@ -5,7 +5,10 @@
 export default {
     name: 'topNavRailedGroupTrails',
     props: {
-
+        lastSelectedElement: {
+            type: Number,
+            default: 0,
+        }
     },
     data() {
         return {
@@ -50,7 +53,6 @@ export default {
     },
     methods: {
         handleClicked(event) {
-
             const clickedElement = event.target.getBoundingClientRect();
             const parentElement = event.target.parentNode.getBoundingClientRect();
             this.selectionTrainStyle.width = `${clickedElement.width}px`
@@ -77,6 +79,11 @@ export default {
         },
         goToElement(lastElementId){
             // Used if the user closes the modal and is still selected on not the first element
+            const clickedElement = document.getElementById(lastElementId).getBoundingClientRect();
+            const parentElement = document.getElementById(lastElementId).parentNode.getBoundingClientRect();
+            this.selectionTrainStyle.width = `${clickedElement.width}px`
+            this.selectionTrainStyle.transform = `translateX(${clickedElement.left - parentElement.left}px) translateY(-4px)`
+
             const navElements = document.querySelectorAll('.navElements');
             navElements.forEach((element) => {
                 element.style.color = 'var(--topNavElementUnselectedTextColor)';
@@ -100,10 +107,8 @@ export default {
     mounted() {
 
         this.$nextTick(() => {
+            // Initialize the rail and train
             const navElements = document.querySelectorAll('.navElements');
-
-            // // Set the current selection to the nav first element
-            console.log(this.$refs);
 
             // Set the width of the rail to the size of all the nav elements
             let width = 0;
@@ -113,7 +118,11 @@ export default {
             this.railStyle.width = `${width - 30}px`;
 
             // Set the width of the train to the size of the first nav element
-            this.selectionTrainStyle.width = `${navElements[0].children[0].getBoundingClientRect().width}px`;
+            // this.selectionTrainStyle.width = `${navElements[0].children[0].getBoundingClientRect().width}px`;
+
+            // Send the train to the last selected element
+            this.goToElement(this.lastSelectedElement);
+
         });
     },
 };

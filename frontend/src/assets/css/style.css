@@ -6,6 +6,11 @@
     --app-green-hover: #1DB954;
     --app-green-pressed: #1AA34A;
     --action-blue: #0067d5;
+    --action-blue-hover: #0056b3;
+    --action-blue-pressed: #004b9a;
+    --action-blue-lighter: #0095ec;
+    --action-blue-lighter-hover: #007ab8;
+    --action-blue-ligther-pressed: #005f9e;
     --tertiary-green: #00B03F;
     --unselected-color: #646464;
     --selected-color: #000000;
