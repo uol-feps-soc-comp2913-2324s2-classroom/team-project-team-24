@@ -4,10 +4,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+import stripe
 
 app = Flask(__name__)
 CORS(app)
 
+stripe.api_key = "sk_test_51PBedsRq4UQ9omwxmLSrDcG9TL8bmhprG5G7LFiCszpoghpS2QTZjjimEO4571P4h40WQNgv8pOhiVXHvi2wuGq60093lrCCiF"
 # Load environment variables from .env file (used for SECRET_KEY)
 load_dotenv()
 

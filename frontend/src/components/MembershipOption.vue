@@ -29,17 +29,16 @@ export default {
     },
     methods: {
         async buyMembership() {
-            const confirmationMessage = `You are about to purchase the ${this.membership.regularity} membership for ${this.membership.price}. Are you sure?`;
-            if (confirm(confirmationMessage)) {
-                // Proceed with purchasing the membership
-                // You can add your logic here, such as navigating to a checkout page or triggering a payment process
-                await axiosAuth.post('/membership/purchase', {
-                    membershipID: this.membership.id
-                });
-                this.$parent.getPageData();
-            } else {
-                console.log('Purchase cancelled.');
-            }
+            await axiosAuth.post('/membership/get-checkout-session', {
+                membershipID: this.membership.id,
+            }).then(response => {
+                console.log("Response:", response);
+                window.location.href = response.data.url;
+            });
+            // await axiosAuth.post('/membership/purchase', {
+            //     membershipID: this.membership.id
+            // });
+            // this.$parent.getPageData();
         }
 
     },
