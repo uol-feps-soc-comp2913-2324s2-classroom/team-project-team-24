@@ -27,7 +27,6 @@ export default {
             axiosAuth.get('/friends/get-all').then(
                 response => {
                     this.friends = response.data.friends;
-                    console.log("Friends:", this.friends);
                 }
             );
             axiosAuth.get('/groups/get-all').then(
@@ -59,9 +58,7 @@ export default {
         async removeFriend(userID) {
             await axiosAuth.post('/friends/remove', {
                 friendID: userID,
-            }).catch(error => {
-                console.log(error);
-            })
+            }).catch(() => {});
             this.getPageData();
         }
     },

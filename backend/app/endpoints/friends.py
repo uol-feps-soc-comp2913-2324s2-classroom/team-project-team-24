@@ -150,11 +150,8 @@ def accept_friend_request_route():
 @jwt_required()
 @membership_required
 def reject_friend_request_route():
-    print("Rejecting friend request")
     user_id = get_current_user().id
-    print(request)
     from_id = request.get_json().get("fromUserID")
-    print(from_id)
     if from_id == None:
         return jsonify({"error": "Missing ID"}), 400
     

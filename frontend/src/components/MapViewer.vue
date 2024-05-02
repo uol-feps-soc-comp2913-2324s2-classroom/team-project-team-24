@@ -15,9 +15,6 @@
         required: true,
       },
     },
-    created() {
-        console.log("MapViewerComponent: selectedTrails prop:", this.selectedTrails);
-    },
     data() {
       return {
         mapHtml: "",
@@ -32,7 +29,6 @@
     methods: {
         async fetchSelectedTrails() {
     try {
-      console.log('MapViewer: fetchSelectedTrails called with selectedTrails:', this.selectedTrails);
       const response = await axiosAuth.post("/trail/get-selected-map", {
         trailIDs: this.selectedTrails,
       });

@@ -13,10 +13,8 @@ bp = Blueprint('account', __name__, url_prefix='/account')
 def set_account_details():
     # recieve user ID and new password
     user = get_current_user()
-    print("here")
     # Retrieve JSON data
     data = request.get_json()
-    print("handling", data)
     
     # Handle JSON data
     if 'name' in data:
