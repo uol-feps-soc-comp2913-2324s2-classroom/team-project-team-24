@@ -11,3 +11,13 @@ def membership_required(func):
         
     wrapper.__name__ = func.__name__
     return wrapper
+
+def ownership_required(func):
+    def wrapper():
+        if get_current_user().is_owner != True:
+            return jsonify({"error": "User is not an owner"}), 400
+        else:
+            return func()
+        
+    wrapper.__name__ = func.__name__
+    return wrapper

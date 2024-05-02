@@ -34,6 +34,7 @@
 <script>
 import '@/assets/css/form.css'
 import axios from 'axios'
+import axiosAuth from '@/api/axios-auth.js'
 
 export default {
     name: 'LoginFormComponent',
@@ -55,7 +56,15 @@ export default {
             axios.post("/auth/login", formData).then(response => {
                 if (response.data.success === true) {
                     localStorage.setItem('token', response.data.token);
-                    this.$router.push("/activitycenter");
+                    axiosAuth.get('/owner/current-is-owner').then(
+                        response => {
+                            if (response.status == 200) {
+                                this.$router.push('/owner');
+                            } else {
+                                this.$router.push('/activitycenter');
+                            }
+                        }
+                    ).catch(() => {this.$router.push('/activitycenter')});
                 }
             }).catch(() => {
                 this.invalidCredentials = true;

@@ -105,6 +105,7 @@ const routes = [
         path: '/owner',
         name: 'Owner',
         component: OwnerPage,
+        meta: { requiresAuth: true, requiresOwner: true }
     },
 ]
 
@@ -113,57 +114,74 @@ const router = createRouter({
     routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     let token = localStorage.getItem('token');
     let requireAuth = to.matched.some(record => record.meta.requiresAuth);
     let requireMembership = to.matched.some(record => record.meta.requiresMembership);
+    let requireOwner = to.matched.some(record => record.meta.requiresOwner);
+    
+    var nextPage = '';
     if (to.path === '/'){
-        next('/welcome');
+        nextPage = '/welcome';
     }
     if (to.path === '/login') {
         if (token) {
-            axiosAuth.post('/auth/verify-token').then(() => {
-                next('/activitycenter');
+            await axiosAuth.post('/auth/verify-token').then(() => {
+                nextPage = '/activitycenter';
             }).catch(() => {});
         }
     }
     
-    if (!requireAuth && !requireMembership) {
+    // Rewrite
+    if (requireAuth) {
+        if (token) {
+            await axiosAuth.post('/auth/verify-token').then(() => {
+                
+            }).catch(() => {
+                console.log("catch");
+                nextPage = '/login';
+            })
+        } else {
+            nextPage = '/login';
+        }
+    }
+    if (requireMembership) {
+        await axiosAuth.get('/membership/get-current').then(
+            response => {
+                if (response.data.membership === null) {
+                    nextPage = '/membership';
+                }
+            }
+        ).catch(
+            error => {
+                if (error.response.status !== 200) {
+                    nextPage = '/membership';
+                }
+            }
+        )
+    }
+    if (requireOwner) {
+        console.log("is maybe owner");
+        await axiosAuth.get('/owner/current-is-owner').then(
+            response => {
+                if (response.status !== 200) {
+                    nextPage = '/activitycenter';
+                }
+            }
+        ).catch(error => {
+            console.log(error);
+            nextPage = '/activitycenter';
+        });
+    }
+    
+    console.log("next page: ", nextPage);
+    if (nextPage === '') {
         next();
+    } else {
+        console.log(nextPage);
+        next(nextPage);
     }
-
-    else if (requireAuth && !token) {
-        next('/login');
-    }
-
-    else if (requireAuth && token && !requireMembership) {
-        axiosAuth.post('/auth/verify-token').then(() => {
-            next();
-        }).catch(() => {
-            next('/login');
-        })
-    }
-    else if (requireAuth && token && requireMembership) {
-        axiosAuth.post('/auth/verify-token').then(() => {
-            axiosAuth.get('/membership/get-current').then(
-                response => {
-                    if (response.data.membership !== null) {
-                        next();
-                    } else {
-                        next('/membership');
-                    }
-                }
-            ).catch(
-                error => {
-                    if (error.response.status !== 200) {
-                        next('/membership');
-                    }
-                }
-            )
-        }).catch(() => {
-            next('/login');
-        })
-    }
+    
 
 });
 

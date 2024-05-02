@@ -74,6 +74,13 @@ def create_db_memberships():
         
         db_add(m)
 
+def create_owner_login():
+    u = User("admin", "admin")
+    u.is_owner = True
+    u.membership = MembershipPlan.query.all()[0]
+    db.session.add(u)
+    db.session.commit()
+
 delete_all(MembershipPlan)
 create_db_memberships()
-print([x.stripe_price for x in MembershipPlan.query.all()])
+create_owner_login()

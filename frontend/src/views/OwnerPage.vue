@@ -19,26 +19,25 @@
 <script>
 import UserInfo from '@/components/UserInfo.vue'
 import RevenueComponent from '@/components/RevenueComponent.vue'
-// import axiosAuth from '@/api/axios-auth.js'
+import axiosAuth from '@/api/axios-auth.js'
 
 export default {
     data() {
         return {
             userInfoIsShowing: true,
             revenueIsShowing: false,
+            numberOfUsers: 0,
         }
     },
 
     methods: {
-        // getPageData() {
-        //     axiosAuth.get('/UserInfo/get-all').then((response) => {
-        //         this.numberOfUsers = response.data.count
-        //         console.log('Number of registered users:', this.numberOfUsers)
-        //     })
-        //     axiosAuth.get('/Revenue/get-all').then((response) => {
-        //         this.groups = response.data.groups
-        //     })
-        // },
+        getPageData() {
+            axiosAuth.get('/owner/get-owner-membership-data').then(
+                response => {
+                    this.numberOfUsers = response.data.numUsers;
+                }
+            )
+        },
         showUsers() {
             this.userInfoIsShowing = true
             this.revenueIsShowing = false
@@ -48,9 +47,9 @@ export default {
             this.userInfoIsShowing = false
         },
     },
-    // mounted() {
-    //     this.getPageData()
-    // },
+    mounted() {
+        this.getPageData()
+    },
     components: {
         UserInfo,
         RevenueComponent,
