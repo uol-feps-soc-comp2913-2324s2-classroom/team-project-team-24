@@ -1,59 +1,53 @@
 <template>
     <div class="map-container">
-        <iframe  scrolling="no" :src="mapUrl" frameborder="0" style="width: 100%; height: 450px; overflow: hidden; "></iframe>
+      <div v-html="mapHtml"></div>
     </div>
-</template>
-
-<script>
-import axiosAuth from "@/api/axios-auth"
-
-export default {
-    name: 'MapViewerComponent',
+  </template>
+  
+  <script>
+  import axiosAuth from "@/api/axios-auth";
+  
+  export default {
+    name: "MapViewerComponent",
     props: {
-        trailID: {
-            
-        }
+      selectedTrails: {
+        type: Array,
+        required: true,
+      },
+    },
+    created() {
+        console.log("MapViewerComponent: selectedTrails prop:", this.selectedTrails);
     },
     data() {
-        return {
-            mapUrl: null,
-        };
+      return {
+        mapHtml: "",
+      };
     },
-    async mounted() {
-        try {
-            console.log(this.trailID);
-            const response = await axiosAuth.post(`/trail/get-map`, {
-                trailID: this.trailID,
-            }).catch(
-                error => {
-                    console.log(error);
-                }
-            );
-            const mapHtml = response.data;
-            const blob = new Blob([mapHtml], { type: 'text/html' });
-            this.mapUrl = URL.createObjectURL(blob);
-        } catch (error) {
-            console.error('Error fetching map:', error);
-        }
-        try {
-            console.log(this.trailID);
-            const response = await axiosAuth.post(`/trail/get-map`, {
-                trailID: this.trailID,
-            }).catch(
-                error => {
-                    console.log(error);
-                }
-            );
-            const mapHtml = response.data;
-            const blob = new Blob([mapHtml], { type: 'text/html' });
-            this.mapUrl = URL.createObjectURL(blob);
-        } catch (error) {
-            console.error('Error fetching map:', error);
-        }
+    watch: {
+      selectedTrails: {
+        handler: "fetchSelectedTrails",
+        immediate: true,
+      },
     },
-};
-</script>
+    methods: {
+        async fetchSelectedTrails() {
+    try {
+      console.log('MapViewer: fetchSelectedTrails called with selectedTrails:', this.selectedTrails);
+      const response = await axiosAuth.post("/trail/get-selected-map", {
+        trailIDs: this.selectedTrails,
+      });
+      this.mapHtml = response.data.mapHtml;
+    } catch (error) {
+      console.error("Error fetching selected trails map:", error);
+    }
+  },
+  },
+}
+  </script>
 
 <style scoped>
-
+.map-container {
+    width: 70%;
+    height: 20%;
+}
 </style>
