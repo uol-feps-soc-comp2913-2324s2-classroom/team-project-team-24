@@ -25,13 +25,11 @@ export default {
         };
     },
     methods: {
-        getPageData() {
-            console.log("=================", this.trail);
-            this.$emit('trailItemDataUpdated')
-        },
+
     },
     created() {
-        this.getPageData();
+        
+        this.$emit('trailItemDataUpdated')
     },
 };
 </script>

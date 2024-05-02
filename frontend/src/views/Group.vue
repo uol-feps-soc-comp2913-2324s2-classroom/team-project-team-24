@@ -33,7 +33,7 @@ export default {
             loadingTrailList: true,
             loadingMembersList: true,
             loadingFriendsList: true,
-            loadingTrailName: true,
+            loadingGroupName: true,
             loadingGroupTrails: true,
 
             // Used to show the loading message when the user's trails are still being rendered
@@ -59,7 +59,7 @@ export default {
             this.loadingTrailList = true;
             this.loadingMembersList = true;
             this.loadingFriendsList = true;
-            this.loadingTrailName = true;
+            this.loadingGroupName = true;
             this.loadingGroupTrails = true;
 
             const getMembersPromise = axiosAuth.post('/groups/get-members', {
@@ -75,7 +75,7 @@ export default {
             }).then(
                 response => {
                     this.name = response.data.name;
-                    this.loadingTrailName = false;
+                    this.loadingGroupName = false;
                 }
             );
 
@@ -98,16 +98,17 @@ export default {
                     this.username = response.data.name;
                 }
             );
-
+            
+            // Get all of the user's trails
             axiosAuth.post('/groups/get-trails', {
                 groupID: this.groupID
             }).then(
                 response => {
                     this.groupTrailsIDOnly = response.data.trails;
-                    // this.loadingGroupTrails = false;
                 }
             );
 
+            // Get all of the group's trails
             const getGroupTrailsPromise = axiosAuth.post('groups/get-trails-complete', {
                 groupID: this.groupID
             }).then(
@@ -216,8 +217,8 @@ export default {
         },
         handleTrailItemDataUpdated() {
             this.trailItemFullyLoadedCount++;
-            console.log("Trail item fully loaded count: ", this.trailItemFullyLoadedCount);
-            console.log("Expected count: ", this.shareableTrails.length);
+            console.log("xxxxxxxxxxxxxxxxx Trail item fully loaded count: ", this.trailItemFullyLoadedCount);
+            console.log("xxxxxxxxxxxxxxxxx Expected count: ", this.shareableTrails.length);
             if (this.trailItemFullyLoadedCount === this.shareableTrails.length) {
                 this.trailItemLoaded = true;
                 console.log("All trail items fully loaded");
@@ -252,6 +253,41 @@ export default {
             // this.loadingTrailName = true;
 
             // this.getPageData();
+        },
+        updateTrailsList() {
+            this.loadingTrailList = true;
+            this.loadingGroupTrails = true;
+            this.trailItemLoaded = false;
+            this.trailItemFullyLoadedCount = 0;
+
+            this.groupTrails = [];
+            this.shareableTrails = [];
+            this.trails = [];
+
+            const getGroupTrailsPromise = axiosAuth.post('/groups/get-trails-complete', {
+                groupID: this.groupID
+            }).then(
+                response => {
+                    this.groupTrails = response.data.trails;
+                    this.loadingGroupTrails = false;
+                }
+            );
+
+            const getAllTrailsPromise = axiosAuth.get('/trail/get-all').then(
+                response => {
+                    this.trails = response.data.trails;
+                }
+            );
+
+            Promise.all([getGroupTrailsPromise, getAllTrailsPromise]).then(() => {
+                const groupTrailsSet = new Set(this.groupTrails.map(trail => trail.id));
+                this.shareableTrails = this.trails.filter(trail => !groupTrailsSet.has(trail.id));
+                this.loadingTrailList = false;
+                if (this.shareableTrails.length === 0) {
+                    this.trailItemLoaded = true;
+                }
+            });
+
         }
 
     },
@@ -277,8 +313,8 @@ export default {
             <div class="d-flex flex-row align-items-center">
                 <img src="../assets/back_button.svg" class="backButton me-3" alt="back arrow icon"
                     @click="returnToCommunity">
-                <h3 v-if="!loadingTrailName">{{ name }}</h3>
-                <h3 v-if="loadingTrailName">Loading...</h3>
+                <h3 v-if="!loadingGroupName">{{ name }}</h3>
+                <h3 v-if="loadingGroupName">Loading...</h3>
             </div>
             <div>
                 <button @click="addRoutes" class="btn-primary me-3">
@@ -309,7 +345,7 @@ export default {
                                 v-if="shareableTrails.length > 0" @listComponentUnmounted="resetTrailItemDataUpdated"
                                 class="width100">
                                 <AddTrailListItemComponent class="slightlySmaller" v-bind:trail="slotProps.data"
-                                    :groupID="groupID" @trailItemDataUpdated="handleTrailItemDataUpdated" />
+                                    :groupID="parseInt(groupID)" @trailItemDataUpdated="handleTrailItemDataUpdated" @trailAddedToGroup="updateTrailsList" />
                             </ListComponent>
                             <p v-if="shareableTrails.length == 0" class="greyText align-self-start">No trails available</p>
                         </div>

@@ -28,18 +28,22 @@ export default {
                 {
                     color: 'var(--text-color)',
                     transition: 'color 0.2s',
+                    cursor: 'pointer',
                 },
                 {
                     color: 'var(--topNavElementUnselectedTextColor)',
                     transition: 'color 0.2s',
+                    cursor: 'pointer',
                 },
                 {
                     color: 'var(--topNavElementUnselectedTextColor)',
                     transition: 'color 0.2s',
+                    cursor: 'pointer',
                 },
                 {
                     color: 'var(--topNavElementUnselectedTextColor)',
                     transition: 'color 0.2s',
+                    cursor: 'pointer',
                 },
             ]
         };
@@ -118,8 +122,8 @@ export default {
 <template>
     <div class="top-nav-railed">
         <div class="navElements mb-2">
-            <router-link @click="handleClicked" to="#" id="0" class="topNavElement" :style="navStyles[0]">Shared Trails</router-link>
-            <router-link @click="handleClicked" to="#" id="1" class="topNavElement" :style="navStyles[1]">Add Trails</router-link>
+            <div @click.stop="handleClicked" id="0" to="" class="topNavElement" :style="navStyles[0]">Shared Trails</div>
+            <div @click.stop="handleClicked" id="1" to="" class="topNavElement" :style="navStyles[1]">Add Trails</div>
         </div>
         <div id="selection-rail" class="selectionRail" :style="railStyle"></div>
         <div id="selection-train" class="selectorTrain" :style="selectionTrainStyle"></div>
