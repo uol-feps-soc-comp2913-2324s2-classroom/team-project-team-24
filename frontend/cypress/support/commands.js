@@ -88,8 +88,8 @@ Cypress.Commands.add('createProduct', (name) => {
 });
 
 // Set your login credentials as environment variables
-Cypress.env('username', 'mate');
-Cypress.env('email', 'mate@example.com');
+Cypress.env('username', 'newuser');
+Cypress.env('email', 'newuser@example.com');
 Cypress.env('password', 'Password123');
 Cypress.env('gender' , 'male');
 Cypress.env('age' , '18');
