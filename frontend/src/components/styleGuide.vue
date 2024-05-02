@@ -13,6 +13,10 @@ export default {
     methods: {
         increment() {
             this.count++;
+        },
+        handleClicked({event, to}) {
+            console.log("We're going to tNR")
+            this.$refs.topNavRailed.handleClicked({event, to});
         }
     },
     components: {

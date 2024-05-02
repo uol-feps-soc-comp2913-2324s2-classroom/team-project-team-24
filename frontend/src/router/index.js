@@ -15,6 +15,17 @@ import ResetPassword from "@/views/ResetPassword.vue";
 import UploadTrail from "@/views/UploadTrail.vue";
 import axiosAuth from "@/api/axios-auth";
 
+// Defines a variable using environment variables to disable
+// logins for development purposes.
+// Checks if environment variable VUE_APP_DISABLE_LOGIN exists
+// If it exists takes its boolean value to disable or enable login
+// Defaults to true if the variable doesn't exist (requiring login)
+const authRequired =
+  process.env.VUE_APP_DISABLE_LOGIN !== undefined
+    ? !JSON.parse(process.env.VUE_APP_DISABLE_LOGIN)
+    : true;
+console.log(process.env.VUE_APP_DISABLE_LOGIN);
+
 const routes = [
     {
         path: "/welcome",
@@ -52,7 +63,7 @@ const routes = [
         path: "/membership",
         name: "Membership",
         component: Membership,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
     {
         path: "/group",
@@ -64,7 +75,7 @@ const routes = [
         path: "/myaccount",
         name: "Account",
         component: MyAccount,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
     {
         path: "/mytrail",
@@ -87,7 +98,7 @@ const routes = [
         path: "/stylingguide",
         name: "StylingGuide",
         component: StylingGuide,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: authRequired },
     },
 ]
 
