@@ -13,8 +13,16 @@ export default {
                 "#0A481F",
                 // Add more colors as needed
             ],
-            currentMembershipID: -1,
+            currentPlan: {"id": -1, "name": "", "regularity": "", "price": 0}, // Simulate currentPlan state
         };
+    },
+    computed: {
+        
+        // Computed property to determine the viewer's current membership tier
+        viewerMembershipOption() {
+            // Find the membership option that matches the viewer's tier
+            return this.membershipOptions.find(option => option.regularity === this.viewerMembershipTier);
+        }
     },
     methods: {
         getPageData() {
@@ -26,7 +34,9 @@ export default {
             axiosAuth.get('/membership/get-current').then(
                 response => {
                     if (response.data.membership !== null) {
-                        this.currentMembershipID = response.data.membership.id;
+                        this.currentPlan = response.data.membership;
+                    } else {
+                        this.currentPlan.id = -1;
                     }
                 }
             )
@@ -46,12 +56,17 @@ export default {
         <div class="page-heading-container">
             <h1>Membership</h1>
         </div>
-        <p> To get access to Walkley, please choose your payment subscription option</p>
+        <p v-if="currentPlan.id===-1">
+            We've detected you haven't subscribed to Walkley. To get access to Walkley, please choose your payment subscription option
+        </p>
+        <p v-else>
+            Hello Member! You are subscribed to the <b>{{ currentPlan.name }}</b> plan.
+        </p>
         <div class="membership-options-container">
             <MembershipOptionComponent v-for="(membership, x) in membershipOptions" 
             :key="membership" v-bind:membership="membership" 
             :color="membershipColors[x]"
-            :currentMembershipID="currentMembershipID"
+            v-bind:currentPlan="currentPlan"
             />    
         </div>
         
