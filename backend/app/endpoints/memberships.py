@@ -8,6 +8,7 @@ import stripe
 
 # This is your Stripe CLI webhook secret for testing your endpoint locally.
 WEBHOOK_SECRET = 'whsec_7d4a3ea9df544e2d813140092a64baa04aaa6256129ededc7adcc9584f321355'
+YOUR_DOMAIN = "http://localhost:8080"
 
 bp = Blueprint('memberships', __name__, url_prefix='/membership')
 
@@ -99,8 +100,6 @@ def purchase_membership():
 def create_checkout_session():
     membership_id = request.get_json().get("membershipID")
     membership = MembershipPlan.query.filter_by(id=membership_id).first()
-    print(membership)
-    YOUR_DOMAIN = "http://localhost:8080"
     try:
         checkout_session = stripe.checkout.Session.create(
             line_items=[
