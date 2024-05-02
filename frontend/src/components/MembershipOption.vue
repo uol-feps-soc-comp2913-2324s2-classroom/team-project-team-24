@@ -1,13 +1,20 @@
 <template>
     <div :class="'membership-option'" :style="{ backgroundColor: color }">
-        <h3>{{ membership.regularity }}</h3>
-        <h4 v-if="currentMembershipID === membership.id">Current</h4>
+        <h3>{{ membership.name }}</h3>
         <ul>
             <li v-for="(point) in membership.points" :key="point">{{point}}</li>
         </ul>
         <div class="option-details">
-            <h4>£{{ membership.price }} {{ membership.regularity }}</h4>
-            <button class="btn-primary" @click="buyMembership">Buy Now</button>
+            <h4>£{{ membership.price.toFixed(2) }}<br>{{ membership.regularity }}</h4>
+        
+            <template v-if="currentPlan.id===membership.id">
+                <button class="btn-danger" @click="cancelMembership">Cancel Plan</button>
+            </template>
+            <template v-else>
+                <button class="btn-primary" @click="buyMembership">Buy Now</button>
+            </template>
+    
+            
         </div>
     </div>
 </template>
@@ -20,7 +27,7 @@ export default {
     props: {
         membership: {},
         color: String, // Ensure the color prop is of type String,
-        currentMembershipID: Number,
+        currentPlan: {},
     },
     data() {
         return {
@@ -75,5 +82,22 @@ export default {
   margin: 0;
 }
 
-
+.dummy-button {
+    background-color: var(--tertiary-button-grey);
+    border-style: solid;
+    border-color: var(--tertiary-button-grey);
+    border-width: 3px;
+    font-weight: bold;
+    color: var(--secondary-button-offBlack);
+    padding-top: var(--button-padding-vertical);
+    padding-bottom: var(--button-padding-vertical);
+    padding-left: var(--button-padding-horizontal);
+    padding-right: var(--button-padding-horizontal);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    cursor: pointer;
+    border-radius: 99999px;
+}
 </style>
