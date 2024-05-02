@@ -20,6 +20,9 @@ export default {
     methods: {
         
     },
+    unmounted() {
+        this.$emit("listComponentUnmounted");
+    }
 };
 </script>
 
