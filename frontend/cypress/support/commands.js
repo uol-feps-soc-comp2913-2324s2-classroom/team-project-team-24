@@ -40,11 +40,30 @@ Cypress.Commands.add('setUserToken', () => {
   });
 });
 
+Cypress.Commands.add('register', () => {
+  cy.visit('http://localhost:3000/register'); // Assuming '/register' is your registration page URL
+  cy.contains('label', 'Username').siblings('input').type(Cypress.env('username'));
+  cy.contains('label', 'Email').siblings('input').type(Cypress.env('email'));
+  cy.contains('label', 'Password').siblings('input').type(Cypress.env('password'));
+  cy.contains('label', 'Confirm Password').siblings('input').type(Cypress.env('password'));
+
+  // continue button
+  cy.contains('button', 'Continue').click()
+
+  // step 2 of register
+  cy.contains('label', 'Gender').siblings('input').type(Cypress.env('gender'));
+  cy.contains('label', 'Age').siblings('input').type(Cypress.env('age'));
+  cy.wait(1000);
+  // click register
+  cy.contains('Register').click()
+  cy.url().should('include', '/membership'); // Verify successful login redirect
+});
+
 Cypress.Commands.add('login', () => {
   // Make a login call to the endpoint and set token in Cypress environment
   cy.visit('http://localhost:3000/login'); // Assuming '/login' is your login page URL
-  cy.get('#username').type(Cypress.env('username')); // Assuming '#username' is the username input field
-  cy.get('#password').type(Cypress.env('password')); // Assuming '#password' is the password input field
+  cy.contains('label', 'Username').siblings('input').type(Cypress.env('username'));
+  cy.contains('label', 'Password').siblings('input').type(Cypress.env('password'));
   cy.contains('button', 'Login').click(); // Click the login button
   cy.url().should('include', '/activitycenter'); // Verify successful login redirect
   cy.setUserToken(); // Set user token after successful login
@@ -69,5 +88,8 @@ Cypress.Commands.add('createProduct', (name) => {
 });
 
 // Set your login credentials as environment variables
-Cypress.env('username', 'u1');
-Cypress.env('password', 'pwd');
+Cypress.env('username', 'newuser');
+Cypress.env('email', 'newuser@example.com');
+Cypress.env('password', 'Password123');
+Cypress.env('gender' , 'male');
+Cypress.env('age' , '18');
