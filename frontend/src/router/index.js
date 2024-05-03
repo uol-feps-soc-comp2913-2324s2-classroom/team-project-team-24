@@ -11,7 +11,6 @@ import MyAccount from "../views/MyAccount.vue";
 import MyTrail from "../views/MyTrail.vue";
 import StylingGuide from "../views/StylingGuide.vue";
 import MyGroup from "@/views/Group.vue";
-import ResetPassword from "@/views/ResetPassword.vue";
 import UploadTrail from "@/views/UploadTrail.vue";
 import axiosAuth from "@/api/axios-auth";
 
@@ -88,11 +87,6 @@ const routes = [
         name: "UploadTrail",
         component: UploadTrail,
         meta: { requiresAuth: true, requiresMembership: true },
-    },
-    {
-        path: "/resetpassword",
-        name: "ResetPassword",
-        component: ResetPassword,
     },
     {
         path: "/stylingguide",
