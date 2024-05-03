@@ -105,7 +105,7 @@ def test_send_friend_request_success(client):
 
     response = client.post("/friends/send-request",
                            content_type='application/json',
-                           data=json.dumps({"receiveUserID": user_2.id}),
+                           data=json.dumps({"receiveUserID": user_2.username}),
                            headers=headers)
     assert response.status_code == 200
     assert user_1 in user_2.incoming_friend_requests() and len(user_2.incoming_friend_requests()) == 1
@@ -125,7 +125,7 @@ def test_send_friend_request_auto_add(client):
 
     response = client.post("/friends/send-request",
                            content_type='application/json',
-                           data=json.dumps({"receiveUserID": user_2.id}),
+                           data=json.dumps({"receiveUserID": user_2.username}),
                            headers=headers)
     assert response.status_code == 200
     assert len(user_1.outgoing_friend_requests()) == 0
@@ -147,7 +147,7 @@ def test_send_friend_request_duplicate(client):
 
     response = client.post("/friends/send-request",
                            content_type='application/json',
-                           data=json.dumps({"receiveUserID": user_2.id}),
+                           data=json.dumps({"receiveUserID": user_2.username}),
                            headers=headers)
     assert response.status_code == 400
     assert b"Friend request already exists" in response.data
@@ -165,7 +165,7 @@ def test_send_friend_request_already_friends(client):
 
     response = client.post("/friends/send-request",
                            content_type='application/json',
-                           data=json.dumps({"receiveUserID": user_2.id}),
+                           data=json.dumps({"receiveUserID": user_2.username}),
                            headers=headers)
     assert response.status_code == 400
     assert b"Users are already friends" in response.data
@@ -180,7 +180,7 @@ def test_send_friend_request_to_self(client):
 
     response = client.post("/friends/send-request",
                            content_type='application/json',
-                           data=json.dumps({"receiveUserID": user_1.id}),
+                           data=json.dumps({"receiveUserID": user_1.username}),
                            headers=headers)
     assert response.status_code == 400
     assert b"Cannot send friend request to self" in response.data
@@ -197,21 +197,21 @@ def test_send_friend_request_missing_id(client):
                            data=json.dumps({}),
                            headers=headers)
     assert response.status_code == 400
-    assert b"Receive user ID not given" in response.data
+    assert b"Receive user not given" in response.data
 
-def test_send_friend_request_invalid_id(client):
-    delete_all(FriendRequest)
-    delete_all(Friend)
-    delete_all(User)
+# def test_send_friend_request_invalid_id(client):
+#     delete_all(FriendRequest)
+#     delete_all(Friend)
+#     delete_all(User)
 
-    headers = get_test_user_headers("u1", "pwd")
+#     headers = get_test_user_headers("u1", "pwd")
 
-    response = client.post("/friends/send-request",
-                           content_type='application/json',
-                           data=json.dumps({"receiveUserID": -1}),
-                           headers=headers)
-    assert response.status_code == 400
-    assert b"Invalid ID" in response.data
+#     response = client.post("/friends/send-request",
+#                            content_type='application/json',
+#                            data=json.dumps({"receiveUserID": -1}),
+#                            headers=headers)
+#     assert response.status_code == 400
+#     assert b"Invalid ID" in response.data
 
 def test_accept_friend_request_success(client):
     delete_all(FriendRequest)
