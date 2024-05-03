@@ -49,34 +49,28 @@ export default {
     <div>
         <table class="my-5">
             <tr>
-                <td class="ps-5 floor-ceiling-padding">Name</td>
-                <td class="bold">{{ name }}</td>
+                <td class="px-5 floor-ceiling-padding">Name</td>
+                <td class="px-5 bold">{{ name }}</td>
             </tr>
             <tr>
-                <td class="ps-5 floor-ceiling-padding">Email</td>
-                <td class="bold">{{ email }}</td>
+                <td class="px-5 floor-ceiling-padding">Email</td>
+                <td class="px-5 bold">{{ email }}</td>
             </tr>
             <tr>
-                <td class="ps-5 floor-ceiling-padding">Age</td>
-                <td class="bold">{{ age }}</td>
+                <td class="px-5 floor-ceiling-padding">Age</td>
+                <td class="px-5 bold">{{ age }}</td>
             </tr>
             <tr>
-                <td class="ps-5 floor-ceiling-padding">Gender</td>
-                <td class="bold">{{ gender }}</td>
+                <td class="px-5 floor-ceiling-padding">Gender</td>
+                <td class="px-5 bold">{{ gender }}</td>
             </tr>
             <tr>
-                <td class="ps-5 floor-ceiling-padding">Membership</td>
-                <td class="bold">{{ membership }}</td>
+                <td class="px-5 floor-ceiling-padding">Membership</td>
+                <td class="px-5 bold">{{ membership }}</td>
             </tr>
             <tr>
-                <td class="ps-5 floor-ceiling-padding">Password</td>
-                <td>
-                    <div class="d-flex flex-row justify-content-between align-items-center">
-                        <span class="bold">********</span>
-                        
-                        
-                    </div>
-                </td>
+                <td class="px-5 floor-ceiling-padding">Password</td>
+                <td class="px-5 bold">********</td>
             </tr>
         </table>
         <div>
