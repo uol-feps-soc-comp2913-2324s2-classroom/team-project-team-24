@@ -4,25 +4,33 @@
 # To Get Started With Development
 
 ## Prerequisites
+
 Make sure you have these installed:
+
 1. Docker
 2. Node.js (Version 18.0 or higher)
 3. Python3
 
 ## Starting the whole project
+
 The whole project can now be started with one command using docker compose:
+
 ```bash
 docker compose up
 ```
+
 **Use `docker compose up --build` if you have made any changes. If you don't your changes will not be shown when you run the app!!**  
 To then close it, press `Ctrl+C`.  
 You could also use the `-d` flag to make it detached, and the in order to stop it, run:
+
 ```bash
 docker compose down
 ```
 
 ## Starting the frontend development server
+
 Make sure you have Node.js installed.
+
 ```BASH
 # Navigate to the frontend folder
 cd ./team-project-team-24/frontend/gpx_app_front
@@ -37,9 +45,11 @@ npm run dev
 ```
 
 ## Starting the backend development server
+
 Make sure you have Docker installed.
 
 ### With Docker
+
 ```BASH
 # Navigate to the backend folder
 cd ./team-project-team-24/backend
@@ -48,7 +58,7 @@ cd ./team-project-team-24/backend
 docker build -t gpx_app .
 
 # Run the docker container
-# You can also do this in the Docker Desktop app which is easier just make sure to set the "host port" 
+# You can also do this in the Docker Desktop app which is easier just make sure to set the "host port"
 # to 5000 in the "optional settings"
 docker run --name gpx_app_server -p 5000:5000 -d gpx_app
 
@@ -58,6 +68,7 @@ docker run --name gpx_app_server -p 5000:5000 -d gpx_app
 ```
 
 ### Without Docker
+
 ```BASH
 # Navigate to the backend folder
 cd ./team-project-team-24/backend
@@ -76,12 +87,14 @@ python run.py
 ```
 
 ## Stopping the backend development server
+
 ```BASH
 # Stop the docker container
 docker stop gpx_app_server
 ```
 
 ## More Useful Docker Commands
+
 ```BASH
 # List all running containers
 docker ps
@@ -98,19 +111,30 @@ docker rm <container_id>
 # Remove an image
 docker rmi <image_id>
 ```
+
 Or forget about all of this and use the Docker Desktop app to manage containers and images.
 
 ## Testing the frontend with cypress (End-To-End Testing)
-1. navigate to frontend\gpx_app_front
+
+navigate to frontend\gpx_app_front
+need to have the app running while doing this, and it needs to be on port 3000. If not using docker run the command:
+
+```BASH
+npm run serve -- --port 3000
+```
+
+to then run cypress:
+
 ```BASH
 # Run cypress
 npx cypress open
 ```
+
 2. To stop it, simply ctrl + c.
 
 3. To observe the tests in action, navigate to E2E testing > specs > 'frontend\gpx_app_front\cypress\e2e', and select your desired cypress test file
 
-4. If you'd like to add to the specs for further tests, or utilise existing files, navigate to the same area in your IDE, and 
+4. If you'd like to add to the specs for further tests, or utilise existing files, navigate to the same area in your IDE, and
 
 - Commands are to be placed in `cypress/support/commands.js`, essential commands such as login() are found here.
 - Whenever you do cypress testing, to use `cy.login()`, just include it in the `beforeEach` portion of your tests, see `uploadTrail.cy.js` for reference

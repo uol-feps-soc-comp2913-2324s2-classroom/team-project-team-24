@@ -13,8 +13,6 @@
                 <p v-if="invalidCredentials" class="error-ext">Your username/password is incorrect</p>
             </div>
             <div class="form-actions">
-                <a href="#" @click.prevent="forgotPassword">Forgot password</a>
-
                 <button type="submit" class="btn-primary">Login</button>
             </div>
 
@@ -48,12 +46,10 @@ export default {
     },
     methods: {
         async onSubmit() {
-            console.log("Submitting...")
             let formData = {
                 username: this.username,
                 password: this.password,
             }
-            console.log(this.username, this.password)
             axios.post("/auth/login", formData).then(response => {
                 if (response.data.success === true) {
                     localStorage.setItem('token', response.data.token);
@@ -62,9 +58,6 @@ export default {
             }).catch(() => {
                 this.invalidCredentials = true;
             });
-        },
-        forgotPassword() {
-            this.$router.push('/resetpassword')
         },
         createAccount() {
             this.$router.push('/register')

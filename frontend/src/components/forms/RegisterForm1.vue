@@ -19,7 +19,17 @@ export default {
         async handleRegister() {
             if (this.password !== this.confirmPassword) {
                 this.errorText = "Passwords do not match";
-                return
+                return;
+            }
+            
+            else if (this.username.length < 6) {
+                this.errorText = "Username must be at least 6 characters";
+                return;
+            }
+            
+            else if (this.password.length < 8) {
+                this.errorText = "Password must be at least 8 characters";
+                return;
             }
 
             let formData = {
@@ -33,11 +43,9 @@ export default {
                     localStorage.setItem('token', response.data.token);
                     this.$parent.form1Submit();
                 } else {
-                    console.log("register error");
                     this.errorText = response.data.error;
                 }
             }).catch(error => {
-                console.log("register error", error);
                 this.errorText = error.response.data.error;
             });
         },

@@ -213,3 +213,38 @@ def add_user_to_group_route():
 
     add_user_to_group(friend_id, group_id)
     return Response(f"Friend successfully added to group", 200)
+
+
+@bp.route('/get-trails-complete', methods=['POST'])
+@jwt_required()
+@membership_required
+def get_group_trails_complete():
+    # recieve user ID
+    user_id = get_current_user().id
+
+    group_id = request.json.get("groupID")
+    if group_id == None:
+        return jsonify({"error": "Missing group ID"}), 400
+
+    if Group.query.filter_by(id=group_id).first() == None:
+        return jsonify({"error": "Invalid group ID"}), 400
+
+    if not check_for_user_in_group(user_id, group_id):
+        return jsonify({"error": "User is not in this group"}), 400
+
+    trails = [trail.id for trail in Group.query.filter_by(id=group_id).first().routes]
+
+    # Stores a list of all the trails in the group with their names and exercise types
+    trails_complete = []
+    for trail_id in trails:
+        trail = Route.query.filter_by(id=trail_id).first()
+        trail_data = {
+            "id": trail.id,
+            "name": trail.name,
+            "exerciseType": trail.exercise_type,
+        }
+        trails_complete.append(trail_data)
+
+    return jsonify({
+        "trails": trails_complete
+    })

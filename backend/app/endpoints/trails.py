@@ -31,17 +31,27 @@ def get_overall_stats():
     trails = get_routes_by_user_id(user_id)
 
     durations = [GPX(trail.data).get_duration() for trail in trails]
-    totalDuration = sum(durations)
-    totalDuration_h = int(totalDuration / 3600)
-    totalDuration_m = int((totalDuration % 3600) / 60)
-    totalDuration_s = int(totalDuration % 60)
+    
+    if durations != []:
+        totalDuration = sum(durations)
+        totalDuration_h = int(totalDuration / 3600)
+        totalDuration_m = int((totalDuration % 3600) / 60)
+        totalDuration_s = int(totalDuration % 60)
 
-    longestDuration = max(durations)
-    longestDuration_h = int(longestDuration / 3600)
-    longestDuration_m = int((longestDuration % 3600) / 60)
-    longestDuration_s = int(longestDuration % 60)
+        longestDuration = max(durations)
+        longestDuration_h = int(longestDuration / 3600)
+        longestDuration_m = int((longestDuration % 3600) / 60)
+        longestDuration_s = int(longestDuration % 60)
+    else:
+        totalDuration = 0
+        longestDuration_h = 0
+        longestDuration_m = 0
+        longestDuration_s = 0
+        totalDuration_h = 0
+        totalDuration_m = 0
+        totalDuration_s = 0
+        longestDuration = 0
 
-    # TODO: calorie calculation
 
     return jsonify({
         # Total time spent doing activities in a period of time
@@ -82,7 +92,6 @@ def get_longest_trail():
 
 
     # get trail IDs from trails
-    print(longest)
     # return trails
     return jsonify({
         "trailID": longest["trailID"]
@@ -192,7 +201,6 @@ def get_selected_trails_map():
     
     # Get the trail IDs from the request
     trail_ids = request.get_json().get("trailIDs")
-    print("Received Trail IDs: ", trail_ids) # For Debugging
     
     # Make a new folium map
     map_obj = folium.Map(location=[0, 0], zoom_start=2)
@@ -222,7 +230,6 @@ def get_selected_trails_map():
     
     # Get the html representation of the map object
     map_html = map_obj._repr_html_()
-    print("Generated Map HTML. ") # For Debugging
     
     # Return map html as a json
     return jsonify({"mapHtml": map_html})
@@ -398,7 +405,6 @@ def upload():
     db.session.commit()
     
     routeID = Route.query.filter(and_(Route.name == route_name, Route.user_id == user_id)).first().id
-    print(routeID)
     return jsonify({
         "trailID": routeID,
     })
