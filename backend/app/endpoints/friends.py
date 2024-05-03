@@ -108,7 +108,7 @@ def send_friend_request():
     if to_user_name == None:
         return jsonify({"error": "Receive user not given"}), 400
 
-    if user_id == to_id:
+    if to_user.id == user_id:
         return jsonify({"error": "Cannot send friend request to self"}), 400
 
     if to_user == None:
