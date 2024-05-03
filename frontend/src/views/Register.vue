@@ -24,15 +24,22 @@ export default {
 </script>
 
 <template>
-    <div class="register-container">
-        <h2 class="title"><b>Create an account</b></h2>
-        <RegisterForm1Component v-if="form1" @formSubmitted="form1Submit" />
-        <RegisterForm2Component
-            v-if="form2"
-            @registrationSuccessful="handleRegistrationSuccessful"
-        />
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="register-container">
+            <h2 class="title"><b>Create an account</b></h2>
+            <RegisterForm1Component v-if="form1" @formSubmitted="form1Submit" />
+            <RegisterForm2Component
+              v-if="form2"
+              @registrationSuccessful="handleRegistrationSuccessful"
+            />
+          </div>
+        </div>
+      </div>
     </div>
-</template>
+  </template>
+  
 
 <style scoped>
 .title {
@@ -51,5 +58,18 @@ export default {
     background: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+}
+
+@media (max-width: 576px) {
+  .title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .register-container {
+    margin-top: 20px;
+    border-radius: 0;
+  }
 }
 </style>
