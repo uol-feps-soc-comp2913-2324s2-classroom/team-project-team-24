@@ -1,7 +1,8 @@
 <template>
     <div>
-        <div class="header">
+        <div class="header" style="display: flex">
             <h4>Admin</h4>
+            <button class="btn-secondary logout-btn"  @click="accountLogout">logout</button>
         </div>
         <div class="button" style="display: flex">
             <button @click="showUsers">Users Info</button>
@@ -46,6 +47,10 @@ export default {
             this.revenueIsShowing = true
             this.userInfoIsShowing = false
         },
+        accountLogout() {
+            localStorage.removeItem('token');
+            this.$router.push("/login");
+        },
     },
     mounted() {
         this.getPageData()
@@ -80,5 +85,10 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+}
+
+.logout-btn {
+    /* float: right; */
+    margin-left: auto;
 }
 </style>

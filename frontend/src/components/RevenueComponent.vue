@@ -20,8 +20,6 @@ export default {
             console.log(config);
             axiosAuth.get('/owner/get-future-revenue').then(
                 response=> {
-                    console.log(response.data);
-                    config.options.scales.y.beginAtZero = true;
                     config.data.labels = [];
                     config.data.datasets[0].data = [];
                     config.data.datasets[0].label = "Revenue";

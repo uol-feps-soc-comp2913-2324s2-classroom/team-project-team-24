@@ -138,7 +138,6 @@ router.beforeEach(async (to, from, next) => {
             await axiosAuth.post('/auth/verify-token').then(() => {
                 
             }).catch(() => {
-                console.log("catch");
                 nextPage = '/login';
             })
         } else {
@@ -161,28 +160,22 @@ router.beforeEach(async (to, from, next) => {
         )
     }
     if (requireOwner) {
-        console.log("is maybe owner");
         await axiosAuth.get('/owner/current-is-owner').then(
             response => {
                 if (response.status !== 200) {
                     nextPage = '/activitycenter';
                 }
             }
-        ).catch(error => {
-            console.log(error);
+        ).catch(() => {
             nextPage = '/activitycenter';
         });
     }
     
-    console.log("next page: ", nextPage);
     if (nextPage === '') {
         next();
     } else {
-        console.log(nextPage);
         next(nextPage);
     }
-    
-
 });
 
 export default router
