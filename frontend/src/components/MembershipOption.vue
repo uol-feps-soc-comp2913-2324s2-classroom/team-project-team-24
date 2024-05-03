@@ -44,8 +44,6 @@ export default {
                     membershipID: this.membership.id
                 });
                 this.$parent.getPageData();
-            } else {
-                console.log('Purchase cancelled.');
             }
         },
         async cancelMembership() {
@@ -55,8 +53,6 @@ export default {
                 // You can add your logic here, such as navigating to a checkout page or triggering a payment process
                 await axiosAuth.get('/membership/cancel').catch(() => {});
                 this.$parent.getPageData();
-            } else {
-                console.log('Purchase cancelled.');
             }
         }
 

@@ -28,8 +28,7 @@ export default {
         },
         deleteAccount() {
             axiosAuth.get('/account/delete').then(
-                response => {
-                    console.log(response.data);
+                () => {
                     localStorage.removeItem('token');
                     this.$router.push("/login");
                 }

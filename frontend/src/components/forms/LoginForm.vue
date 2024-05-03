@@ -46,12 +46,10 @@ export default {
     },
     methods: {
         async onSubmit() {
-            console.log("Submitting...")
             let formData = {
                 username: this.username,
                 password: this.password,
             }
-            console.log(this.username, this.password)
             axios.post("/auth/login", formData).then(response => {
                 if (response.data.success === true) {
                     localStorage.setItem('token', response.data.token);
