@@ -15,7 +15,7 @@ def membership_required(func):
 def ownership_required(func):
     def wrapper():
         if get_current_user().is_owner != True:
-            return jsonify({"error": "User is not an owner"}), 400
+            return jsonify({"error": "Not authorised"}), 400
         else:
             return func()
         
