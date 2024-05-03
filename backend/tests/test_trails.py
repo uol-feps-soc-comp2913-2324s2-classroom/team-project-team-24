@@ -103,7 +103,7 @@ def test_download_trail_success(client):
 
     r1_id = create_route_from_file("example_data/track1.gpx", "Route 1", "Walking", user_id)
 
-    response = client.get("/trail/download", json={"trailID": r1_id}, headers=headers)
+    response = client.post("/trail/download", json={"trailID": r1_id}, headers=headers)
     assert response.status_code == 200
     assert response.json == {"data": Route.query.filter_by(id=r1_id).first().data}
 
@@ -112,9 +112,9 @@ def test_download_trail_invalid_id(client):
     delete_all(User)
 
     headers = get_test_user_headers("u1", "pwd")
-    response = client.get("/trail/download", json={"trailID": -1}, headers=headers)
+    response = client.post("/trail/download", json={"trailID": -1}, headers=headers)
     assert response.status_code == 400
 
 def test_download_trail_not_authenticated(client):
-    response = client.get("/trail/download", json={"trailID": -1})
+    response = client.post("/trail/download", json={"trailID": -1})
     assert response.status_code == 401
