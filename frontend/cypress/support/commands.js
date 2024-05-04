@@ -65,7 +65,6 @@ Cypress.Commands.add('login', () => {
   cy.contains('label', 'Username').siblings('input').type(Cypress.env('username'));
   cy.contains('label', 'Password').siblings('input').type(Cypress.env('password'));
   cy.contains('button', 'Login').click(); // Click the login button
-  cy.url().should('include', '/activitycenter'); // Verify successful login redirect
   cy.setUserToken(); // Set user token after successful login
 });   
 

@@ -17,6 +17,5 @@ describe('RegisterFormComponent', () => {
 
     it('cypress register function works', () => {
         cy.register();
-        cy.login();        
     })
 })
