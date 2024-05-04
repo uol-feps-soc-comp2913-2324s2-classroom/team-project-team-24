@@ -1,23 +1,21 @@
 <template>
     <div :class="'membership-option'" :style="{ backgroundColor: color }">
-        <h3>{{ membership.name }}</h3>
-        <ul>
-            <li v-for="(point) in membership.points" :key="point">{{point}}</li>
-        </ul>
-        <div class="option-details">
-            <h4>£{{ membership.price.toFixed(2) }}<br>{{ membership.regularity }}</h4>
-        
-            <template v-if="currentPlan.id===membership.id">
-                <button class="btn-danger" @click="cancelMembership">Cancel Plan</button>
-            </template>
-            <template v-else>
-                <button class="btn-primary" @click="buyMembership">Buy Now</button>
-            </template>
-    
-            
-        </div>
+      <h3>{{ membership.name }}</h3>
+      <ul>
+        <li v-for="(point) in membership.points" :key="point">{{ point }}</li>
+      </ul>
+      <div class="option-details">
+        <h4>£{{ membership.price.toFixed(2) }}<br>{{ membership.regularity }}</h4>
+  
+        <template v-if="currentPlan.id === membership.id">
+          <button class="btn-danger" @click="cancelMembership">Cancel Plan</button>
+        </template>
+        <template v-else>
+          <button class="btn-primary" @click="buyMembership">Buy Now</button>
+        </template>
+      </div>
     </div>
-</template>
+  </template>
 
 <script>
 import axiosAuth from '@/api/axios-auth.js';
@@ -64,6 +62,7 @@ export default {
 .membership-option {
     text-align: center; /* Center align all the content */
     padding: 20px; /* Add padding to the container */
+    
 }
 
 .membership-option h3,
@@ -104,6 +103,31 @@ export default {
     display: inline-block;
     transition: background-color 0.2s, border-color 0.2s, color 0.2s;
     cursor: pointer;
-    border-radius: 99999px;
+}
+
+@media (max-width: 768px) {
+  .membership-option {
+    width: calc(50% - 10px);
+    padding: 10px;
+  }
+  .membership-options-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 480px) {
+  .membership-option {
+    width: calc(100% - 10px);
+  }
+
+  .option-details {
+    margin-top: 0rem;
+  }
+
+  .option-details h4 {
+    font-size: 19px;
+  }
 }
 </style>
