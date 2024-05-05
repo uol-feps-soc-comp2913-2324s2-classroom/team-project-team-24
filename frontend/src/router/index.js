@@ -108,6 +108,12 @@ const routes = [
         component: StylingGuide,
         meta: { requiresAuth: authRequired, title: 'Styling Guide' },
     },
+    {
+        path: "/owner",
+        name: "OwnerPage",
+        component: OwnerPage,
+        meta: { requiresAuth: authRequired, requiresOwner: true, title: 'Owner' },
+    },
 ]
 
 const router = createRouter({
@@ -115,7 +121,7 @@ const router = createRouter({
     routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     // Check if the route has a meta field and a title in it
     if (to.meta.title) {
         document.title = to.meta.title; // Set the page title based on the route's meta title
