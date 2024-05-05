@@ -1,5 +1,9 @@
 <template>
         <div v-html="mapHtml"></div>
+        <div v-if="loading" class="loading-container">
+            <h2>Loading map...</h2>
+        </div>
+        <!-- <h2 v-if="loading">Loading...</h2> -->
 </template>
 
 <script>
@@ -22,6 +26,7 @@ export default {
     data() {
         return {
             mapHtml: "",
+            loading: true,
         };
     },
     watch: {
@@ -34,15 +39,11 @@ export default {
         async fetchSelectedTrails() {
             try {
                 let response;
-                console.log("Width: " + this.width + " Height: " + this.height)
-
                 if (this.width == null || this.height == null) {
-                    console.log("requesting map without width and height")
                     response = await axiosAuth.post("/trail/get-selected-map", {
                         trailIDs: this.selectedTrails,
                     });
                 } else {
-                    console.log("requesting map with width" + this.width + " and height" + this.height)
                     response = await axiosAuth.post("/trail/get-selected-map", {
                         trailIDs: this.selectedTrails,
                         width: this.width,
@@ -50,6 +51,7 @@ export default {
                     });
                 }
                 this.mapHtml = response.data.mapHtml;
+                this.loading = false;
             } catch (error) {
                 console.error("Error fetching selected trails map:", error);
             }
@@ -61,6 +63,13 @@ export default {
 <style scoped>
 .map-container {
     width: 100%;
+    height: 100%;
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100%;
 }
 </style>
