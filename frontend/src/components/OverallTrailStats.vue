@@ -1,11 +1,11 @@
 <template>
     <div class="d-flex flex-row">
-        <div class="stats-group d-flex flex-column align-items-start me-5">
+        <div class="stats-group d-flex flex-column align-items-end me-5">
             <h3 class="my-0 monoText">{{ totalDuration.hours }}h {{ totalDuration.minutes }}m</h3>
             <p class="smallerText my-0">Total duration</p>
         </div>
         <div class="verticalLine"></div>
-        <div class="stats-group d-flex flex-column align-items-start ms-5 me-4">
+        <div class="stats-group d-flex flex-column align-items-end ms-5 me-4">
             <h3 class="my-0 monoText">{{ longestTime.hours }}h {{ longestTime.minutes }}m</h3>
             <p class="smallerText my-0">Longest time</p>
         </div>
