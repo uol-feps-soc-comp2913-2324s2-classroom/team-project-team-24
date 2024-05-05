@@ -1,6 +1,8 @@
 import stripe
 from app.models import *
 from app.db_functions import *
+import random
+from datetime import date
 
 stripe.api_key = "sk_test_51PBedsRq4UQ9omwxmLSrDcG9TL8bmhprG5G7LFiCszpoghpS2QTZjjimEO4571P4h40WQNgv8pOhiVXHvi2wuGq60093lrCCiF"
 
@@ -74,13 +76,26 @@ def create_db_memberships():
         
         db_add(m)
 
-def create_owner_login():
-    u = User("admin", "admin")
-    u.is_owner = True
-    u.membership = MembershipPlan.query.all()[0]
-    db.session.add(u)
+def create_test_members():
+    users = ["Lukecb", "Raccoon", "Irishaha", "ShreyB", "Branson", "SamWilkie"]
+    password = "asdfasdf"
+    for user in users:
+        u = User(user, password)
+        u.membership = random.choice(MembershipPlan.query.all())
+        u.membership_start_date = date.today()
+        db.session.add(u)
     db.session.commit()
 
+def create_owner_login():
+    if not User.query.filter_by(username="admin").first():
+        u = User("admin", "admin")
+        u.is_owner = True
+        u.membership = MembershipPlan.query.all()[0]
+        db.session.add(u)
+        db.session.commit()
+
 delete_all(MembershipPlan)
+delete_all(User)
 create_db_memberships()
+create_test_members()
 create_owner_login()

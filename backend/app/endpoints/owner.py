@@ -52,7 +52,13 @@ def get_owner_membership_data():
                 and_(User.membership_id==membership.id, User.is_owner==False)
                 ).all())
         })
-
+    
+    memberships.append({
+        "id": None,
+        "name": "No Membership",
+        "numMembers": len(User.query.filter_by(membership=None).all())
+    })
+    
     response["memberships"] = memberships
     return jsonify(response)
 
@@ -96,25 +102,25 @@ def get_future_revenue():
     for user in User.query.filter_by(is_owner=False).all():
         next_future_payment = user.membership_start_date
         membership = MembershipPlan.query.filter_by(id=user.membership_id).first()
-        
-        # determine how often the user will be paying
-        if membership.payment_regularity == "yearly":
-            day_offset = 365
-        elif membership.payment_regularity == "monthly":
-            day_offset = 31
-        elif membership.payment_regularity == "weekly":
-            day_offset = 7
+        if membership:
+            # determine how often the user will be paying
+            if membership.payment_regularity == "yearly":
+                day_offset = 365
+            elif membership.payment_regularity == "monthly":
+                day_offset = 31
+            elif membership.payment_regularity == "weekly":
+                day_offset = 7
 
-        # get the first date that the user will be paying
-        while next_future_payment.date() < date.today():
-            next_future_payment += datetime.timedelta(days=day_offset)
-
-        # find closest date after each payment,
-        # then increment that date's total payment amount by the user's membership price
-        for i in range(len(data)):
-            if datetime.datetime.strptime(data[i]["date"], "%Y-%m-%d").date() >= next_future_payment.date():
-                data[i]["amount"] += membership.cost
+            # get the first date that the user will be paying
+            while next_future_payment.date() < date.today():
                 next_future_payment += datetime.timedelta(days=day_offset)
+
+            # find closest date after each payment,
+            # then increment that date's total payment amount by the user's membership price
+            for i in range(len(data)):
+                if datetime.datetime.strptime(data[i]["date"], "%Y-%m-%d").date() >= next_future_payment.date():
+                    data[i]["amount"] += membership.cost
+                    next_future_payment += datetime.timedelta(days=day_offset)
     
     response.append(data[0])
     for i in range(1, len(data)):
