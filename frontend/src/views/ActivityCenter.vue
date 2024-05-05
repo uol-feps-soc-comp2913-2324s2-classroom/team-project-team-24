@@ -1,5 +1,4 @@
 <script>
-/* eslint-disable vue/no-unused-components */
 import MapViewerComponent from '@/components/MapViewer.vue'
 // import GoalComponent from '@/components/Goal.vue'
 import OverallTrailStatsComponent from '@/components/OverallTrailStats.vue'
@@ -115,12 +114,12 @@ export default {
                     class="mapViewerComponent"
                 />
             </div>
-            <div class="d-flex flex-row align-items-center justify-content-between px-4 py-4" id="overAllTrailStatsComponent">
+            <div class="d-flex flex-row align-items-center justify-content-between px-4 py-2" id="overAllTrailStatsComponent">
                 <h2>My trails</h2>
                 <OverallTrailStatsComponent/>
             </div>
         </div>
-        <div class="trails-container p-3 scrollableList">
+        <div class="trails-container px-3 scrollableList">
             <table class="trailsListTable">
                 <ListComponentNoDiv v-bind:dataArray="trails" v-slot="slotProps">
                     <TrailListItemComponent
@@ -191,6 +190,7 @@ h2 {
     margin: 0;
     overflow: hidden;
     border-radius: var(--border-radius);
+    height: 100%;
 }
 
 .track-stats-column {

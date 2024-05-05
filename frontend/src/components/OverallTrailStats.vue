@@ -1,12 +1,14 @@
 <template>
     <div class="d-flex flex-row">
-        <div class="stats-group d-flex flex-column align-items-end me-5">
-            <h3 class="my-0 monoText">{{ totalDuration.hours }}h {{ totalDuration.minutes }}m</h3>
+        <div class="stats-group d-flex flex-column align-items-start">
+            <h3 class="my-0 monoText" v-if="!loading">{{ totalDuration.hours }}h {{ totalDuration.minutes }}m</h3>
+            <h3 class="my-0" v-if="loading">Loading...</h3>
             <p class="smallerText my-0">Total duration</p>
         </div>
-        <div class="verticalLine"></div>
-        <div class="stats-group d-flex flex-column align-items-end ms-5 me-4">
-            <h3 class="my-0 monoText">{{ longestTime.hours }}h {{ longestTime.minutes }}m</h3>
+        <div class="verticalLine mx-5"></div>
+        <div class="stats-group d-flex flex-column align-items-start">
+            <h3 class="my-0 monoText" v-if="!loading">{{ longestTime.hours }}h {{ longestTime.minutes }}m</h3>
+            <h3 class="my-0" v-if="loading">Loading...</h3>
             <p class="smallerText my-0">Longest time</p>
         </div>
     </div>
@@ -26,6 +28,7 @@ export default {
                 hours: 0,
                 minutes: 0
             },
+            loading: true,
         };
     },
     methods: {
@@ -34,6 +37,7 @@ export default {
                 response => {
                     this.totalDuration = response.data.totalDuration;
                     this.longestTime = response.data.longestTime;
+                    this.loading = false;
                 }
             )
         }
@@ -56,7 +60,4 @@ export default {
 
 .stats-group {}
 
-.monoText {
-    font-family: 'Roboto Mono', monospace;
-}
 </style>
