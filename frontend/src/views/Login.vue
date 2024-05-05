@@ -4,7 +4,6 @@
         <LoginFormComponent />
     </div>
     <br />
-    <!-- <p>API Response: {{ APIResponse }}</p> -->
 </template>
 
 <script>

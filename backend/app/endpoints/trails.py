@@ -327,7 +327,7 @@ def delete_trail():
         app.logger.error(f"Error deleting trail: {e}")
         return jsonify({"error": "An error occurred while deleting the trail"}), 500
 
-@bp.route('/download', methods=['GET'])
+@bp.route('/download', methods=['POST'])
 @jwt_required()
 @membership_required
 def download_trail():
