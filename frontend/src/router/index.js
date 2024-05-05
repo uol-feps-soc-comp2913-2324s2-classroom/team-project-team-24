@@ -30,69 +30,82 @@ const routes = [
         path: "/welcome",
         name: "Welcome",
         component: WelcomePage,
+        meta: {
+            title: 'Welcome to Walkley'
+        }
     },
     {
         path: "/login",
         name: "Login",
         component: Login,
+        meta: {
+            title: 'Login'
+        }
     },
     {
         path: "/register",
         name: "Register",
         component: Register,
+        meta: {
+            title: 'Register'
+        }
     },
     {
         path: "/apitest",
         name: "API Tests",
         component: apiTests,
+        meta: {
+            title: 'API tests'
+        }
     },
     {
         path: "/activitycenter",
         name: "Activity",
         component: ActivityCenter,
-        meta: { requiresAuth: true, requiresMembership: true },
+        meta: { requiresAuth: true, requiresMembership: true, title: 'Activity Center' },
+        
     },
     {
         path: "/community",
         name: "Community",
         component: Community,
-        meta: { requiresAuth: true, requiresMembership: true },
+        meta: { requiresAuth: true, requiresMembership: true, title: 'Community' },
     },
     {
         path: "/membership",
         name: "Membership",
         component: Membership,
-        meta: { requiresAuth: authRequired },
+        meta: { requiresAuth: authRequired, title: 'Buy a membership' },
     },
     {
         path: "/group",
         name: "Group",
         component: MyGroup,
-        meta: { requiresAuth: true, requiresMembership: true },
+        meta: { requiresAuth: true, requiresMembership: true , title: 'Groups'},
     },
     {
         path: "/myaccount",
         name: "Account",
         component: MyAccount,
-        meta: { requiresAuth: authRequired },
+        meta: { requiresAuth: authRequired, title: 'Account Details' },
     },
     {
         path: "/mytrail",
         name: "MyTrail",
         component: MyTrail,
-        meta: { requiresAuth: true, requiresMembership: true },
+        meta: { requiresAuth: true, requiresMembership: true, title: 'Trail Info' },
     },
     {
         path: "/uploadtrail",
         name: "UploadTrail",
         component: UploadTrail,
-        meta: { requiresAuth: true, requiresMembership: true },
+        meta: { requiresAuth: true, requiresMembership: true, title: 'Upload a trail' },
     },
     {
         path: "/stylingguide",
         name: "StylingGuide",
         component: StylingGuide,
-        meta: { requiresAuth: authRequired },
+        meta: { requiresAuth: authRequired, title: 'Styling Guide' },
     },
 ]
 
@@ -102,6 +115,12 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+    // Check if the route has a meta field and a title in it
+    if (to.meta.title) {
+        document.title = to.meta.title; // Set the page title based on the route's meta title
+    } else {
+        document.title = 'Walkley'; // Set a default title if the route doesn't have a meta title
+    }
     let token = localStorage.getItem('token');
     let requireAuth = to.matched.some(record => record.meta.requiresAuth);
     let requireMembership = to.matched.some(record => record.meta.requiresMembership);
