@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router'
 
 import WelcomePage from "../views/Welcome.vue";
 import Login from "../views/Login.vue";
@@ -12,6 +12,7 @@ import MyTrail from "../views/MyTrail.vue";
 import StylingGuide from "../views/StylingGuide.vue";
 import MyGroup from "@/views/Group.vue";
 import UploadTrail from "@/views/UploadTrail.vue";
+import OwnerPage from "@/views/OwnerPage.vue";
 import axiosAuth from "@/api/axios-auth";
 
 // Defines a variable using environment variables to disable
@@ -27,77 +28,77 @@ console.log(process.env.VUE_APP_DISABLE_LOGIN);
 
 const routes = [
     {
-        path: "/welcome",
-        name: "Welcome",
+        path: '/welcome',
+        name: 'Welcome',
         component: WelcomePage,
         meta: {
             title: 'Welcome to Walkley'
         }
     },
     {
-        path: "/login",
-        name: "Login",
+        path: '/login',
+        name: 'Login',
         component: Login,
         meta: {
             title: 'Login'
         }
     },
     {
-        path: "/register",
-        name: "Register",
+        path: '/register',
+        name: 'Register',
         component: Register,
         meta: {
             title: 'Register'
         }
     },
     {
-        path: "/apitest",
-        name: "API Tests",
+        path: '/apitest',
+        name: 'API Tests',
         component: apiTests,
         meta: {
             title: 'API tests'
         }
     },
     {
-        path: "/activitycenter",
-        name: "Activity",
+        path: '/activitycenter',
+        name: 'Activity',
         component: ActivityCenter,
         meta: { requiresAuth: true, requiresMembership: true, title: 'Activity Center' },
         
     },
     {
-        path: "/community",
-        name: "Community",
+        path: '/community',
+        name: 'Community',
         component: Community,
         meta: { requiresAuth: true, requiresMembership: true, title: 'Community' },
     },
     {
-        path: "/membership",
-        name: "Membership",
+        path: '/membership',
+        name: 'Membership',
         component: Membership,
         meta: { requiresAuth: authRequired, title: 'Buy a membership' },
     },
     {
-        path: "/group",
-        name: "Group",
+        path: '/group',
+        name: 'Group',
         component: MyGroup,
         meta: { requiresAuth: true, requiresMembership: true , title: 'Groups'},
     },
     {
-        path: "/myaccount",
-        name: "Account",
+        path: '/myaccount',
+        name: 'Account',
         component: MyAccount,
         meta: { requiresAuth: authRequired, title: 'Account Details' },
     },
     {
-        path: "/mytrail",
-        name: "MyTrail",
+        path: '/mytrail',
+        name: 'MyTrail',
         component: MyTrail,
         meta: { requiresAuth: true, requiresMembership: true, title: 'Trail Info' },
     },
     {
-        path: "/uploadtrail",
-        name: "UploadTrail",
+        path: '/uploadtrail',
+        name: 'UploadTrail',
         component: UploadTrail,
         meta: { requiresAuth: true, requiresMembership: true, title: 'Upload a trail' },
     },
@@ -107,14 +108,20 @@ const routes = [
         component: StylingGuide,
         meta: { requiresAuth: authRequired, title: 'Styling Guide' },
     },
+    {
+        path: "/owner",
+        name: "OwnerPage",
+        component: OwnerPage,
+        meta: { requiresAuth: authRequired, requiresOwner: true, title: 'Owner' },
+    },
 ]
 
 const router = createRouter({
-    history: createWebHistory("127.0.0.1:3000/"),
+    history: createWebHistory('127.0.0.1:3000/'),
     routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     // Check if the route has a meta field and a title in it
     if (to.meta.title) {
         document.title = to.meta.title; // Set the page title based on the route's meta title
@@ -124,54 +131,64 @@ router.beforeEach((to, from, next) => {
     let token = localStorage.getItem('token');
     let requireAuth = to.matched.some(record => record.meta.requiresAuth);
     let requireMembership = to.matched.some(record => record.meta.requiresMembership);
+    let requireOwner = to.matched.some(record => record.meta.requiresOwner);
+    
+    var nextPage = '';
     if (to.path === '/'){
-        next('/welcome');
+        nextPage = '/welcome';
     }
     if (to.path === '/login') {
         if (token) {
-            axiosAuth.post('/auth/verify-token').then(() => {
-                next('/activitycenter');
+            await axiosAuth.post('/auth/verify-token').then(() => {
+                nextPage = '/activitycenter';
             }).catch(() => {});
         }
     }
     
-    if (!requireAuth && !requireMembership) {
+    // Rewrite
+    if (requireAuth) {
+        if (token) {
+            await axiosAuth.post('/auth/verify-token').then(() => {
+                
+            }).catch(() => {
+                nextPage = '/login';
+            })
+        } else {
+            nextPage = '/login';
+        }
+    }
+    if (requireMembership) {
+        await axiosAuth.get('/membership/get-current').then(
+            response => {
+                if (response.data.membership === null) {
+                    nextPage = '/membership';
+                }
+            }
+        ).catch(
+            error => {
+                if (error.response.status !== 200) {
+                    nextPage = '/membership';
+                }
+            }
+        )
+    }
+    if (requireOwner) {
+        await axiosAuth.get('/owner/current-is-owner').then(
+            response => {
+                if (response.status !== 200) {
+                    nextPage = '/activitycenter';
+                }
+            }
+        ).catch(() => {
+            nextPage = '/activitycenter';
+        });
+    }
+    
+    if (nextPage === '') {
         next();
+    } else {
+        next(nextPage);
     }
-
-    else if (requireAuth && !token) {
-        next('/login');
-    }
-
-    else if (requireAuth && token && !requireMembership) {
-        axiosAuth.post('/auth/verify-token').then(() => {
-            next();
-        }).catch(() => {
-            next('/login');
-        })
-    }
-    else if (requireAuth && token && requireMembership) {
-        axiosAuth.post('/auth/verify-token').then(() => {
-            axiosAuth.get('/membership/get-current').then(
-                response => {
-                    if (response.data.membership !== null) {
-                        next();
-                    } else {
-                        next('/membership');
-                    }
-                }
-            ).catch(
-                error => {
-                    if (error.response.status !== 200) {
-                        next('/membership');
-                    }
-                }
-            )
-        }).catch(() => {
-            next('/login');
-        })
-    }
-
 });
 
 export default router

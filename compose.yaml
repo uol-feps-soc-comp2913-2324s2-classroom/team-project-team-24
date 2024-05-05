@@ -15,3 +15,9 @@ services:
             context: frontend
         ports:
             - $FRONTEND_PORT:3000
+            
+    stripe-cli:
+        image: stripe/stripe-cli
+        container_name: stripe-cli
+        network_mode: host
+        command: "listen --api-key ${STRIPE_API_KEY} --forward-to localhost:${BACKEND_PORT}/webhook"

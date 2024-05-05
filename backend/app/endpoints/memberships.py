@@ -74,10 +74,11 @@ def cancel_membership():
         return jsonify({"error": "User is not a member"}), 400
 
     delete_user_membership(user.id)
-    stripe.Subscription.modify(
-        user.stripe_subscription,
-        cancel_at_period_end=True,
-    )
+    if user.stripe_subscription:
+        stripe.Subscription.modify(
+            user.stripe_subscription,
+            cancel_at_period_end=True,
+        )
     user.stripe_subscription = None
     return Response("Cancelled user membership", 200)
 
