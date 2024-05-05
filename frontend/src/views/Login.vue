@@ -4,7 +4,6 @@
         <LoginFormComponent />
     </div>
     <br />
-    <!-- <p>API Response: {{ APIResponse }}</p> -->
 </template>
 
 <script>
@@ -17,11 +16,19 @@ export default {
         return {}
     },
     methods: {
-        autoLogin() {
+        async autoLogin() {
             let token = localStorage.getItem('token');
             if (token) {
                 axiosAuth.post('/auth/verify-token').then(() => {
-                    this.$router.push('/activitycenter');
+                    axiosAuth.get('/owner/current-is-owner').then(
+                        response => {
+                            if (response.status == 200) {
+                                this.$router.push('/owner');
+                            } else {
+                                this.$router.push('/activitycenter');
+                            }
+                        }
+                    ).catch(() => {this.$router.push('/activitycenter')});
                 }).catch(() => {});
             }
         }

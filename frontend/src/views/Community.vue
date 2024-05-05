@@ -175,9 +175,6 @@ export default {
     margin: 0;
 }
 
-.createGroupButton {
-}
-
 .groupNavigations {
     display: flex;
     flex-direction: row;

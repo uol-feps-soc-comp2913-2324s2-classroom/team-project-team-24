@@ -201,9 +201,15 @@ def get_selected_trails_map():
     
     # Get the trail IDs from the request
     trail_ids = request.get_json().get("trailIDs")
-    
+    width = request.get_json().get("width")
+    height = request.get_json().get("height")
+
     # Make a new folium map
-    map_obj = folium.Map(location=[0, 0], zoom_start=2)
+    if not width or not height:
+        map_obj = folium.Map(location=[0, 0], zoom_start=2)
+    else:
+        map_obj = folium.Map(location=[0, 0], zoom_start=2, width=width, height=height)
+
     
     if trail_ids:
         # Get the routes for the trail IDs
@@ -249,6 +255,8 @@ def zoom_to_trail():
     user_id = get_current_user().id
     trail_id = request.get_json().get("trailID")
     selected_trail_ids = request.get_json().get("selectedTrailIDs")
+    width = request.get_json().get("width")
+    height = request.get_json().get("height")
     
     #Error handling 
     if not trail_id:
@@ -267,7 +275,10 @@ def zoom_to_trail():
     if not zoom_route:
         return jsonify({"error": "Invalid trail ID"}), 400
     
-    map_obj = folium.Map(location=[0, 0], zoom_start=2)
+    if not width or not height:
+        map_obj = folium.Map(location=[0, 0], zoom_start=2)
+    else:
+        map_obj = folium.Map(location=[0, 0], zoom_start=2, width=width, height=height)
     
     # Essentially: use bounds to define where to zoom 
     bounds = []
@@ -327,7 +338,7 @@ def delete_trail():
         app.logger.error(f"Error deleting trail: {e}")
         return jsonify({"error": "An error occurred while deleting the trail"}), 500
 
-@bp.route('/download', methods=['GET'])
+@bp.route('/download', methods=['POST'])
 @jwt_required()
 @membership_required
 def download_trail():

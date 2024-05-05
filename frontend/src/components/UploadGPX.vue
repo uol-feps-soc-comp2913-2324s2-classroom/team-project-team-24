@@ -29,9 +29,7 @@ export default {
             <input type="file" @change="handleFileUpload" class="form-control" accept=".gpx" />
             <input type="text" placeholder="Enter the name of your route" v-model="routeName"
                 class="form-control mt-2" />
-            <!-- Warning for duplicate name -->
-            <div v-if="isDuplicateName" class="text-danger mt-2">Duplicate name detected. Please choose a different
-                name.</div>
+
             <!-- Select with "Walking" as default and made selection mandatory -->
             <select v-model="exerciseType" class="form-select mt-2" required>
                 <option disabled value="">Please select one</option>
@@ -40,7 +38,7 @@ export default {
                 <option>Biking</option>
                 <option>Hiking</option>
             </select>
-            
+            <p class="form-error-text">{{ errorMessage }}</p>
             <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
                 <!-- Button disabled logic checks if routeName has content and file is uploaded -->
                 <button class="btn-primary" @click="uploadData"
@@ -52,12 +50,13 @@ export default {
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const routeName = ref('');
 const exerciseType = ref('Walking'); // set Walking as default
 const selectedFile = ref(null);
+var errorMessage = ref("");
 
 const router = useRouter();
 
@@ -65,18 +64,6 @@ const router = useRouter();
 const handleFileUpload = event => {
     selectedFile.value = event.target.files[0] || null;
 };
-
-// Example list of existing route names
-const existingRouteNames = ['Trailblazer', 'Morning Run', 'Mountain Hike'];
-
-// Ref to store whether the current route name is a duplicate
-const isDuplicateName = ref(false);
-
-// Watch for changes to routeName and validate for duplicates
-watch(routeName, (newValue) => {
-    isDuplicateName.value = existingRouteNames.includes(newValue);
-});
-
 
 const uploadData = () => {
     // Here you would typically handle the file upload to your backend
@@ -96,7 +83,9 @@ const uploadData = () => {
                     query: {trailID: response.data.trailID}
                 });
             }
-        );
+        ).catch(error => {
+            errorMessage.value = error.response.data;
+        });
 };
 </script>
 

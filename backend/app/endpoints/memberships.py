@@ -8,7 +8,7 @@ import stripe
 
 # This is your Stripe CLI webhook secret for testing your endpoint locally.
 WEBHOOK_SECRET = 'whsec_7d4a3ea9df544e2d813140092a64baa04aaa6256129ededc7adcc9584f321355'
-YOUR_DOMAIN = "http://localhost:8080"
+YOUR_DOMAIN = "http://localhost:3000"
 
 bp = Blueprint('memberships', __name__, url_prefix='/membership')
 
@@ -74,10 +74,11 @@ def cancel_membership():
         return jsonify({"error": "User is not a member"}), 400
 
     delete_user_membership(user.id)
-    stripe.Subscription.modify(
-        user.stripe_subscription,
-        cancel_at_period_end=True,
-    )
+    if user.stripe_subscription:
+        stripe.Subscription.modify(
+            user.stripe_subscription,
+            cancel_at_period_end=True,
+        )
     user.stripe_subscription = None
     return Response("Cancelled user membership", 200)
 
