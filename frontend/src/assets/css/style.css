@@ -85,3 +85,11 @@ body{
 .greyText{
     color: var(--grey-font-color);
 }
+
+.monoText {
+    font-family: 'Roboto Mono', monospace;
+}
+
+.smallerText {
+    font-size: 0.8rem;
+}
