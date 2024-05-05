@@ -1,36 +1,10 @@
-<template>
-    <div class="activityCenterPageContainer p-2">
-        <div class="main-container">
-            <div class="map-view-column p-3">
-                <GoalComponent />
-                <MapViewerComponent
-                    :selected-trails="selectedTrails"
-                    ref="mapViewer"
-                />
-            </div>
-            <div class="track-stats-column p-3">
-                <OverallTrailStatsComponent />
-            </div>
-        </div>
-        <div class="trails-container p-2">
-            <ListComponent v-bind:dataArray="trails" v-slot="slotProps">
-                <TrailListItemComponent
-                    :trail="slotProps.data"
-                    @trail-deleted="handleTrailDeleted"
-                    @trail-selected="handleTrailSelected"
-                    @zoom-to-trail="handleZoomToTrail"
-                />
-            </ListComponent>
-        </div>
-    </div>
-</template>
-
 <script>
+/* eslint-disable vue/no-unused-components */
 import MapViewerComponent from '@/components/MapViewer.vue'
-import GoalComponent from '@/components/Goal.vue'
+// import GoalComponent from '@/components/Goal.vue'
 import OverallTrailStatsComponent from '@/components/OverallTrailStats.vue'
 import TrailListItemComponent from '@/components/lists/TrailListItem.vue'
-import ListComponent from '@/components/lists/List.vue'
+import ListComponentNoDiv from '@/components/lists/ListNoDiv.vue'
 import axiosAuth from '@/api/axios-auth.js'
 
 export default {
@@ -40,6 +14,8 @@ export default {
             trails: [],
             longestTrailID: null,
             selectedTrails: [],
+            mapViewHeight: null,
+            mapViewWidth: null,
         }
     },
     methods: {
@@ -70,6 +46,8 @@ export default {
             axiosAuth
                 .post('/trail/zoom-to-trail', {
                     trailID: trailId,
+                    height: this.mapViewHeight,
+                    width: this.mapViewWidth,
                     selectedTrailIDs: this.selectedTrails,
                 })
                 .then((response) => {
@@ -90,44 +68,129 @@ export default {
                 )
             }
         },
+        getMapDimensions() {
+            const mapAndStatsContainer = document.getElementById('mapAndStatsContainer')
+            const overAllTrailStatsComponent = document.getElementById('overAllTrailStatsComponent')
+            if (mapAndStatsContainer && overAllTrailStatsComponent) {
+                // this.mapViewHeight = mapAndStatsContainer.clientHeight - overAllTrailStatsComponent.clientHeight
+                // this.mapViewWidth = mapAndStatsContainer.clientWidth
+                this.mapViewHeight = mapAndStatsContainer.getBoundingClientRect().height - overAllTrailStatsComponent.getBoundingClientRect().height
+                this.mapViewWidth = mapAndStatsContainer.getBoundingClientRect().width
+            } else {
+                console.error('Map div not found')
+            }
+
+        },
     },
     components: {
         MapViewerComponent,
-        GoalComponent,
+        // GoalComponent,
+        ListComponentNoDiv,
         OverallTrailStatsComponent,
         TrailListItemComponent,
-        ListComponent,
     },
     created() {
         this.getPageData()
     },
+    mounted() {
+        // Get the map view div width and height
+        this.$nextTick(() => {
+            this.getMapDimensions()
+        })
+    }
 }
 </script>
 
+<template>
+    <div class="activityCenterPageContainer">
+        <div class="map-and-stats-container d-flex flex-column" id="mapAndStatsContainer">
+            <div class="map-view" id="mapDiv">
+                <!-- <GoalComponent /> -->
+                <MapViewerComponent
+                    v-if="mapViewHeight && mapViewWidth"
+                    :selected-trails="selectedTrails"
+                    ref="mapViewer"
+                    :height="mapViewHeight"
+                    :width="mapViewWidth"
+                    class="mapViewerComponent"
+                />
+            </div>
+            <div class="d-flex flex-row align-items-center justify-content-between px-4 py-4" id="overAllTrailStatsComponent">
+                <h2>My trails</h2>
+                <OverallTrailStatsComponent/>
+            </div>
+        </div>
+        <div class="trails-container p-3 scrollableList">
+            <table class="trailsListTable">
+                <ListComponentNoDiv v-bind:dataArray="trails" v-slot="slotProps">
+                    <TrailListItemComponent
+                    :trail="slotProps.data"
+                    @trail-deleted="handleTrailDeleted"
+                    @trail-selected="handleTrailSelected"
+                    @zoom-to-trail="handleZoomToTrail"
+                    />
+                </ListComponentNoDiv>
+            </table>
+        </div>
+    </div>
+</template>
+
+
 <style scoped>
-.activityCenterPageContainer {
+h2 {
+    margin: 0;
+}
+
+.friendItem {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s;
+    transition: background-color 0.2s;
 }
 
-.main-container {
+
+
+.slightlySmaller {
+    width: 99.5%;
+    margin-left: 1px;
+}
+
+.scrollableList {
+    padding-top: 1px;
+    overflow-y: auto;
+    width: 100%;
     display: flex;
-    height: 80vh;
+    flex-direction: column;
+    align-items: center;
 }
 
-.map-view-column {
-    flex: 2; /* Occupy 2/3 of the container */
-    margin-right: 10px; /* Add some space between columns */
-    background-color: var(--l1-color);
-    border-radius: var(--border-radius);
+.mapViewerComponent {
     width: 100%;
     height: 100%;
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
 }
 
-.map-view-column iframe {
-    flex: 1; /* Allow the iframe to grow to fill available space */
-    width: 100%; /* Ensure the iframe takes full width of its container */
-    border: none; /* Remove iframe border */
+.activityCenterPageContainer{
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    row-gap: 10px;
+}
+
+.map-and-stats-container {
+    border-radius: var(--border-radius);
+    background-color: var(--l1-color);
+    overflow: hidden;
+}
+
+.map-view {
+    
+    /* flex: 2; Occupy 2/3 of the container */
+    /* margin-right: 10px; Add some space between columns */
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--border-radius);
 }
 
 .track-stats-column {
@@ -138,11 +201,20 @@ export default {
 }
 
 .trails-container {
-    margin-top: 20px;
-    margin-right: 10px; /* Add some space between columns */
+    /* margin-top: 10px;
+    margin-right: 10px; */
     background-color: var(--l1-color);
     border-radius: var(--border-radius);
+    box-sizing: border-box;
+    /* width: 100%;
+    height: 100%; */
+}
+
+table{
     width: 100%;
-    height: 100%;
+}
+
+.width100{
+    width: 100%;
 }
 </style>
