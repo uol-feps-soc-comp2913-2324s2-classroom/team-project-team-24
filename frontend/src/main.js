@@ -21,4 +21,4 @@ import '@/assets/css/form.css'
 
 axios.defaults.baseURL = `${process.env.VUE_APP_BACKEND_URL}`;
 
-createApp(App).use(router).mount('#app').use(CanvasJSChart)
+createApp(App).use(router, CanvasJSChart).mount('#app');

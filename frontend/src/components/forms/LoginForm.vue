@@ -126,6 +126,8 @@ export default {
 }
 .separator-text {
     padding: 0 10px;
+    position: relative;
+    top: -12px;
 }
 
 .remember-me {
