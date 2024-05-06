@@ -1,10 +1,16 @@
 <template>
-    <div class="login-container">
-        <h2 class="title"><b>Login</b></h2>
-        <LoginFormComponent />
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="login-container">
+            <h2 class="title"><b>Login</b></h2>
+            <LoginFormComponent />
+            </div>
+        </div>
+        </div>
     </div>
-    <br />
 </template>
+
 
 <script>
 import LoginFormComponent from '@/components/forms/LoginForm.vue'
@@ -58,5 +64,18 @@ export default {
     background: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+}
+
+@media (max-width: 576px) {
+  .title {
+    margin-top: 20px;
+    margin-left: 18px;
+    text-align: left;
+  }
+
+  .login-container {
+    margin-top: 20px;
+    border-radius: 0;
+  }
 }
 </style>

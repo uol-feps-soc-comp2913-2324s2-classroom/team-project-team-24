@@ -84,7 +84,6 @@ table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    /* border-radius: var(--border-radius) */
 }
 
 td {
