@@ -44,6 +44,9 @@ export default {
             trailsModalShowAddTrails: false,
             lastTrailsModalView: 0,
             lastGroupMembersModalView: 0,
+
+            mapWidth: null,
+            mapHeight: null,
         };
     },
     methods: {
@@ -115,6 +118,10 @@ export default {
             }).then(
                 response => {
                     this.groupTrails = response.data.trails;
+
+                    // Get map width and height
+                    this.getMapDimensions();
+
                     // this.groupTrailsIDOnly = response.data.trails.map(trail => trail.id);
                     // console.log("Group trail IDs: ", this.groupTrailsIDOnly);
                     this.loadingGroupTrails = false;
@@ -150,7 +157,11 @@ export default {
             });
 
         },
-
+        getMapDimensions() {
+            const element = document.getElementById("mapViewComponent");
+            this.mapWidth = element.clientWidth;
+            this.mapHeight = element.clientHeight;
+        },
         toggle(bool) {
             if (bool) {
                 return false;
@@ -390,8 +401,8 @@ export default {
 
         </div>
 
-        <div class="groupMapView">
-            <MapViewerComponent :selected-trails="groupTrails.map( trail => trail.id )" />
+        <div class="groupMapView" id="mapViewComponent">
+            <MapViewerComponent :selected-trails="groupTrails.map( trail => trail.id )" :width="mapWidth" :height="mapHeight"/>
         </div>
     </div>
 </template>
@@ -481,6 +492,7 @@ h3 {
 .groupMapView {
     background-color: var(--l1-color);
     width: 100%;
+    height: 100%;
     overflow: hidden;
     border-radius: var(--border-radius);
 }
