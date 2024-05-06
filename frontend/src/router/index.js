@@ -139,7 +139,7 @@ router.beforeEach(async (to, from, next) => {
     }
     if (to.path === '/login') {
         if (token) {
-            await axiosAuth.post('/auth/verify-token').then(() => {
+            axiosAuth.post('/auth/verify-token').then(() => {
                 nextPage = '/activitycenter';
             }).catch(() => {});
         }
@@ -183,7 +183,7 @@ router.beforeEach(async (to, from, next) => {
             nextPage = '/activitycenter';
         });
     }
-    
+
     if (nextPage === '') {
         next();
     } else {

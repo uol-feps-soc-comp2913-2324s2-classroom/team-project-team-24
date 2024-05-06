@@ -9,6 +9,7 @@ export default {
         this.$watch('$route', () => {
             this.checkAuth();
         });
+        
     },
     data() {
         return {
@@ -28,17 +29,25 @@ export default {
                                     this.showNav = false;
                                 } else {
                                     this.showNav = true;
+                                    if (this.$route.name == "Welcome" || this.$route.name == "login") {
+                                        this.showNav = false;
+                                    }
                                 }
                             }
-                        ).catch(() => {this.showNav = true;});
+                        ).catch(() => {this.showNav = true;
+                            if (this.$route.name == "Welcome" || this.$route.name == "login") {
+                                        this.showNav = false;
+                                    }});
                     })
                     .catch(() => {
                         this.showNav = false;
                     });
-                
+                    
             } else {
                 this.showNav = true;
             }
+            
+                
         }
     },
     components: {
@@ -46,6 +55,7 @@ export default {
     },
     mounted() {
         this.checkAuth();
+        
     },
 };
 </script>

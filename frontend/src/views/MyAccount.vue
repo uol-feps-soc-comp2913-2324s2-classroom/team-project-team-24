@@ -25,7 +25,6 @@ export default {
         <h1>My Account</h1>
         <span class="mt-2"><button class="btn-secondary" @click="accountLogout">Logout</button></span>
         <AccountDetailsComponent />
-        <!-- <button type="submit" @click.prevent="accountLogout">Logout</button> -->
     </div>
 </template>
 

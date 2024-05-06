@@ -70,7 +70,7 @@ def cancel_membership():
     user = get_current_user()
 
     # ensure that user is a member
-    if get_user_membership_id(user.id) == None or get_membership_price(user.id) == 0:
+    if get_user_membership_id(user.id) == None:
         return jsonify({"error": "User is not a member"}), 400
 
     delete_user_membership(user.id)

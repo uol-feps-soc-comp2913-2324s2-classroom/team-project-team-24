@@ -126,6 +126,8 @@ export default {
 }
 .separator-text {
     padding: 0 10px;
+    position: relative;
+    top: -12px;
 }
 
 .remember-me {
@@ -143,4 +145,18 @@ export default {
 .text-input {
     width: 100%;
 }
+
+@media (max-width: 576px) {
+  .create-account-text {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .form-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 </style>

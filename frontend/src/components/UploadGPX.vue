@@ -21,10 +21,10 @@ export default {
 </script>
 
 <template>
-    <div class="upload-gpx-container p-5">
-        <h1>Upload your new trail</h1>
+    <div class="upload-gpx-container p-3">
+        <h1 class="text-center">Upload your new trail</h1>
         <!-- Wrapper div for fields, with Bootstrap classes for width and centering -->
-        <div class="mx-auto" style="max-width: 50%;">
+        <div class="mx-auto" style="max-width: 400px;">
             <!-- File upload input is now required, only gpx files can be accepted -->
             <input type="file" @change="handleFileUpload" class="form-control" accept=".gpx" />
             <input type="text" placeholder="Enter the name of your route" v-model="routeName"
@@ -96,5 +96,13 @@ const uploadData = () => {
     align-items: center;
     gap: 20px;
     margin-top: 20px;
+}
+
+.form-control {
+  max-width: 100%;
+}
+
+.form-select {
+  max-width: 100%;
 }
 </style>
