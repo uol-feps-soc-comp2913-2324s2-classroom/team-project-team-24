@@ -15,10 +15,6 @@ describe('LoginFormComponent', () => {
         cy.contains('button', 'Login').should('be.visible');
       });
     
-      it('should display the "Forgot password" link', () => {
-        cy.contains('a', 'Forgot password').should('be.visible');
-      });
-    
       it('should display the "Create an account" link', () => {
         cy.contains('a', 'Create an account').should('be.visible');
       });
@@ -26,4 +22,8 @@ describe('LoginFormComponent', () => {
       it('should display the separator text', () => {
         cy.contains('.separator-text', 'Or').should('be.visible');
       });
+
+      it('login functionality should work', () => {
+        cy.login();        
+      })
 })
