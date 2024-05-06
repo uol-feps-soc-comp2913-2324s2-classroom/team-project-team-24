@@ -19,3 +19,4 @@ describe('RegisterFormComponent', () => {
         cy.register();
     })
 })
+
