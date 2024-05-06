@@ -1,8 +1,160 @@
-.navSpacer{
-    width: 6.5rem;
+/* 
+    Attribution:
+    Credit to the original author of the code FireShip
+    
+    This code was adapted from the following source:
+    github.com/fireship-io/222-responsive-icon-nav-css
+    Watch the [Responsive CSS Navbar](https://youtu.be/biOMz4puGt8) episode on on youtube
+*/
+
+.navbar {
+    position: fixed;
+    background-color: var(--l1-color);
+    transition: width var(--transition-speed);
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    z-index: 1;
 }
 
-.sideNav{
+.navbarNav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.nav-item {
+    width: 100%;
+}
+
+.navLink {
+    display: flex;
+    align-items: center;
+    height: 3rem;
+    color: var(--unselected-color);
+    text-decoration: none;
+    transition: var(--transition-speed);
+}
+
+
+.router-link-active .navText{
+    color: var(--selected-color);
+    font-weight: bold;
+}
+
+.navLink:hover {
+    background-color: #eeeeee;
+}
+
+.navText {
+    display: none;
+    margin-left: 0.3rem;
+}
+
+.navLink img {
+    width: 2rem;
+    min-width: 2rem;
+    margin: 0 1.5rem;
+}
+
+.logo {
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1.5rem;
+    width: 100%;
+}
+
+.logoText {
+    letter-spacing: 0.2ch;
+    display: inline;
+    left: -999px;
+    transition: var(--transition-speed);
+    color: #000000;
+}
+
+/* Small screens */
+@media only screen and (max-width: 600px) {
+    .navbar {
+        bottom: 0;
+        width: 100vw;
+        height: 5rem;
+    }
+
+    .navSpacer {
+        width: 0;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .navbarNav {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .navLink {
+        justify-content: end;
+        flex-direction: column;
+    }
+    
+    .navTextMobile {
+        display: block;
+        font-size: 0.7rem;
+    }
+}
+
+/* Large screens */
+@media only screen and (min-width: 600px) {
+    .navbar {
+        top: 0;
+        width: 5rem;
+        height: 100vh;
+        margin-left: 0.5rem;
+    }
+
+    .navLink{
+        margin-bottom: 1rem;
+    }
+
+    .navbar:hover {
+        width: 13rem;
+    }
+
+    .navSpacer {
+        width: 6.5rem;
+    }
+
+    .navbar:hover .navText {
+        display: inline-block;
+    }
+
+    .navbar:hover .logo svg {
+    }
+
+    .navbar:hover .navText {
+        left: 0px;
+    }
+
+    .navTextMobile {
+        display: none;
+    }
+
+    .nav-item:last-child {
+        margin-top: auto;
+    }
+}
+
+/* .sideNav{
     margin-left: 0.5rem;
     height: 100%;
     box-sizing: border-box;
@@ -94,7 +246,7 @@
 .sideNav:hover .navText{
     display: block;
     text-decoration: none !important;
-}
+} */
 
 ::-webkit-scrollbar {
     width: 0.5rem;
