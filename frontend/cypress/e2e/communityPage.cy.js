@@ -1,7 +1,6 @@
 describe('Community Page', () => {
     beforeEach(() => {
-        cy.register()
-        cy.login()
+            cy.login()
         cy.visit('http://localhost:3000/community')
     })
 
@@ -21,7 +20,7 @@ describe('Community Page', () => {
             .click()
     })
 
-    it('should  for email', () => {
+    it('should look for email', () => {
         cy.get('#friend-email').type('test@example.com')
         cy.get('button').contains('Add').should('be.visible').and('be.enabled')
     })
