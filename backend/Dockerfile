@@ -10,5 +10,7 @@ COPY . /app
 
 EXPOSE 5000
 
+RUN python setup_app.py
+
 # CMD ["python", "run.py"]
 CMD ["flask", "--app", "app", "run", "-h", "0.0.0.0", "-p", "5000"]

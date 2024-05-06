@@ -12,7 +12,7 @@ export default {
     },
     data() {
         return {
-            isLoggedIn: false,
+            showNav: false,
         };
     },
     methods: {
@@ -22,13 +22,22 @@ export default {
                 // If the environment variable is not set, check the user's login status
                 axiosAuth.post('/auth/verify-token')
                     .then(() => {
-                        this.isLoggedIn = true;
+                        axiosAuth.get('/owner/current-is-owner').then(
+                            response => {
+                                if (response.status === 200) {
+                                    this.showNav = false;
+                                } else {
+                                    this.showNav = true;
+                                }
+                            }
+                        ).catch(() => {this.showNav = true;});
                     })
                     .catch(() => {
-                        this.isLoggedIn = false;
+                        this.showNav = false;
                     });
+                
             } else {
-                this.isLoggedIn = true;
+                this.showNav = true;
             }
         }
     },
@@ -43,8 +52,8 @@ export default {
 
 <template>
     <div class="main" id="mainElement">
-        <sideNavComponent v-if="isLoggedIn"/>
-        <div class="navSpacer" v-if="isLoggedIn"></div>
+        <sideNavComponent v-if="showNav"/>
+        <div class="navSpacer" v-if="showNav"></div>
         <div class="content">
             <router-view />
         </div>
