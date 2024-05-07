@@ -1,12 +1,34 @@
+<template>
+    <div class="my-trail-container d-flex flex-column" id="myTrailContainer">
+        <div class="map-container" id="mapContainer" v-if="!loadingTrailStats">
+            <MapViewerComponent
+                v-if="mapHeight && mapWidth"
+                :trailID="trailID"
+                :selectedTrails="[trailID]"
+                :height="mapHeight"
+                :width="mapWidth"
+            />
+        </div>
+        <TrailInfoComponent
+            v-show="!loadingTrailStats"
+            @trailDataChanged="initializeMap"
+            :trailID="trailID"
+            class="trail-stats px-3 py-2"
+            id="trailStats"
+        />
+        <div v-if="loadingTrailStats" class="loading-container">
+            <h2>Loading trail data...</h2>
+        </div>
+    </div>
+</template>
+
 <script>
-/* eslint-disable vue/no-unused-components */
-/* eslint-disable no-unused-vars */
-import MapViewerComponent from "@/components/MapViewer.vue";
-import TrailInfoComponent from "@/components/TrailInfo.vue";
-import axiosAuth from "@/api/axios-auth.js";
+import MapViewerComponent from '@/components/MapViewer.vue'
+import TrailInfoComponent from '@/components/TrailInfo.vue'
+import axiosAuth from '@/api/axios-auth.js'
 
 export default {
-    name: "MyTrail",
+    name: 'MyTrail',
     data() {
         return {
             trailID: null,
@@ -14,60 +36,54 @@ export default {
             mapHeight: null,
             trailDataReady: false,
             loadingTrailStats: true,
-        };
+        }
     },
     methods: {
         calculateMapSize() {
-            const mapContainer = document.getElementById("mapContainer");
-            const myTrailContainer = document.getElementById("myTrailContainer");
-            const trailStats = document.getElementById("trailStats");
-            console.log("My Trail Container Height: " + myTrailContainer.getBoundingClientRect().height);
-            console.log("Trail Stats Height: " + trailStats.getBoundingClientRect().height);
-            // console.log("Predicted height: " + mapContainer.getBoundingClientRect().height);
-            
-            if (myTrailContainer && trailStats){
-                this.mapWidth = mapContainer.getBoundingClientRect().width;
-                this.mapHeight = mapContainer.getBoundingClientRect().height;
-            }  else {
-                console.error("Error calculating map size");
+            const mapContainer = document.getElementById('mapContainer')
+            const myTrailContainer = document.getElementById('myTrailContainer')
+            const trailStats = document.getElementById('trailStats')
+            console.log(
+                'My Trail Container Height: ' +
+                    myTrailContainer.getBoundingClientRect().height
+            )
+            console.log(
+                'Trail Stats Height: ' +
+                    trailStats.getBoundingClientRect().height
+            )
+
+            if (myTrailContainer && trailStats) {
+                this.mapWidth = mapContainer.getBoundingClientRect().width
+                this.mapHeight = mapContainer.getBoundingClientRect().height
+            } else {
+                console.error('Error calculating map size')
             }
-            // console.log("Window Height: " + window.innerHeight);
-            // this.mapWidth = mapContainer.clientWidth;
-            // this.mapHeight = window.innerHeight - trailStats.clientHeight - 10;
-            console.log("Width: " + this.mapWidth + " Height: " + this.mapHeight);
-            console.log("final map container height: " + mapContainer.getBoundingClientRect().height);
+
+            console.log(
+                'Width: ' + this.mapWidth + ' Height: ' + this.mapHeight
+            )
+            console.log(
+                'final map container height: ' +
+                    mapContainer.getBoundingClientRect().height
+            )
         },
         initializeMap() {
-            this.loadingTrailStats = false;
+            this.loadingTrailStats = false
             this.$nextTick(() => {
-                this.calculateMapSize();
-            });
-        }
+                this.calculateMapSize()
+            })
+        },
     },
     created() {
-        this.trailID = this.$route.query.trailID;
+        this.trailID = this.$route.query.trailID
     },
-    mounted() {
-
-    },
+    mounted() {},
     components: {
         MapViewerComponent,
         TrailInfoComponent,
     },
-};
+}
 </script>
-
-<template>
-    <div class="my-trail-container d-flex flex-column" id="myTrailContainer">
-        <div class="map-container" id="mapContainer" v-if="!loadingTrailStats">
-            <MapViewerComponent v-if="mapHeight && mapWidth" :trailID="trailID" :selectedTrails="[trailID]" :height="mapHeight" :width="mapWidth"/>
-        </div>
-        <TrailInfoComponent v-show="!loadingTrailStats" @trailDataChanged="initializeMap" :trailID="trailID" class="trail-stats px-3 py-2" id="trailStats"/>
-        <div v-if="loadingTrailStats" class="loading-container">
-            <h2>Loading trail data...</h2>
-        </div>
-    </div>
-</template>
 
 <style scoped>
 .loading-container {
@@ -92,6 +108,5 @@ export default {
     margin-top: 10px;
     background-color: var(--l1-color);
     border-radius: var(--border-radius);
-    /* overflow: hidden; */
 }
 </style>

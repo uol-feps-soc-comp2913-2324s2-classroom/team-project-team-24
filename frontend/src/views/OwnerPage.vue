@@ -2,7 +2,9 @@
     <div>
         <div class="header" style="display: flex">
             <h4>Admin</h4>
-            <button class="btn-secondary logout-btn"  @click="accountLogout">logout</button>
+            <button class="btn-secondary logout-btn" @click="accountLogout">
+                logout
+            </button>
         </div>
         <div class="button" style="display: flex">
             <button @click="showUsers">Users Info</button>
@@ -33,11 +35,11 @@ export default {
 
     methods: {
         getPageData() {
-            axiosAuth.get('/owner/get-owner-membership-data').then(
-                response => {
-                    this.numberOfUsers = response.data.numUsers;
-                }
-            )
+            axiosAuth
+                .get('/owner/get-owner-membership-data')
+                .then((response) => {
+                    this.numberOfUsers = response.data.numUsers
+                })
         },
         showUsers() {
             this.userInfoIsShowing = true
@@ -48,8 +50,8 @@ export default {
             this.userInfoIsShowing = false
         },
         accountLogout() {
-            localStorage.removeItem('token');
-            this.$router.push("/login");
+            localStorage.removeItem('token')
+            this.$router.push('/login')
         },
     },
     mounted() {
@@ -63,7 +65,6 @@ export default {
 </script>
 
 <style>
-/* Your existing styles */
 .header {
     background-color: black;
     color: white;
@@ -88,7 +89,6 @@ export default {
 }
 
 .logout-btn {
-    /* float: right; */
     margin-left: auto;
 }
 </style>

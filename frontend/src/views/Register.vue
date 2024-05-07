@@ -1,3 +1,23 @@
+<template>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="register-container">
+                    <h2 class="title"><b>Create an account</b></h2>
+                    <RegisterForm1Component
+                        v-if="form1"
+                        @formSubmitted="form1Submit"
+                    />
+                    <RegisterForm2Component
+                        v-if="form2"
+                        @registrationSuccessful="handleRegistrationSuccessful"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
 <script>
 import RegisterForm1Component from '@/components/forms/RegisterForm1.vue'
 import RegisterForm2Component from '@/components/forms/RegisterForm2.vue'
@@ -12,8 +32,8 @@ export default {
     },
     methods: {
         form1Submit() {
-            this.form1 = false;
-            this.form2 = true;
+            this.form1 = false
+            this.form2 = true
         },
     },
     components: {
@@ -22,24 +42,6 @@ export default {
     },
 }
 </script>
-
-<template>
-    <div class="container-fluid">
-      <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
-          <div class="register-container">
-            <h2 class="title"><b>Create an account</b></h2>
-            <RegisterForm1Component v-if="form1" @formSubmitted="form1Submit" />
-            <RegisterForm2Component
-              v-if="form2"
-              @registrationSuccessful="handleRegistrationSuccessful"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  </template>
-  
 
 <style scoped>
 .title {
@@ -61,15 +63,15 @@ export default {
 }
 
 @media (max-width: 576px) {
-  .title {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    text-align: center;
-  }
+    .title {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
 
-  .register-container {
-    margin-top: 20px;
-    border-radius: 0;
-  }
+    .register-container {
+        margin-top: 20px;
+        border-radius: 0;
+    }
 }
 </style>
