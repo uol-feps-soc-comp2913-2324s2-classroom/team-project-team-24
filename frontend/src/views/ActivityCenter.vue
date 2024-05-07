@@ -12,7 +12,7 @@
                     ref="mapViewer"
                     :height="mapViewHeight"
                     :width="mapViewWidth"
-                    class="mapViewerComponent"
+                    
                 />
             </div>
             <div

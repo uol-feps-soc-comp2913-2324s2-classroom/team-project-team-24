@@ -20,10 +20,10 @@ export default {
             required: true,
         },
         width: {
-            type: String,
+            type: Number,
         },
         height: {
-            type: String
+            type: Number,
         },
         groupID: {
             type: Number,

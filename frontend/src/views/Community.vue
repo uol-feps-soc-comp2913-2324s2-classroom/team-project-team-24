@@ -97,6 +97,7 @@ export default {
             },
             loadingFriendsList: true,
             loadingGroupsList: true,
+            addFriendsIsShowing: false,
         }
     },
     methods: {

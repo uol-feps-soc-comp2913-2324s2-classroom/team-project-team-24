@@ -18,7 +18,7 @@ export default {
             trails: [],
             groupTrails: [],
             shareableTrails: [],
-            groupID: this.$route.query.groupID,
+            groupID: parseInt(this.$route.query.groupID),
             buttonDict: {
                 text: "Invite",
                 action: this.inviteFriend,

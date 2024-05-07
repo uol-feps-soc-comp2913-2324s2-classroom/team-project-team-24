@@ -56,7 +56,7 @@ export default {
 <template>
     <div class="my-trail-container d-flex flex-column" id="myTrailContainer">
         <div class="map-container" id="mapContainer" v-if="!loadingTrailStats">
-            <MapViewerComponent v-if="mapHeight && mapWidth" :trailID="trailID" :selectedTrails="[trailID]" :height="mapHeight" :width="mapWidth"/>
+            <MapViewerComponent v-if="mapHeight && mapWidth" :selectedTrails="[trailID]" :height="mapHeight" :width="mapWidth"/>
         </div>
         <TrailInfoComponent v-show="!loadingTrailStats" @trailDataChanged="initializeMap" :trailID="trailID" class="trail-stats px-3 py-2" id="trailStats"/>
         <div v-if="loadingTrailStats" class="loading-container">
