@@ -29,13 +29,13 @@ export default {
                                     this.showNav = false;
                                 } else {
                                     this.showNav = true;
-                                    if (this.$route.name == "Welcome" || this.$route.name == "login") {
+                                    if (this.$route.name == "Welcome" || this.$route.name == "login" || this.$route.name == "Register") {
                                         this.showNav = false;
                                     }
                                 }
                             }
                         ).catch(() => {this.showNav = true;
-                            if (this.$route.name == "Welcome" || this.$route.name == "login") {
+                            if (this.$route.name == "Welcome" || this.$route.name == "login" || this.$route.name == "Register") {
                                         this.showNav = false;
                                     }});
                     })
