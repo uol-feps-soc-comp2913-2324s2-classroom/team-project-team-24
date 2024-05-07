@@ -1,11 +1,22 @@
 <template>
-    <div style="display: flex;" class="userListItem2Buttons">
-        <!-- <div class="horizontalLine"></div> -->
+    <div style="display: flex" class="userListItem2Buttons">
         <div class="userListUNameandButton my-2 px-4">
             <p>{{ this.user.name }}</p>
             <div class="2buttons">
-                <button v-if="this.button1.text !== null" class="btn-quiet-action-blue me-3" @click.prevent="this.button1.action(this.user.id)">{{ this.button1.text }}</button>
-                <button v-if="this.button2.text !== null" class="btn-quiet-danger" @click.prevent="this.button2.action(this.user.id)">{{ this.button2.text }}</button>
+                <button
+                    v-if="this.button1.text !== null"
+                    class="btn-quiet-action-blue me-3"
+                    @click.prevent="this.button1.action(this.user.id)"
+                >
+                    {{ this.button1.text }}
+                </button>
+                <button
+                    v-if="this.button2.text !== null"
+                    class="btn-quiet-danger"
+                    @click.prevent="this.button2.action(this.user.id)"
+                >
+                    {{ this.button2.text }}
+                </button>
             </div>
         </div>
         <div class="horizontalLine"></div>
@@ -14,15 +25,13 @@
 
 <script>
 export default {
-    name: "UserList2ButtonItemComponent",
+    name: 'UserList2ButtonItemComponent',
     props: {
-        user: {
-            
-        },
+        user: {},
         button1: {
             default: {
                 action: {
-                    type: Function 
+                    type: Function,
                 },
                 text: null,
             },
@@ -30,26 +39,26 @@ export default {
         button2: {
             default: {
                 action: {
-                    type: Function 
+                    type: Function,
                 },
                 text: null,
             },
-        }
+        },
     },
     data() {
         return {
-            testimg: "",
-            name: this.user
-        };
+            testimg: '',
+            name: this.user,
+        }
     },
     methods: {
         blank() {},
     },
-};
+}
 </script>
 
 <style scoped>
-.userListItem2Buttons{
+.userListItem2Buttons {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -76,4 +85,3 @@ p {
     padding: 0;
 }
 </style>
-

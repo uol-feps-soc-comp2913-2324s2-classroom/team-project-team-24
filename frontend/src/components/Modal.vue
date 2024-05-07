@@ -17,22 +17,22 @@ export default {
     props: {
         isOpen: {
             type: Boolean,
-            default: false
-        }
+            default: false,
+        },
     },
     methods: {
         closeModal() {
-            this.$emit('update:isOpen', false);
+            this.$emit('update:isOpen', false)
         },
         closeModalOnEsc(event) {
             if (event.key === 'Escape') {
-                this.closeModal();
+                this.closeModal()
             }
-        }
+        },
     },
     mounted() {
-        document.addEventListener('keydown', this.closeModalOnEsc);
-        console.log('Modal mounted. Is open: ' + this.isOpen);
+        document.addEventListener('keydown', this.closeModalOnEsc)
+        console.log('Modal mounted. Is open: ' + this.isOpen)
     },
 }
 </script>
@@ -66,16 +66,17 @@ export default {
     height: auto;
 }
 
-.modal-enter-active, .modal-leave-active {
+.modal-enter-active,
+.modal-leave-active {
     transition: opacity 0.2s, backdrop-filter 0.5s;
 }
 
-.modal-enter-from{
+.modal-enter-from {
     opacity: 0;
     backdrop-filter: blur(0);
 }
 
-.modal-enter-to{
+.modal-enter-to {
     opacity: 1;
     backdrop-filter: blur(var(--backdrop-filter-blur));
 }
@@ -89,5 +90,4 @@ export default {
     opacity: 0;
     backdrop-filter: blur(0);
 }
-
 </style>

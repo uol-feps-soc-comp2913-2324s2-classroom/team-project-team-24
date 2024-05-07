@@ -1,8 +1,12 @@
 <template>
     <div class="trailListItem">
-        <div class="d-flex flex-row align-items-center justify-content-between my-2">
-            <div class="d-flex flex-row align-items-center justify-content-between nameAndDate me-5">
-                <p class="my-0">{{ trail.name }}</p> 
+        <div
+            class="d-flex flex-row align-items-center justify-content-between my-2"
+        >
+            <div
+                class="d-flex flex-row align-items-center justify-content-between nameAndDate me-5"
+            >
+                <p class="my-0">{{ trail.name }}</p>
                 <p class="my-0">{{ trail.date }}</p>
             </div>
         </div>
@@ -12,37 +16,31 @@
 
 <script>
 export default {
-    name: "AddTrailListItemComponent",
+    name: 'AddTrailListItemComponent',
     props: {
         trail: {},
         groupID: {
-            type: Number
-        }
+            type: Number,
+        },
     },
     data() {
-        return {
-
-        };
+        return {}
     },
-    methods: {
-
-    },
+    methods: {},
     created() {
-        
         this.$emit('trailItemDataUpdated')
     },
-};
+}
 </script>
 
 <style>
-.nameAndDate{
+.nameAndDate {
     width: 100%;
 }
 .trailListItem {
     width: 100%;
     display: flex;
     flex-direction: column;
-    /* justify-items: flex-start; */
     box-shadow: 0 0 0 var(--selectionRailColor);
     transition: box-shadow 5s;
     transition: background-color 0.2s;

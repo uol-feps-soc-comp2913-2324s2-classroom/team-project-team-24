@@ -1,11 +1,72 @@
+<template>
+    <div class="registerbox-in">
+        <form @submit.prevent="handleRegister">
+            <div class="form-field go-to-login">
+                <span>Already have an account?</span>&nbsp;
+                <a href="#" @click="alreadyHaveAccount">Login</a>
+            </div>
+            <div class="form-field">
+                <label for="username" class="input-label">Username</label>
+                <input
+                    class="text-input"
+                    id="username"
+                    type="username"
+                    v-model="username"
+                    @input="removeErrorMessage"
+                />
+            </div>
+            <div class="form-field">
+                <label for="email" class="input-label">Email</label>
+                <input
+                    class="text-input"
+                    id="email"
+                    type="email"
+                    v-model="email"
+                    @input="removeErrorMessage"
+                />
+            </div>
+            <div class="form-field">
+                <label for="password" class="input-label">Password</label>
+                <input
+                    class="text-input"
+                    id="password"
+                    type="password"
+                    v-model="password"
+                    @input="removeErrorMessage"
+                />
+            </div>
+            <div class="form-field">
+                <label for="confirmPassword" class="input-label"
+                    >Confirm Password</label
+                >
+                <input
+                    class="text-input"
+                    id="confirmPassword"
+                    type="password"
+                    v-model="confirmPassword"
+                    @input="removeErrorMessage"
+                />
+            </div>
+            <div>
+                <p class="form-error-text" v-if="errorText !== null">
+                    {{ errorText }}
+                </p>
+            </div>
+
+            <div class="submit-button-container">
+                <button type="submit" class="btn-primary">Continue</button>
+            </div>
+        </form>
+    </div>
+</template>
+
 <script>
 import '@/assets/css/form.css'
 import axios from 'axios'
 
 export default {
     name: 'RegisterForm1Component',
-    components: {
-    },
+    components: {},
     data() {
         return {
             username: '',
@@ -18,18 +79,14 @@ export default {
     methods: {
         async handleRegister() {
             if (this.password !== this.confirmPassword) {
-                this.errorText = "Passwords do not match";
-                return;
-            }
-            
-            else if (this.username.length < 6) {
-                this.errorText = "Username must be at least 6 characters";
-                return;
-            }
-            
-            else if (this.password.length < 8) {
-                this.errorText = "Password must be at least 8 characters";
-                return;
+                this.errorText = 'Passwords do not match'
+                return
+            } else if (this.username.length < 6) {
+                this.errorText = 'Username must be at least 6 characters'
+                return
+            } else if (this.password.length < 8) {
+                this.errorText = 'Password must be at least 8 characters'
+                return
             }
 
             let formData = {
@@ -38,73 +95,41 @@ export default {
                 email: this.email,
             }
 
-            axios.post("/auth/register", formData).then(response => {
-                if (response.data.success === true) {
-                    localStorage.setItem('token', response.data.token);
-                    this.$parent.form1Submit();
-                } else {
-                    this.errorText = response.data.error;
-                }
-            }).catch(error => {
-                this.errorText = error.response.data.error;
-            });
+            axios
+                .post('/auth/register', formData)
+                .then((response) => {
+                    if (response.data.success === true) {
+                        localStorage.setItem('token', response.data.token)
+                        this.$parent.form1Submit()
+                    } else {
+                        this.errorText = response.data.error
+                    }
+                })
+                .catch((error) => {
+                    this.errorText = error.response.data.error
+                })
         },
         alreadyHaveAccount() {
             this.$router.push('/login')
         },
         enterUsername(event) {
-            this.username = event;
+            this.username = event
         },
         enterPassword(event) {
-            this.password = event;
+            this.password = event
         },
         enterPasswordConfirm(event) {
-            this.confirmPassword = event;
+            this.confirmPassword = event
         },
         enterEmail(event) {
-            this.email = event;
+            this.email = event
         },
         removeErrorMessage() {
-            this.errorText = "";
-        }
+            this.errorText = ''
+        },
     },
 }
 </script>
-
-<template>
-    <div class="registerbox-in">
-        <form @submit.prevent="handleRegister">
-            <div class="form-field go-to-login">
-                <span>Already have an account?</span>&nbsp;
-                <a href="#" @click="alreadyHaveAccount">Login</a>
-            </div>
-            <div class="form-field">
-                <label for="username" class="input-label">Username</label>
-                <input class="text-input" id="username" type="username" v-model="username" @input="removeErrorMessage">
-            </div>
-            <div class="form-field">
-                <label for="email" class="input-label">Email</label>
-                <input class="text-input" id="email" type="email" v-model="email" @input="removeErrorMessage">
-            </div>
-            <div class="form-field">
-                <label for="password" class="input-label">Password</label>
-                <input class="text-input" id="password" type="password" v-model="password" @input="removeErrorMessage">
-            </div>
-            <div class="form-field">
-                <label for="confirmPassword" class="input-label">Confirm Password</label>
-                <input class="text-input" id="confirmPassword" type="password" v-model="confirmPassword" @input="removeErrorMessage">
-            </div>
-            <div>
-                <p class="form-error-text" v-if="errorText !== null">{{ errorText }}</p>
-            </div>
-
-            <div class="submit-button-container">
-
-                <button type="submit" class="btn-primary">Continue</button>
-            </div>
-        </form>
-    </div>
-</template>
 
 <style scoped>
 .registerbox-in {

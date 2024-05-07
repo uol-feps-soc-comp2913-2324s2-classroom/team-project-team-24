@@ -1,26 +1,25 @@
 <template>
-    <slot v-for="(dataItem) in dataArray" :key="dataItem" v-bind:data="dataItem"></slot>
+    <slot
+        v-for="dataItem in dataArray"
+        :key="dataItem"
+        v-bind:data="dataItem"
+    ></slot>
 </template>
 
 <script>
 export default {
-    name: "ListComponentNoDiv",
+    name: 'ListComponentNoDiv',
     props: {
         dataArray: {
-            type: Array
+            type: Array,
         },
     },
     data() {
-        return {
-            
-        };
+        return {}
     },
-    methods: {
-        
-    },
+    methods: {},
     unmounted() {
-        this.$emit("listComponentUnmounted");
-    }
-};
+        this.$emit('listComponentUnmounted')
+    },
+}
 </script>
-

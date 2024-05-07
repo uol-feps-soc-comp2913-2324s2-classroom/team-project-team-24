@@ -23,7 +23,6 @@ export default {
             const trailStats = document.getElementById("trailStats");
             console.log("My Trail Container Height: " + myTrailContainer.getBoundingClientRect().height);
             console.log("Trail Stats Height: " + trailStats.getBoundingClientRect().height);
-            // console.log("Predicted height: " + mapContainer.getBoundingClientRect().height);
             
             if (myTrailContainer && trailStats){
                 this.mapWidth = mapContainer.getBoundingClientRect().width;
@@ -31,9 +30,6 @@ export default {
             }  else {
                 console.error("Error calculating map size");
             }
-            // console.log("Window Height: " + window.innerHeight);
-            // this.mapWidth = mapContainer.clientWidth;
-            // this.mapHeight = window.innerHeight - trailStats.clientHeight - 10;
             console.log("Width: " + this.mapWidth + " Height: " + this.mapHeight);
             console.log("final map container height: " + mapContainer.getBoundingClientRect().height);
         },

@@ -1,27 +1,23 @@
 <template>
     <div class="inner-container">
-        <button @click="closeWindow" style="float:right;">X</button>
+        <button @click="closeWindow" style="float: right">X</button>
         <slot></slot>
     </div>
 </template>
 
 <script>
-import '@/assets/css/form.css';
+import '@/assets/css/form.css'
 
 export default {
-    name: "PopupComponent",
+    name: 'PopupComponent',
     props: {
         closeWindow: {
             type: Function,
-        }
+        },
     },
     data() {
-        return {
-            
-        };
+        return {}
     },
-    methods: {
-    },
-};
+    methods: {},
+}
 </script>
-

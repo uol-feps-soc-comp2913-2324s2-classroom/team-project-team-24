@@ -1,15 +1,14 @@
 <script>
-import sideNavComponent from './components/sideNav.vue';
-import './api/axios-auth';
-import axiosAuth from "@/api/axios-auth"  
+import sideNavComponent from './components/sideNav.vue'
+import './api/axios-auth'
+import axiosAuth from '@/api/axios-auth'
 
 export default {
-    name: "App",
+    name: 'App',
     created() {
         this.$watch('$route', () => {
-            this.checkAuth();
-        });
-        
+            this.checkAuth()
+        })
     },
     data() {
         return {
@@ -17,63 +16,78 @@ export default {
             contentStyle: {
                 height: '100vh',
             },
-        };
+        }
     },
     methods: {
         calculateContentHeight() {
-            const navSpacerHeightMobile = document.getElementById('mobileNavSpacerElement').clientHeight;
-            this.contentStyle.height = window.innerHeight - navSpacerHeightMobile + 'px';
+            const navSpacerHeightMobile = document.getElementById(
+                'mobileNavSpacerElement'
+            ).clientHeight
+            this.contentStyle.height =
+                window.innerHeight - navSpacerHeightMobile + 'px'
         },
         checkAuth() {
             // Bypass login check if the environment variable is set
-            if(process.env.VUE_APP_DISABLE_LOGIN !== undefined ? !JSON.parse(process.env.VUE_APP_DISABLE_LOGIN) : true) {
+            if (
+                process.env.VUE_APP_DISABLE_LOGIN !== undefined
+                    ? !JSON.parse(process.env.VUE_APP_DISABLE_LOGIN)
+                    : true
+            ) {
                 // If the environment variable is not set, check the user's login status
-                axiosAuth.post('/auth/verify-token')
+                axiosAuth
+                    .post('/auth/verify-token')
                     .then(() => {
-                        axiosAuth.get('/owner/current-is-owner').then(
-                            response => {
+                        axiosAuth
+                            .get('/owner/current-is-owner')
+                            .then((response) => {
                                 if (response.status === 200) {
-                                    this.showNav = false;
+                                    this.showNav = false
                                 } else {
-                                    this.showNav = true;
-                                    if (this.$route.name == "Welcome" || this.$route.name == "login" || this.$route.name == "Register") {
-                                        this.showNav = false;
+                                    this.showNav = true
+                                    if (
+                                        this.$route.name == 'Welcome' ||
+                                        this.$route.name == 'login' ||
+                                        this.$route.name == 'Register'
+                                    ) {
+                                        this.showNav = false
                                     }
                                 }
-                            }
-                        ).catch(() => {this.showNav = true;
-                            if (this.$route.name == "Welcome" || this.$route.name == "login" || this.$route.name == "Register") {
-                                        this.showNav = false;
-                                    }});
+                            })
+                            .catch(() => {
+                                this.showNav = true
+                                if (
+                                    this.$route.name == 'Welcome' ||
+                                    this.$route.name == 'login' ||
+                                    this.$route.name == 'Register'
+                                ) {
+                                    this.showNav = false
+                                }
+                            })
                     })
                     .catch(() => {
-                        this.showNav = false;
-                    });
-                    
+                        this.showNav = false
+                    })
             } else {
-                this.showNav = true;
+                this.showNav = true
             }
-            
-                
-        }
+        },
     },
     components: {
         sideNavComponent,
     },
     mounted() {
-        document.documentElement.setAttribute('lang', 'en');
-        this.checkAuth();
+        document.documentElement.setAttribute('lang', 'en')
+        this.checkAuth()
         if (window.innerWidth < 600) {
-            this.calculateContentHeight();
+            this.calculateContentHeight()
         }
-        
     },
-};
+}
 </script>
 
 <template>
     <div class="main" id="mainElement">
-        <sideNavComponent v-if="showNav"/>
+        <sideNavComponent v-if="showNav" />
         <div class="navSpacer" v-if="showNav"></div>
         <div class="content" id="contentContainer" :style="contentStyle">
             <router-view />

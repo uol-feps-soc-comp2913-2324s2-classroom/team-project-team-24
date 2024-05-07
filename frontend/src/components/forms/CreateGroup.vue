@@ -6,12 +6,31 @@
                 <div class="horizontalLine"></div>
                 <p class="mt-4 mb-3">Enter a name for your new group</p>
                 <div class="form-field mb-4">
-                    <label for="name" class="input-label-loud">Group name</label>
-                    <input class="text-input-loud" id="name" v-model="name" placeholder="e.g. Vulpes vulpes running group" />
+                    <label for="name" class="input-label-loud"
+                        >Group name</label
+                    >
+                    <input
+                        class="text-input-loud"
+                        id="name"
+                        v-model="name"
+                        placeholder="e.g. Vulpes vulpes running group"
+                    />
                 </div>
                 <div class="align-self-end mt-2">
-                    <button class="btn-secondary me-3" type="button" @click.prevent="closePopup">Cancel</button>
-                    <button class="btn-primary" type="submit" @click.prevent="createGroup">Create group</button>
+                    <button
+                        class="btn-secondary me-3"
+                        type="button"
+                        @click.prevent="closePopup"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        class="btn-primary"
+                        type="submit"
+                        @click.prevent="createGroup"
+                    >
+                        Create group
+                    </button>
                 </div>
             </form>
         </div>
@@ -20,16 +39,16 @@
 
 <script>
 // import PopupComponent from "@/components/Popup.vue";
-import ModalComponent from "@/components/Modal.vue";
-import '@/assets/css/form.css';
-import axiosAuth from "@/api/axios-auth.js";
+import ModalComponent from '@/components/Modal.vue'
+import '@/assets/css/form.css'
+import axiosAuth from '@/api/axios-auth.js'
 
 export default {
-    name: "CreateGroupComponent",
+    name: 'CreateGroupComponent',
     data() {
         return {
-            name: ""
-        };
+            name: '',
+        }
     },
     props: {
         modalState: {
@@ -39,31 +58,32 @@ export default {
     },
     methods: {
         async createGroup() {
-            await axiosAuth.post("/groups/create", {
-                groupName: this.name,
-            }).then(
-                this.closePopup(),
-            )
-            this.$parent.getPageData();
+            await axiosAuth
+                .post('/groups/create', {
+                    groupName: this.name,
+                })
+                .then(this.closePopup())
+            this.$parent.getPageData()
         },
         closePopup() {
-            this.$parent.closeCreateGroup();
+            this.$parent.closeCreateGroup()
         },
     },
     components: {
         ModalComponent,
     },
     mounted() {
-        console.log("CreateGroupComponent mounted. Modal state: " + this.modalState);
-    }
-};
+        console.log(
+            'CreateGroupComponent mounted. Modal state: ' + this.modalState
+        )
+    },
+}
 </script>
 
 <style scoped>
-
 /* Small screens */
-@media screen and (max-width: 600px){
-    .createGroupContent{
+@media screen and (max-width: 600px) {
+    .createGroupContent {
         width: 80vw;
     }
 
@@ -73,13 +93,13 @@ export default {
 
     .btn-desktop {
         display: none;
-    } 
+    }
 }
 
 /* Medium screens */
-@media screen and (min-width: 600px) and (max-width: 900px){
+@media screen and (min-width: 600px) and (max-width: 900px) {
     .createGroupContent {
-    width: 50vw;
+        width: 50vw;
     }
 
     .btn-mobile {
@@ -92,8 +112,8 @@ export default {
 }
 
 /* Large screens */
-@media screen and (min-width: 900px){
-    .createGroupContent{
+@media screen and (min-width: 900px) {
+    .createGroupContent {
         width: 33vw;
     }
 
@@ -106,10 +126,7 @@ export default {
     }
 }
 
-
-
-p{
+p {
     margin: 0;
 }
 </style>
-
