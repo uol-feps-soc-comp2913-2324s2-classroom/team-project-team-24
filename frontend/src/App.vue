@@ -61,6 +61,7 @@ export default {
         sideNavComponent,
     },
     mounted() {
+        document.documentElement.setAttribute('lang', 'en');
         this.checkAuth();
         if (window.innerWidth < 600) {
             this.calculateContentHeight();

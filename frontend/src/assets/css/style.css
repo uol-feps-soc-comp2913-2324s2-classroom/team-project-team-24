@@ -2,9 +2,9 @@
     --l0-color: #F2F2F7;
     --l1-color: #FFFFFF;
     --text-color: #000000;
-    --app-green: #1ED760;
-    --app-green-hover: #1DB954;
-    --app-green-pressed: #1AA34A;
+    --app-green: #00852E;
+    --app-green-hover: #1e8f44;
+    --app-green-pressed: #1b7f3e;
     --action-blue: #0067d5;
     --action-blue-hover: #0056b3;
     --action-blue-pressed: #004b9a;
@@ -12,7 +12,7 @@
     --action-blue-lighter-hover: #007ab8;
     --action-blue-ligther-pressed: #005f9e;
     --tertiary-green: #00B03F;
-    --unselected-color: #646464;
+    --unselected-color: #757575;
     --selected-color: #000000;
     --border-color: #000000;
     --danger-color: #da2626;
