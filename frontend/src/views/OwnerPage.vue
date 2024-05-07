@@ -6,10 +6,10 @@
                 logout
             </button>
         </div>
-        <div class="button" style="display: flex">
-            <button @click="showUsers">Users Info</button>
-            <button @click="showRevenue">Revenue</button>
-        </div>
+        <topNavRailedAdmin
+            @NavElementClicked="handleNavChange"
+            class="mt-2 ms-4"
+        />
         <div v-if="userInfoIsShowing">
             <UserInfo :numberOfUsers="numberOfUsers" />
         </div>
@@ -23,6 +23,7 @@
 import UserInfo from '@/components/UserInfo.vue'
 import RevenueComponent from '@/components/RevenueComponent.vue'
 import axiosAuth from '@/api/axios-auth.js'
+import topNavRailedAdmin from '@/components/ui-components/topNavRailedAdmin.vue'
 
 export default {
     data() {
@@ -53,6 +54,17 @@ export default {
             localStorage.removeItem('token')
             this.$router.push('/login')
         },
+        handleNavChange(id) {
+            const id_val = parseInt(id)
+            switch (id_val) {
+                case 0:
+                    this.showUsers()
+                    break
+                case 1:
+                    this.showRevenue()
+                    break
+            }
+        },
     },
     mounted() {
         this.getPageData()
@@ -60,6 +72,7 @@ export default {
     components: {
         UserInfo,
         RevenueComponent,
+        topNavRailedAdmin,
     },
 }
 </script>
