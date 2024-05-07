@@ -21,6 +21,9 @@ export default {
         },
         height: {
             type: String
+        },
+        groupID: {
+            type: Number,
         }
     },
     data() {
@@ -61,17 +64,18 @@ export default {
                     console.log("Getting map without width and height specified");
                     response = await axiosAuth.post("/trail/get-selected-map", {
                         trailIDs: this.selectedTrails,
+                        groupID: this.groupID,
                     });
                 } else {
                     console.log("Getting map with width: " + this.width + " and height: " + this.height);
                     response = await axiosAuth.post("/trail/get-selected-map", {
                         trailIDs: this.selectedTrails,
                         width: this.width,
-                        height: this.height
+                        height: this.height,
+                        groupID: this.groupID,
                     });
                 }
                 this.mapHtml = response.data.mapHtml;
-                console.log(response.data.mapHtml)
                 this.$nextTick(() => {
                     this.cancerousHeightFix();
                     // this.loading = false;
