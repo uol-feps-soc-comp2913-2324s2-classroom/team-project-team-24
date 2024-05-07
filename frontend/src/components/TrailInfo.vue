@@ -7,12 +7,12 @@
                 <h4 class="monoText">{{ distance }} km</h4>
                 <p class="smallerText">Total distance</p>
             </div>
-            <div class="verticalLine mx-5"></div>
+            <div class="verticalLine mx-sm-5 mx-3"></div>
             <div v-if="hasTimeData" class="stat">
                 <h4 class="monoText">{{ time.hours }}h {{ time.minutes }}m {{ time.seconds }}s</h4>
                 <p class="smallerText">Time spent</p>
             </div>
-            <div class="verticalLine mx-5"></div>
+            <div class="verticalLine mx-sm-5 mx-3"></div>
             <div v-if="hasTimeData" class="stat">
                 <h4 class="monoText">{{ speed }} km/h</h4>
                 <p class="smallerText">Average speed</p>

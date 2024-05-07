@@ -121,7 +121,7 @@ export default {
         <div class="navElements mb-2">
             <div @click="handleClicked" id="0" class="topNavElement" :style="navStyles[0]">Friends</div>
             <div @click="handleClicked" id="1" class="topNavElement" :style="navStyles[1]">Groups</div>
-            <div @click="handleClicked" id="2" class="topNavElement" :style="navStyles[2]">Add Friends</div>
+            <div @click="handleClicked" id="2" class="topNavElement" :style="navStyles[2]">Add&nbsp;Friends</div>
         </div>
         <div id="selection-rail" class="selectionRail" :style="railStyle"></div>
         <div id="selection-train" class="selectorTrain" :style="selectionTrainStyle"></div>

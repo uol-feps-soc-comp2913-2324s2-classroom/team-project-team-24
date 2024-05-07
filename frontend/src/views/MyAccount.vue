@@ -23,7 +23,7 @@ export default {
 <template>
     <div class="myAccountPageContainer p-5 d-flex flex-column overflowScroll">
         <h1>My Account</h1>
-        <span class="mt-2"><button class="btn-secondary" @click="accountLogout">Logout</button></span>
+        <span class="mt-sm-2 mt-1"><button class="btn-secondary" @click="accountLogout">Logout</button></span>
         <AccountDetailsComponent />
     </div>
 </template>

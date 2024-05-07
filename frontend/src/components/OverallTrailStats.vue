@@ -5,7 +5,7 @@
             <h3 class="my-0" v-if="loading">Loading...</h3>
             <p class="smallerText my-0">Total duration</p>
         </div>
-        <div class="verticalLine mx-5"></div>
+        <div class="verticalLine mx-sm-5 mx-3"></div>
         <div class="stats-group d-flex flex-column align-items-start">
             <h3 class="my-0 monoText" v-if="!loading">{{ longestTime.hours }}h {{ longestTime.minutes }}m</h3>
             <h3 class="my-0" v-if="loading">Loading...</h3>

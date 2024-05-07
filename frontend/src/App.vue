@@ -14,9 +14,16 @@ export default {
     data() {
         return {
             showNav: false,
+            contentStyle: {
+                height: '100vh',
+            },
         };
     },
     methods: {
+        calculateContentHeight() {
+            const navSpacerHeightMobile = document.getElementById('mobileNavSpacerElement').clientHeight;
+            this.contentStyle.height = window.innerHeight - navSpacerHeightMobile + 'px';
+        },
         checkAuth() {
             // Bypass login check if the environment variable is set
             if(process.env.VUE_APP_DISABLE_LOGIN !== undefined ? !JSON.parse(process.env.VUE_APP_DISABLE_LOGIN) : true) {
@@ -55,6 +62,9 @@ export default {
     },
     mounted() {
         this.checkAuth();
+        if (window.innerWidth < 600) {
+            this.calculateContentHeight();
+        }
         
     },
 };
@@ -64,9 +74,10 @@ export default {
     <div class="main" id="mainElement">
         <sideNavComponent v-if="showNav"/>
         <div class="navSpacer" v-if="showNav"></div>
-        <div class="content">
+        <div class="content" id="contentContainer" :style="contentStyle">
             <router-view />
         </div>
+        <div class="mobileNavSpacer" id="mobileNavSpacerElement"></div>
     </div>
 </template>
 

@@ -49,7 +49,7 @@ export default {
 }
 
 .trailListItem:hover {
-    box-shadow: 0 0 2px var(--selectionRailColor);
+    box-shadow: 0 0 8px var(--selectionRailColor);
 }
 
 p {

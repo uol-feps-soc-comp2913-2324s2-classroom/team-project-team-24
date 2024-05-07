@@ -122,12 +122,11 @@ export default {
 </script>
 
 <template>
-    <div class="communityPageContainer p-4">
-        <topNavRailed @NavElementClicked="navElementClicked"/>
-        <div class="columns">
-            <div>
+    <div class="communityPageContainer p-4" id="communityPageContainer">
+        <topNavRailed @NavElementClicked="navElementClicked" id="topNav"/>
+        <div class="columns" id="columnsContainer">
                 <h4 class="mt-4 mb-3" v-if="friendsIsShowing">My friends</h4>
-                <div class="groupNavigations mt-4 mb-3" v-if="groupsIsShowing">
+                <div class="groupNavigations mt-4 mb-3" v-if="groupsIsShowing" id="groupNav">
                     <h4 class="">My groups</h4>
                     <button @click="createGroup" class="btn-primary createGroupButton">
                         <div class="buttonText">
@@ -146,15 +145,13 @@ export default {
                 <ListComponent v-if="groupsIsShowing" v-bind:dataArray="groups" v-slot="slotProps">
                     <GroupListItemComponent v-bind:group="slotProps.data"/>
                 </ListComponent>
+                
                 <p v-if="groupsIsShowing && groups.length == 0 && !loadingGroupsList" class="greyText">You haven't joined any groups yet. Create a group and start sharing your trails!</p>
                 <CreateGroupComponent :modal-state="createGroupIsShowing"/>
 
                 <NewFriendsComponent v-if="addFriendsIsShowing"/>
 
-            </div>
         </div>
-        
-        
     </div>
 </template>
 

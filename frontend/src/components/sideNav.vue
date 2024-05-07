@@ -36,7 +36,7 @@ export default {
 
             <li class="nav-item">
                 <router-link :to="{ name: 'UploadTrail' }" class="navLink">
-                    <img src="../assets/tracks_icon.svg" alt="Trail Icon" class="navIcons">
+                    <img src="../assets/upload_icon.svg" alt="Trail Icon" class="navIcons">
                     <span class="navText">Upload&nbsp;Trail</span>
                     <span class="navTextMobile">Upload</span>
                 </router-link>
@@ -68,8 +68,8 @@ export default {
 
             <li class="nav-item">
                 <router-link :to="{ name: 'Account' }" class="navLink">
-                    <img src="../assets/community_icon.svg" alt="Account Icon" class="navIcons">
-                    <span class="navText">My Account</span>
+                    <img src="../assets/user_icon.svg" alt="Account Icon" class="navIcons">
+                    <span class="navText">My&nbsp;Account</span>
                     <span class="navTextMobile">Account</span>
                 </router-link>
             </li>

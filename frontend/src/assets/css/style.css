@@ -22,7 +22,7 @@
     --font-size: 16px;
     --font-family: 'Roboto', sans-serif;
     --scrollbar-background: #e6e6e6;
-    --scrollbar-thumb: #b9ffa8;
+    --scrollbar-thumb: #303030;
     --transition-speed: 100ms;
     --secondary-button-offBlack: #383838;
     --secondary-button-offBlack-disabled: #616161;
@@ -50,25 +50,42 @@
     --backdrop-filter-blur: 3px;
 }
 
-@media screen and (max-width: 600px){
-    /* Mobile */
+
+.main{
+    display: flex;
+}
+
+/* Mobile screens */
+@media only screen and (max-width: 600px){
+    .main{
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .content{
+        height: 100vh;
+        width: 100vw;
+        overflow-y: scroll;
+    }
+}
+
+/* Large screens */
+@media only screen and (min-width: 600px){
+    .main{
+        flex-direction: row;
+    }
+    
+    .content{
+        height: 100vh;
+        width: 100%;
+        overflow-y: scroll;
+    }
 }
 
 body{
     font-family: var(--font-family) !important;
     background-color: var(--l0-color) !important;
     color: var(--text-color) !important;
-}
-
-.main{
-    display: flex;
-    flex-direction: row;
-}
-
-.content{
-    height: 100vh;
-    width: 100%;
-    overflow-y: scroll;
 }
 
 .overflowScroll{

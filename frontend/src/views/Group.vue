@@ -47,6 +47,11 @@ export default {
 
             mapWidth: null,
             mapHeight: null,
+
+            mapViewComponentStyleForce: {
+                width: "100%",
+                height: "100%",
+            },
         };
     },
     methods: {
@@ -159,8 +164,16 @@ export default {
         },
         getMapDimensions() {
             const element = document.getElementById("mapViewComponent");
-            this.mapWidth = element.clientWidth;
-            this.mapHeight = element.clientHeight;
+            this.mapWidth = element.getBoundingClientRect().width;
+            this.mapHeight = element.getBoundingClientRect().height;
+
+            // const groupViewHeading = document.getElementById("gropViewHeadingContainer");
+            // this.mapWidth = groupViewHeading.getBoundingClientRect().width;
+            // this.mapHeight = window.innerHeight - groupViewHeading.getBoundingClientRect().height - 10;
+
+            console.log("Map width: ", this.mapWidth);
+            console.log("Map height: ", this.mapHeight);
+
         },
         toggle(bool) {
             if (bool) {
@@ -229,11 +242,8 @@ export default {
         },
         handleTrailItemDataUpdated() {
             this.trailItemFullyLoadedCount++;
-            console.log("xxxxxxxxxxxxxxxxx Trail item fully loaded count: ", this.trailItemFullyLoadedCount);
-            console.log("xxxxxxxxxxxxxxxxx Expected count: ", this.shareableTrails.length);
             if (this.trailItemFullyLoadedCount === this.shareableTrails.length) {
                 this.trailItemLoaded = true;
-                console.log("All trail items fully loaded");
             }
         },
         handleNavElementClickedTrails(id) {
@@ -320,20 +330,26 @@ export default {
 
 <template>
     <div class="myGroupPageContainer d-flex flex-column">
-        <div class="groupViewHeading d-flex flex-row justify-content-between align-items-center p-3">
-            <div class="d-flex flex-row align-items-center">
+        <div class="groupViewHeading d-flex flex-row justify-content-between align-items-center p-3" id="gropViewHeadingContainer">
+            <div class="d-flex flex-row align-items-center groupName">
                 <img src="../assets/back_button.svg" class="backButton me-3" alt="back arrow icon"
                     @click="returnToCommunity">
-                <h3 v-if="!loadingGroupName">{{ name }}</h3>
+                <h3 v-if="!loadingGroupName" class="groupNameText">{{ name }}</h3>
                 <h3 v-if="loadingGroupName">Loading...</h3>
             </div>
-            <div>
-                <button @click="addRoutes" class="btn-primary me-3">
+            <div class="d-flex flex-row">
+                <button @click="addRoutes" class="btn-primary me-3 btn-desktop">
                     <div class="buttonText">
-                        <p>Manage routes</p>
+                        <p>Manage&nbsp;routes</p>
                     </div>
                 </button>
-                <button @click="inviteFriends" class="btn-secondary">Group members</button>
+                <button @click="inviteFriends" class="btn-secondary btn-desktop">Group&nbsp;members</button>
+                <button @click="addRoutes" class="btn-primary me-3 btn-mobile">
+                    <div class="buttonText">
+                        <p>Routes</p>
+                    </div>
+                </button>
+                <button @click="inviteFriends" class="btn-secondary btn-mobile">Members</button>
             </div>
 
             <ModalComponent :is-open="showTrails" @update:is-open="showTrails = $event; closeTrailsPopup">
@@ -401,13 +417,30 @@ export default {
 
         </div>
 
-        <div class="groupMapView" id="mapViewComponent">
+        <div class="groupMapView" id="mapViewComponent" :style="mapViewComponentStyleForce">
             <MapViewerComponent :selected-trails="groupTrails.map( trail => trail.id )" :width="mapWidth" :height="mapHeight"/>
         </div>
     </div>
 </template>
 
 <style scoped>
+.groupNameText {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.groupName{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+    min-width: 0;
+}
+
+.mapViewIndependent{
+    width: 100%;
+    height: 100%;
+
+}
+
 .slightlySmaller {
     width: 99.5%;
     margin-left: 1px;
@@ -433,7 +466,7 @@ p {
 }
 
 .friendItem:hover {
-    box-shadow: 0 0 2px var(--selectionRailColor);
+    box-shadow: 0 0 8px var(--selectionRailColor);
 }
 
 .friendNameandAction {
@@ -448,9 +481,64 @@ p {
     width: 100%;
 }
 
-.groupMembersModalWindow {
-    width: 33vw;
+/* Small screens */
+@media screen and (max-width: 600px){
+    .groupMembersModalWindow{
+        width: 80vw;
+    }
+
+    .addTrailsModalWindow {
+        width: 80vw;
+    }
+
+    .btn-mobile {
+        display: inline;
+    }
+
+    .btn-desktop {
+        display: none;
+    } 
 }
+
+/* Medium screens */
+@media screen and (min-width: 600px) and (max-width: 900px){
+    .groupMembersModalWindow {
+    width: 50vw;
+    }
+
+    .addTrailsModalWindow {
+    width: 50vw;
+    }
+
+    .btn-mobile {
+        display: none;
+    }
+
+    .btn-desktop {
+        display: inline;
+    }
+}
+
+/* Large screens */
+@media screen and (min-width: 900px){
+    .groupMembersModalWindow {
+    width: 33vw;
+    }
+
+
+    .addTrailsModalWindow {
+    width: 33vw;
+    }
+
+    .btn-mobile {
+        display: none;
+    }
+
+    .btn-desktop {
+        display: inline;
+    }
+}
+
 
 h3 {
     margin: 0;
@@ -497,7 +585,5 @@ h3 {
     border-radius: var(--border-radius);
 }
 
-.addTrailsModalWindow {
-    width: 33vw;
-}
+
 </style>
