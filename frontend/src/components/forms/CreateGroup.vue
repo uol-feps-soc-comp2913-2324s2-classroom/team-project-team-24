@@ -60,9 +60,53 @@ export default {
 </script>
 
 <style scoped>
-.createGroupContent{
-    width: 33vw;
+
+/* Small screens */
+@media screen and (max-width: 600px){
+    .createGroupContent{
+        width: 80vw;
+    }
+
+    .btn-mobile {
+        display: inline;
+    }
+
+    .btn-desktop {
+        display: none;
+    } 
 }
+
+/* Medium screens */
+@media screen and (min-width: 600px) and (max-width: 900px){
+    .createGroupContent {
+    width: 50vw;
+    }
+
+    .btn-mobile {
+        display: none;
+    }
+
+    .btn-desktop {
+        display: inline;
+    }
+}
+
+/* Large screens */
+@media screen and (min-width: 900px){
+    .createGroupContent{
+        width: 33vw;
+    }
+
+    .btn-mobile {
+        display: none;
+    }
+
+    .btn-desktop {
+        display: inline;
+    }
+}
+
+
 
 p{
     margin: 0;
