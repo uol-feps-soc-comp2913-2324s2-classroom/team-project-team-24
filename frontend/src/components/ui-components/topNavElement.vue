@@ -1,3 +1,13 @@
+<template>
+    <router-link
+        :to="`${to}`"
+        @click="emitClicked($event)"
+        class="topNavElement"
+    >
+        <slot></slot>
+    </router-link>
+</template>
+
 <script>
 // Only use within a topNavRailed component
 export default {
@@ -13,20 +23,14 @@ export default {
     },
     methods: {
         emitClicked(event) {
-            this.$emit('NavElementClicked',  event )
+            this.$emit('NavElementClicked', event)
         },
     },
 }
 </script>
 
-<template>
-    <router-link :to="`${to}`" @click="emitClicked($event)" class="topNavElement">
-        <slot></slot>
-    </router-link>
-</template>
-
 <style scoped>
-.topNavElement{
+.topNavElement {
     text-decoration: none;
     color: var(--topNavElementUnselectedTextColor);
 }

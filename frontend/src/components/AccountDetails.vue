@@ -1,49 +1,3 @@
-<script>
-import axiosAuth from "@/api/axios-auth.js";
-
-export default {
-    name: "GoalComponent",
-    data() {
-        return {
-            name: "",
-            membershipTier: "",
-            gender: "",
-            age: null,
-            email: "",
-            membership: ""
-        };
-    },
-    methods: {
-        getPageData() {
-            axiosAuth.get('/account/get-details').then(
-                response => {
-                    this.name = response.data.name;
-                    this.gender = response.data.gender;
-                    this.age = response.data.age;
-                    this.email = response.data.email;
-                    this.membershipTier = response.data.membershipTier;
-                    this.membership = response.data.paymentRegularity;
-                }
-            )
-        },
-        deleteAccount() {
-            axiosAuth.get('/account/delete').then(
-                () => {
-                    localStorage.removeItem('token');
-                    this.$router.push("/login");
-                }
-            )
-            
-        }
-    },
-    components: {
-    },
-    created() {
-        this.getPageData();
-    }
-};
-</script>
-
 <template>
     <div>
         <table class="my-sm-5 my-3">
@@ -64,20 +18,65 @@ export default {
                 <td class="pe-sm-5 pe-4 ps-0 bold">{{ gender }}</td>
             </tr>
             <tr>
-                <td class="ps-sm-5 ps-4 pe-0 floor-ceiling-padding">Membership</td>
+                <td class="ps-sm-5 ps-4 pe-0 floor-ceiling-padding">
+                    Membership
+                </td>
                 <td class="pe-sm-5 pe-4 ps-0 bold">{{ membership }}</td>
             </tr>
             <tr>
-                <td class="ps-sm-5 ps-4 pe-0 floor-ceiling-padding">Password</td>
+                <td class="ps-sm-5 ps-4 pe-0 floor-ceiling-padding">
+                    Password
+                </td>
                 <td class="pe-sm-5 pe-4 ps-0 bold">********</td>
             </tr>
         </table>
         <div>
-            <button class="btn-danger" @click="deleteAccount">Delete account</button>
+            <button class="btn-danger" @click="deleteAccount">
+                Delete account
+            </button>
         </div>
     </div>
-
 </template>
+
+<script>
+import axiosAuth from '@/api/axios-auth.js'
+
+export default {
+    name: 'GoalComponent',
+    data() {
+        return {
+            name: '',
+            membershipTier: '',
+            gender: '',
+            age: null,
+            email: '',
+            membership: '',
+        }
+    },
+    methods: {
+        getPageData() {
+            axiosAuth.get('/account/get-details').then((response) => {
+                this.name = response.data.name
+                this.gender = response.data.gender
+                this.age = response.data.age
+                this.email = response.data.email
+                this.membershipTier = response.data.membershipTier
+                this.membership = response.data.paymentRegularity
+            })
+        },
+        deleteAccount() {
+            axiosAuth.get('/account/delete').then(() => {
+                localStorage.removeItem('token')
+                this.$router.push('/login')
+            })
+        },
+    },
+    components: {},
+    created() {
+        this.getPageData()
+    },
+}
+</script>
 
 <style scoped>
 table {
@@ -123,22 +122,19 @@ td:last-child {
     font-weight: bold;
 }
 
-/* Small screens */
-@media screen and (max-width: 600px){
-    .floor-ceiling-padding{
+/* Mobile screens */
+@media screen and (max-width: 600px) {
+    .floor-ceiling-padding {
         padding-top: 1.5rem;
         padding-bottom: 1.5rem;
     }
 }
 
 /* Large screens */
-@media screen and (min-width: 600px){
-    .floor-ceiling-padding{
+@media screen and (min-width: 600px) {
+    .floor-ceiling-padding {
         padding-top: 2rem;
         padding-bottom: 2rem;
     }
-    
 }
-
-
 </style>

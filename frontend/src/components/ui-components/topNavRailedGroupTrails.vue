@@ -1,3 +1,34 @@
+<template>
+    <div class="top-nav-railed">
+        <div class="navElements mb-2">
+            <div
+                @click.stop="handleClicked"
+                id="0"
+                to=""
+                class="topNavElement"
+                :style="navStyles[0]"
+            >
+                Shared Trails
+            </div>
+            <div
+                @click.stop="handleClicked"
+                id="1"
+                to=""
+                class="topNavElement"
+                :style="navStyles[1]"
+            >
+                Add Trails
+            </div>
+        </div>
+        <div id="selection-rail" class="selectionRail" :style="railStyle"></div>
+        <div
+            id="selection-train"
+            class="selectorTrain"
+            :style="selectionTrainStyle"
+        ></div>
+    </div>
+</template>
+
 <script>
 // Adobe Spectrum Inspired Top Nav
 // Unfortunately, the current implementation is not very flexible and is not very reusable
@@ -8,7 +39,7 @@ export default {
         lastSelectedElement: {
             type: Number,
             default: 0,
-        }
+        },
     },
     data() {
         return {
@@ -48,96 +79,89 @@ export default {
                     transition: 'color 0.2s',
                     cursor: 'pointer',
                 },
-            ]
-        };
+            ],
+        }
     },
     methods: {
         handleClicked(event) {
-            const clickedElement = event.target.getBoundingClientRect();
-            const parentElement = event.target.parentNode.getBoundingClientRect();
+            const clickedElement = event.target.getBoundingClientRect()
+            const parentElement =
+                event.target.parentNode.getBoundingClientRect()
             this.selectionTrainStyle.width = `${clickedElement.width}px`
-            this.selectionTrainStyle.transform = `translateX(${clickedElement.left - parentElement.left}px) translateY(-4px)`
+            this.selectionTrainStyle.transform = `translateX(${
+                clickedElement.left - parentElement.left
+            }px) translateY(-4px)`
 
             // Set the color of the selected element to the selected color
-            const navElements = document.querySelectorAll('.navElements');
+            const navElements = document.querySelectorAll('.navElements')
             navElements.forEach((element) => {
-                element.style.color = 'var(--topNavElementUnselectedTextColor)';
-            });
+                element.style.color = 'var(--topNavElementUnselectedTextColor)'
+            })
 
             // navStyles[event.target.getAttribute('id') - 1].color = 'var(--text-color)';
 
             for (let i = 0; i < this.navStyles.length; i++) {
                 if (i == event.target.getAttribute('id')) {
-                    this.navStyles[i].color = 'var(--text-color)';
-                    continue;
+                    this.navStyles[i].color = 'var(--text-color)'
+                    continue
                 } else {
-                    this.navStyles[i].color = 'var(--topNavElementUnselectedTextColor)';
+                    this.navStyles[i].color =
+                        'var(--topNavElementUnselectedTextColor)'
                 }
             }
 
-            this.$emit('NavElementClicked', event.target.getAttribute('id'));
+            this.$emit('NavElementClicked', event.target.getAttribute('id'))
         },
-        goToElement(lastElementId){
+        goToElement(lastElementId) {
             // Used if the user closes the modal and is still selected on not the first element
-            const clickedElement = document.getElementById(lastElementId).getBoundingClientRect();
-            const parentElement = document.getElementById(lastElementId).parentNode.getBoundingClientRect();
+            const clickedElement = document
+                .getElementById(lastElementId)
+                .getBoundingClientRect()
+            const parentElement = document
+                .getElementById(lastElementId)
+                .parentNode.getBoundingClientRect()
             this.selectionTrainStyle.width = `${clickedElement.width}px`
-            this.selectionTrainStyle.transform = `translateX(${clickedElement.left - parentElement.left}px) translateY(-4px)`
+            this.selectionTrainStyle.transform = `translateX(${
+                clickedElement.left - parentElement.left
+            }px) translateY(-4px)`
 
-            const navElements = document.querySelectorAll('.navElements');
+            const navElements = document.querySelectorAll('.navElements')
             navElements.forEach((element) => {
-                element.style.color = 'var(--topNavElementUnselectedTextColor)';
-            });
+                element.style.color = 'var(--topNavElementUnselectedTextColor)'
+            })
 
             for (let i = 0; i < this.navStyles.length; i++) {
                 if (i == lastElementId) {
-                    this.navStyles[i].color = 'var(--text-color)';
-                    continue;
+                    this.navStyles[i].color = 'var(--text-color)'
+                    continue
                 } else {
-                    this.navStyles[i].color = 'var(--topNavElementUnselectedTextColor)';
+                    this.navStyles[i].color =
+                        'var(--topNavElementUnselectedTextColor)'
                 }
             }
 
-            this.$emit('NavElementClicked', lastElementId);
-        }
+            this.$emit('NavElementClicked', lastElementId)
+        },
     },
-    components: {
-        // topNavElement,
-    },
+    components: {},
     mounted() {
-
         this.$nextTick(() => {
             // Initialize the rail and train
-            const navElements = document.querySelectorAll('.navElements');
+            const navElements = document.querySelectorAll('.navElements')
 
             // Set the width of the rail to the size of all the nav elements
-            let width = 0;
+            let width = 0
             navElements.forEach((element) => {
-                width += element.getBoundingClientRect().width;
-            });
-            this.railStyle.width = `${width - 30}px`;
-
-            // Set the width of the train to the size of the first nav element
-            // this.selectionTrainStyle.width = `${navElements[0].children[0].getBoundingClientRect().width}px`;
+                width += element.getBoundingClientRect().width
+            })
+            this.railStyle.width = `${width - 30}px`
 
             // Send the train to the last selected element
-            this.goToElement(this.lastSelectedElement);
-
-        });
+            this.goToElement(this.lastSelectedElement)
+        })
     },
-};
+}
 </script>
-
-<template>
-    <div class="top-nav-railed">
-        <div class="navElements mb-2">
-            <div @click.stop="handleClicked" id="0" to="" class="topNavElement" :style="navStyles[0]">Shared Trails</div>
-            <div @click.stop="handleClicked" id="1" to="" class="topNavElement" :style="navStyles[1]">Add Trails</div>
-        </div>
-        <div id="selection-rail" class="selectionRail" :style="railStyle"></div>
-        <div id="selection-train" class="selectorTrain" :style="selectionTrainStyle"></div>
-    </div>
-</template>
 
 <style scoped>
 .router-link-active {
@@ -156,12 +180,11 @@ export default {
     flex-direction: row;
 }
 
-.navElements>* {
+.navElements > * {
     margin-right: 30px;
 }
 
-.topNavElement{
+.topNavElement {
     text-decoration: none;
-    /* color: var(--topNavElementUnselectedTextColor); */
 }
 </style>
