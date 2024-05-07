@@ -7,23 +7,22 @@
 
 <script>
 export default {
-    name: "GroupListItemComponent",
+    name: 'GroupListItemComponent',
     props: {
-        group: {
-            
-        }
+        group: {},
     },
     data() {
-        return {
-            
-        };
+        return {}
     },
     methods: {
         showGroup() {
-            this.$router.push({path: "/group", query: {groupID: this.group.id}});
-        }
+            this.$router.push({
+                path: '/group',
+                query: { groupID: this.group.id },
+            })
+        },
     },
-};
+}
 </script>
 
 <style scoped>
@@ -33,7 +32,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    /* justify-items: flex-start; */
     box-shadow: 0 0 0 var(--selectionRailColor);
     transition: box-shadow 5s;
     transition: background-color 0.2s;

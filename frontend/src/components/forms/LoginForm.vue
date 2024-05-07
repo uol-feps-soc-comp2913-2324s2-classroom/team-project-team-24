@@ -3,14 +3,26 @@
         <div class="inner-container">
             <div class="form-field">
                 <label for="username" class="input-label">Username</label>
-                <input class="text-input" id="username" v-model="username" type="username">
+                <input
+                    class="text-input"
+                    id="username"
+                    v-model="username"
+                    type="username"
+                />
             </div>
             <div class="form-field">
                 <label for="password" class="input-label">Password</label>
-                <input class="text-input" id="password" v-model="password" type="password">
+                <input
+                    class="text-input"
+                    id="password"
+                    v-model="password"
+                    type="password"
+                />
             </div>
             <div>
-                <p v-if="invalidCredentials" class="error-ext">Your username/password is incorrect</p>
+                <p v-if="invalidCredentials" class="error-ext">
+                    Your username/password is incorrect
+                </p>
             </div>
             <div class="form-actions">
                 <button type="submit" class="btn-primary">Login</button>
@@ -36,8 +48,7 @@ import axiosAuth from '@/api/axios-auth.js'
 
 export default {
     name: 'LoginFormComponent',
-    components: {
-    },
+    components: {},
     data() {
         return {
             username: '',
@@ -51,22 +62,28 @@ export default {
                 username: this.username,
                 password: this.password,
             }
-            axios.post("/auth/login", formData).then(response => {
-                if (response.data.success === true) {
-                    localStorage.setItem('token', response.data.token);
-                    axiosAuth.get('/owner/current-is-owner').then(
-                        response => {
-                            if (response.status == 200) {
-                                this.$router.push('/owner');
-                            } else {
-                                this.$router.push('/activitycenter');
-                            }
-                        }
-                    ).catch(() => {this.$router.push('/activitycenter')});
-                }
-            }).catch(() => {
-                this.invalidCredentials = true;
-            });
+            axios
+                .post('/auth/login', formData)
+                .then((response) => {
+                    if (response.data.success === true) {
+                        localStorage.setItem('token', response.data.token)
+                        axiosAuth
+                            .get('/owner/current-is-owner')
+                            .then((response) => {
+                                if (response.status == 200) {
+                                    this.$router.push('/owner')
+                                } else {
+                                    this.$router.push('/activitycenter')
+                                }
+                            })
+                            .catch(() => {
+                                this.$router.push('/activitycenter')
+                            })
+                    }
+                })
+                .catch(() => {
+                    this.invalidCredentials = true
+                })
         },
         createAccount() {
             this.$router.push('/register')
@@ -147,16 +164,15 @@ export default {
 }
 
 @media (max-width: 576px) {
-  .create-account-text {
-    display: block;
-    margin-bottom: 10px;
-  }
+    .create-account-text {
+        display: block;
+        margin-bottom: 10px;
+    }
 
-  .form-footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+    .form-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 }
-
 </style>
