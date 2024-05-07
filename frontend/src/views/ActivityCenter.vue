@@ -79,6 +79,11 @@ export default {
                 console.error('Map div not found')
             }
 
+            console.log('Map view height:', this.mapViewHeight)
+            console.log('Map view width:', this.mapViewWidth)
+            console.log('Map and stats container height:', mapAndStatsContainer.getBoundingClientRect().height)
+            // console.log('Map and stats container width:', mapAndStatsContainer.getBoundingClientRect().width)
+
         },
     },
     components: {
@@ -119,7 +124,7 @@ export default {
                 <OverallTrailStatsComponent/>
             </div>
         </div>
-        <div class="trails-container px-3 scrollableList">
+        <div class="trails-container scrollableList">
             <table class="trailsListTable">
                 <ListComponentNoDiv v-bind:dataArray="trails" v-slot="slotProps">
                     <TrailListItemComponent
@@ -136,6 +141,12 @@ export default {
 
 
 <style scoped>
+
+#mapDiv{
+    width: 100%;
+    height: 100%;
+}
+
 h2 {
     margin: 0;
 }

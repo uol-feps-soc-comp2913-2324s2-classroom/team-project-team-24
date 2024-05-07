@@ -46,30 +46,30 @@ export default {
 
 <template>
     <div>
-        <table class="my-5">
+        <table class="my-sm-5 my-3">
             <tr>
-                <td class="ps-5 pe-0 floor-ceiling-padding">Name</td>
-                <td class="pe-5 ps-0 bold">{{ name }}</td>
+                <td class="ps-sm-5 ps-4 pe-0 floor-ceiling-padding">Name</td>
+                <td class="pe-sm-5 pe-4 ps-0 bold">{{ name }}</td>
             </tr>
             <tr>
-                <td class="ps-5 pe-0 floor-ceiling-padding">Email</td>
-                <td class="pe-5 ps-0 bold">{{ email }}</td>
+                <td class="ps-sm-5 ps-4 pe-0 floor-ceiling-padding">Email</td>
+                <td class="pe-sm-5 pe-4 ps-0 bold">{{ email }}</td>
             </tr>
             <tr>
-                <td class="ps-5 pe-0 floor-ceiling-padding">Age</td>
-                <td class="pe-5 ps-0 bold">{{ age }}</td>
+                <td class="ps-sm-5 ps-4 pe-0 floor-ceiling-padding">Age</td>
+                <td class="pe-sm-5 pe-4 ps-0 bold">{{ age }}</td>
             </tr>
             <tr>
-                <td class="ps-5 pe-0 floor-ceiling-padding">Gender</td>
-                <td class="pe-5 ps-0 bold">{{ gender }}</td>
+                <td class="ps-sm-5 ps-4 pe-0 floor-ceiling-padding">Gender</td>
+                <td class="pe-sm-5 pe-4 ps-0 bold">{{ gender }}</td>
             </tr>
             <tr>
-                <td class="ps-5 pe-0 floor-ceiling-padding">Membership</td>
-                <td class="pe-5 ps-0 bold">{{ membership }}</td>
+                <td class="ps-sm-5 ps-4 pe-0 floor-ceiling-padding">Membership</td>
+                <td class="pe-sm-5 pe-4 ps-0 bold">{{ membership }}</td>
             </tr>
             <tr>
-                <td class="ps-5 pe-0 floor-ceiling-padding">Password</td>
-                <td class="pe-5 ps-0 bold">********</td>
+                <td class="ps-sm-5 ps-4 pe-0 floor-ceiling-padding">Password</td>
+                <td class="pe-sm-5 pe-4 ps-0 bold">********</td>
             </tr>
         </table>
         <div>
@@ -123,9 +123,22 @@ td:last-child {
     font-weight: bold;
 }
 
-.floor-ceiling-padding{
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+/* Small screens */
+@media screen and (max-width: 600px){
+    .floor-ceiling-padding{
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
 }
+
+/* Large screens */
+@media screen and (min-width: 600px){
+    .floor-ceiling-padding{
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
+}
+
 
 </style>

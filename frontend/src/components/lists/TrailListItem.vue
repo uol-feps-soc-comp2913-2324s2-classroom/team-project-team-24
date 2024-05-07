@@ -74,11 +74,11 @@ export default {
 
 <template>
     <tr class="tableRow p-1 my-5" @click="viewTrail">
-        <td class="tdItem tdItemCheckbox"><input type="checkbox" :value="trail.id" v-model="checked" @click.stop @change="onCheckboxChange" /></td>
+        <td class="tdItem tdItemCheckbox ps-4"><input type="checkbox" :value="trail.id" v-model="checked" @click.stop @change="onCheckboxChange" /></td>
         <td class="tdItem"><p>{{ trail.name }}</p></td>
         <td class="tdItem"><p>{{ trail.exercise_type }}</p></td>
                 <!-- <p>{{ trail.date }}</p> -->
-        <td class="tdItem tdItemButtons">
+        <td class="tdItem tdItemButtons pe-4">
             <div>
                 <button class="imageButton zoom-button" :style="buttonStyle" v-if="isSelected" @click.stop="zoomToTrail"><span><img src="../../assets/Smock_Location_18_N.svg"></span></button>
                 <button class="imageButton mx-3" :style="buttonStyle" @click.stop="downloadTrail"><span><img src="../../assets/Smock_Download_18_N.svg"></span></button>
@@ -108,7 +108,7 @@ tr{
 
 tr:hover {
     /* box-shadow: 8px var(--selectionRailColor); */
-    filter: drop-shadow(0px 0px 5px var(--selectionRailColor));
+    filter: drop-shadow(0px 0px 8px var(--selectionRailColor));
 }
 
 .tdItemCheckbox{

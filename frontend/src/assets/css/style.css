@@ -2,9 +2,9 @@
     --l0-color: #F2F2F7;
     --l1-color: #FFFFFF;
     --text-color: #000000;
-    --app-green: #1ED760;
-    --app-green-hover: #1DB954;
-    --app-green-pressed: #1AA34A;
+    --app-green: #00852E;
+    --app-green-hover: #1e8f44;
+    --app-green-pressed: #1b7f3e;
     --action-blue: #0067d5;
     --action-blue-hover: #0056b3;
     --action-blue-pressed: #004b9a;
@@ -12,7 +12,7 @@
     --action-blue-lighter-hover: #007ab8;
     --action-blue-ligther-pressed: #005f9e;
     --tertiary-green: #00B03F;
-    --unselected-color: #646464;
+    --unselected-color: #757575;
     --selected-color: #000000;
     --border-color: #000000;
     --danger-color: #da2626;
@@ -22,7 +22,7 @@
     --font-size: 16px;
     --font-family: 'Roboto', sans-serif;
     --scrollbar-background: #e6e6e6;
-    --scrollbar-thumb: #b9ffa8;
+    --scrollbar-thumb: #303030;
     --transition-speed: 100ms;
     --secondary-button-offBlack: #383838;
     --secondary-button-offBlack-disabled: #616161;
@@ -50,25 +50,42 @@
     --backdrop-filter-blur: 3px;
 }
 
-@media screen and (max-width: 600px){
-    /* Mobile */
+
+.main{
+    display: flex;
+}
+
+/* Mobile screens */
+@media only screen and (max-width: 600px){
+    .main{
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .content{
+        height: 100vh;
+        width: 100vw;
+        overflow-y: scroll;
+    }
+}
+
+/* Large screens */
+@media only screen and (min-width: 600px){
+    .main{
+        flex-direction: row;
+    }
+    
+    .content{
+        height: 100vh;
+        width: 100%;
+        overflow-y: scroll;
+    }
 }
 
 body{
     font-family: var(--font-family) !important;
     background-color: var(--l0-color) !important;
     color: var(--text-color) !important;
-}
-
-.main{
-    display: flex;
-    flex-direction: row;
-}
-
-.content{
-    height: 100vh;
-    width: 100%;
-    overflow-y: scroll;
 }
 
 .overflowScroll{
