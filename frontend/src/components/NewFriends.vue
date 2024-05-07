@@ -2,7 +2,7 @@
     <div>
         <form @submit.prevent="addFriend" class="my-3 d-flex flex-row align-items-center">
             <div class="sendRequestField d-flex flex-column me-3">
-                <input id="friend-email" v-model="friend" type="text" class="text-input-loud me-3" placeholder="Enter a Walkley username to send a friend request" required />
+                <input id="friend-email" v-model="friend" type="text" class="text-input-loud me-3" placeholder="Enter a Walkley username to send a friend request" required @input="removeErrorText"/>
                 <h6 style="color:red" class="mt-1" v-if="error">{{ error }}</h6>
                 <h6 style="color:green" class="mt-1" v-if="success">{{ success }}</h6>
             </div>
@@ -80,6 +80,10 @@ export default {
             this.getPageData();
             this.$parent.getPageData();
         },
+        removeErrorText() {
+            this.error = null;
+            this.success = null;
+        }
     },
     created() {
         this.getPageData();
