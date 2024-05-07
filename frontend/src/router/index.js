@@ -24,7 +24,6 @@ const authRequired =
     process.env.VUE_APP_DISABLE_LOGIN !== undefined
         ? !JSON.parse(process.env.VUE_APP_DISABLE_LOGIN)
         : true
-console.log(process.env.VUE_APP_DISABLE_LOGIN)
 
 const routes = [
     {

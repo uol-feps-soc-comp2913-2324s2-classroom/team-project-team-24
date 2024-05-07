@@ -155,7 +155,6 @@ export default {
                 }
 
             });
-            console.log("Trails: ", this.groupTrails.map( trail => trail.id ));
 
         },
         getMapDimensions() {
@@ -200,7 +199,6 @@ export default {
         },
         closeTrailsPopup() {
             this.showTrails = false;
-            console.log("Closing trails popup")
         },
         groupModalShowAddMembersHandle() {
             this.groupModalShowMembers = false;
@@ -220,7 +218,6 @@ export default {
                     this.groupModalShowAddMembersHandle();
                     break;
                 default:
-                    console.log("Unknown");
                     break;
             }
         },
@@ -245,7 +242,6 @@ export default {
                     this.trailsModalShowAddTrails = true;
                     break;
                 default:
-                    console.log("Unknown");
                     break;
             }
         },

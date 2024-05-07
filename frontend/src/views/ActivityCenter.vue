@@ -125,13 +125,6 @@ export default {
             } else {
                 console.error('Map div not found')
             }
-
-            console.log('Map view height:', this.mapViewHeight)
-            console.log('Map view width:', this.mapViewWidth)
-            console.log(
-                'Map and stats container height:',
-                mapAndStatsContainer.getBoundingClientRect().height
-            )
         },
     },
     components: {

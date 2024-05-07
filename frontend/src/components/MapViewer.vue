@@ -65,20 +65,11 @@ export default {
             try {
                 let response
                 if (this.width == null || this.height == null) {
-                    console.log(
-                        'Getting map without width and height specified'
-                    )
                     response = await axiosAuth.post('/trail/get-selected-map', {
                         trailIDs: this.selectedTrails,
                         groupID: this.groupID,
                     });
                 } else {
-                    console.log(
-                        'Getting map with width: ' +
-                            this.width +
-                            ' and height: ' +
-                            this.height
-                    )
                     response = await axiosAuth.post('/trail/get-selected-map', {
                         trailIDs: this.selectedTrails,
                         width: this.width,

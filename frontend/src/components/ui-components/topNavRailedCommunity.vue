@@ -106,10 +106,6 @@ export default {
                 }
             }
 
-            for (let i = 0; i < this.navStyles.length; i++) {
-                console.log(this.navStyles[i].color)
-            }
-
             this.$emit('NavElementClicked', event.target.getAttribute('id'))
         },
     },
@@ -119,7 +115,6 @@ export default {
             const navElements = document.querySelectorAll('.navElements')
 
             // Set the current selection to the nav first element
-            console.log(this.$refs)
 
             // Set the width of the rail to the size of all the nav elements
             let width = 0

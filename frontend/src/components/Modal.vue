@@ -32,7 +32,6 @@ export default {
     },
     mounted() {
         document.addEventListener('keydown', this.closeModalOnEsc)
-        console.log('Modal mounted. Is open: ' + this.isOpen)
     },
 }
 </script>

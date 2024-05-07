@@ -52,7 +52,6 @@ export default {
                 .post("/trail/download", { trailID: this.trail.id })
                 .then(
                     (response) => {
-                        console.log(response.data.data);
                         const download_link = document.createElement("a");
                         download_link.href = URL.createObjectURL(new Blob([response.data.data], { type: "text/plain" }));
                         download_link.download = `${this.trail.name}.gpx`;

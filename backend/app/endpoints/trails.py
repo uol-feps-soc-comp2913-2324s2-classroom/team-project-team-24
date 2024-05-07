@@ -208,7 +208,7 @@ def get_selected_trails_map():
         else:
             return jsonify({"error": "Invalid group ID"}), 400 
     
-    print(user_ids)
+
     
     # Get the trail IDs from the request
     trail_ids = request.get_json().get("trailIDs")

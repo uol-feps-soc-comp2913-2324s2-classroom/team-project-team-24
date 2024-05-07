@@ -152,7 +152,7 @@ def webhook_received():
         
         # Cancel a previous membership
         user = User.query.filter_by(id=int(metadata["userID"])).first()
-        print(user.stripe_subscription)
+
         if user.stripe_subscription != None:
             stripe.Subscription.modify(
                 user.stripe_subscription,
