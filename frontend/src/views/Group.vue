@@ -160,6 +160,7 @@ export default {
                 }
 
             });
+            console.log("Trails: ", this.groupTrails.map( trail => trail.id ));
 
         },
         getMapDimensions() {
@@ -171,8 +172,6 @@ export default {
             // this.mapWidth = groupViewHeading.getBoundingClientRect().width;
             // this.mapHeight = window.innerHeight - groupViewHeading.getBoundingClientRect().height - 10;
 
-            console.log("Map width: ", this.mapWidth);
-            console.log("Map height: ", this.mapHeight);
 
         },
         toggle(bool) {
@@ -418,7 +417,7 @@ export default {
         </div>
 
         <div class="groupMapView" id="mapViewComponent" :style="mapViewComponentStyleForce">
-            <MapViewerComponent :selected-trails="groupTrails.map( trail => trail.id )" :width="mapWidth" :height="mapHeight"/>
+            <MapViewerComponent v-bind:selected-trails="groupTrails.map( trail => trail.id )" :width="mapWidth" :height="mapHeight" :groupID="groupID"/>
         </div>
     </div>
 </template>
