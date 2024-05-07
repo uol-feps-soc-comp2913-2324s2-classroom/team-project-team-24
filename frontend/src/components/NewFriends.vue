@@ -12,13 +12,15 @@
                     class="text-input-loud me-3"
                     placeholder="Enter a Walkley username to send a friend request"
                     required
+                    @input="removeErrorText"
                 />
                 <h6 style="color: red" class="mt-1" v-if="error">
-                    {{ error }}
+                  {{ error }}
                 </h6>
                 <h6 style="color: green" class="mt-1" v-if="success">
-                    {{ success }}
+                  {{ success }}
                 </h6>
+        
             </div>
             <button
                 type="submit"
@@ -116,6 +118,10 @@ export default {
             this.getPageData()
             this.$parent.getPageData()
         },
+        removeErrorText() {
+            this.error = null;
+            this.success = null;
+        }
     },
     created() {
         this.getPageData()

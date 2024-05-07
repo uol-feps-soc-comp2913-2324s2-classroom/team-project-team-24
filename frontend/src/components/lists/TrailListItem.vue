@@ -49,17 +49,17 @@ export default {
         downloadTrail() {
             // Implement the logic to download the trail data
             axiosAuth
-                .post('/trail/download', { trailID: this.trail.id })
-                .then((response) => {
-                    console.log(response.data.data)
-                    const download_link = document.createElement('a')
-                    download_link.href = URL.createObjectURL(
-                        new Blob([response.data.data], { type: 'text/plain' })
-                    )
-                    download_link.download = 'route.gpx'
-                    download_link.click()
-                })
-                .catch((error) => console.error('Error:', error))
+                .post("/trail/download", { trailID: this.trail.id })
+                .then(
+                    (response) => {
+                        console.log(response.data.data);
+                        const download_link = document.createElement("a");
+                        download_link.href = URL.createObjectURL(new Blob([response.data.data], { type: "text/plain" }));
+                        download_link.download = `${this.trail.name}.gpx`;
+                        download_link.click();
+                    }
+                )
+                .catch((error) => console.error("Error:", error));
         },
         deleteTrail() {
             axiosAuth

@@ -23,8 +23,11 @@ export default {
             type: String,
         },
         height: {
-            type: String,
+            type: String
         },
+        groupID: {
+            type: Number,
+        }
     },
     data() {
         return {
@@ -67,7 +70,8 @@ export default {
                     )
                     response = await axiosAuth.post('/trail/get-selected-map', {
                         trailIDs: this.selectedTrails,
-                    })
+                        groupID: this.groupID,
+                    });
                 } else {
                     console.log(
                         'Getting map with width: ' +
@@ -79,10 +83,10 @@ export default {
                         trailIDs: this.selectedTrails,
                         width: this.width,
                         height: this.height,
-                    })
+                        groupID: this.groupID,
+                    });
                 }
-                this.mapHtml = response.data.mapHtml
-                console.log(response.data.mapHtml)
+                this.mapHtml = response.data.mapHtml;
                 this.$nextTick(() => {
                     this.cancerousHeightFix()
                 })
