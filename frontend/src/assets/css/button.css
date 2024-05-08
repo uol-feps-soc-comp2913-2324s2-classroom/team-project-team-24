@@ -94,6 +94,38 @@
     border-color: var(--secondary-button-offBlack-active);
 }
 
+/* Secondary button styles */
+.btn-secondary-white {
+    background-color: rgba(0, 0, 0, 0);
+    border-style: solid;
+    border-color: #FFFFFF;
+    border-width: 2px;
+    font-weight: bold;
+    color: #FFFFFF;
+    padding-top: var(--button-padding-vertical);
+    padding-bottom: var(--button-padding-vertical);
+    padding-left: var(--button-padding-horizontal);
+    padding-right: var(--button-padding-horizontal);
+    /* padding: 0.4rem 1.5rem; */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    cursor: pointer;
+    border-radius: 99999px;
+}
+
+.btn-secondary-white:hover {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.btn-secondary-white:active {
+    background-color: #bcbcbc;
+    border-color: #bcbcbc;
+    color: #000000;
+}
+
 .btn-tertiary {
     background-color: var(--tertiary-button-grey);
     border-style: solid;

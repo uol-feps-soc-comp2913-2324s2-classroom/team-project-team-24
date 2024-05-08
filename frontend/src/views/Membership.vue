@@ -9,7 +9,7 @@
                 to Walkley, please choose your payment subscription option
             </p>
             <p v-else>
-                Hello Member! You are subscribed to the
+                You are subscribed to the
                 <b>{{ currentPlan.name }}</b> plan.
             </p>
         </div>
