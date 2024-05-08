@@ -1,30 +1,33 @@
 <template>
     <div class="top-nav-railed">
         <div class="navElements mb-2">
-            <div
+            <button
                 @click="handleClicked"
                 id="0"
                 class="topNavElement"
                 :style="navStyles[0]"
+                tabindex="0"
             >
                 Friends
-            </div>
-            <div
+            </button>
+            <button
                 @click="handleClicked"
                 id="1"
                 class="topNavElement"
                 :style="navStyles[1]"
+                tabindex="0"
             >
                 Groups
-            </div>
-            <div
+            </button>
+            <button
                 @click="handleClicked"
                 id="2"
                 class="topNavElement"
                 :style="navStyles[2]"
+                tabindex="0"
             >
                 Add&nbsp;Friends
-            </div>
+            </button>
         </div>
         <div id="selection-rail" class="selectionRail" :style="railStyle"></div>
         <div
@@ -161,5 +164,10 @@ export default {
 .topNavElement {
     text-decoration: none;
     cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
 }
 </style>
