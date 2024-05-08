@@ -3,7 +3,7 @@
         <div class="welcome-container">
             <div class="direct-welcome">
                 <h1 class="app-name">Walkley</h1>
-                <p class="app-name-sh">Your GPX manager</p>
+                <p class="app-name-sh mb-3">Your GPX manager</p>
                 <div class="button-container">
                     <button class="btn-primary me-1" @click="registerNewAccount">Register</button>
                     <button class="btn-secondary-white ms-1" @click="alreadyHaveAccount">Login</button>

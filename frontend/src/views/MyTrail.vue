@@ -70,7 +70,7 @@ export default {
 }
 
 .my-trail-container {
-    height: 100vh;
+    height: 100%;
 }
 
 .map-container {
