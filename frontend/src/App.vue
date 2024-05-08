@@ -78,7 +78,7 @@ export default {
         <div class="content" id="contentContainer" :style="contentStyle">
             <router-view />
         </div>
-        <div class="mobileNavSpacer" id="mobileNavSpacerElement"></div>
+        <div class="mobileNavSpacer" v-if="showNav" id="mobileNavSpacerElement"></div>
     </div>
 </template>
 

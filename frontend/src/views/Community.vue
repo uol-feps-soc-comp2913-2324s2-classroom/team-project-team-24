@@ -139,7 +139,7 @@ export default {
                 <ListComponent v-if="friendsIsShowing && friends.length > 0" v-bind:dataArray="friends" v-slot="slotProps">
                     <UserListItemComponent v-bind:user="slotProps.data" :button="buttonDict"/>
                 </ListComponent>
-                <p v-if="friendsIsShowing && friends.length == 0 && !loadingFriendsList" class="greyText">You haven't add anyone as friends yet...</p>
+                <p v-if="friendsIsShowing && friends.length == 0 && !loadingFriendsList" class="greyText">You haven't added any friends yet.</p>
                 <p v-if="friendsIsShowing && loadingFriendsList" class="greyText">Loading friends...</p>
                 
                 <ListComponent v-if="groupsIsShowing" v-bind:dataArray="groups" v-slot="slotProps">

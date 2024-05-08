@@ -1,149 +1,324 @@
 <template>
-  <div class="container-fluid welcome-container">
-    <div class="content p-3">
-      <div class="header">
-        <img src="../assets/Logo.svg" alt="Logo" class="logo" />
-        <h1>Welcome to Walkley</h1>
-      </div>
-      <p class="mb-4">
-        Track your progress and join a community of fitness enthusiasts in 3
-        steps.
-      </p>
-      <div class="steps-container mb-4">
-        <div class="row icon-row">
-          <div class="col-4">
-            <img
-              src="../assets/membership_icon.svg"
-              alt="Membership Icon"
-              class="step-icon"
-            />
-          </div>
-          <div class="col-4">
-            <img
-              src="../assets/tracks_icon.svg"
-              alt="Trail Icon"
-              class="step-icon"
-            />
-          </div>
-          <div class="col-4">
-            <img
-              src="../assets/activity_icon.svg"
-              alt="Activity Icon"
-              class="step-icon"
-            />
-          </div>
+    <div class="snap-container">
+        <div class="welcome-container">
+            <div class="direct-welcome">
+                <h1 class="app-name">Walkley</h1>
+                <p class="app-name-sh">Your GPX manager</p>
+                <div class="button-container">
+                    <button class="btn-primary me-1" @click="registerNewAccount">Register</button>
+                    <button class="btn-secondary-white ms-1" @click="alreadyHaveAccount">Login</button>
+                </div>
+            </div>
         </div>
-        <div class="row step-row">
-          <div class="col-12 col-md-4 step">
-            <h3>1. Sign up and choose a payment plan</h3>
-          </div>
-          <div class="col-12 col-md-4 step">
-            <h3>2. Upload your GPX trail data</h3>
-          </div>
-          <div class="col-12 col-md-4 step">
-            <h3>3. View your trail or your friends trails!</h3>
-          </div>
+        <div class="pitch-container">
+            <div class="container pitch-grid-container">
+                <div class="pitch-grid">
+                    <div class="pitch-box p-5">
+                        <div class="d-flex flex-row align-items-center"><img src="../assets/activity_icon.svg" alt="Activity Icon"/><span class="feature-name">Activity Center</span></div>
+                        <p class="large-pitch-text">Manage and visualize your activities</p>
+                    </div>
+                    <div class="pitch-box p-5">
+                        <div class="d-flex flex-row align-items-center"><img src="../assets/upload_icon.svg" alt="Upload icon"><span class="feature-name">Upload</span></div>
+                        <p class="large-pitch-text">Upload your trails to the cloud</p>
+                    </div>
+                    <div class="pitch-box p-5">
+                        <div class="d-flex flex-row align-items-center"><img src="../assets/community_icon.svg" alt="Community icon"><span class="feature-name">Community</span></div>
+                        <p class="large-pitch-text">Share your activities and view your friends' activities</p>
+                    </div>
+                    <div class="pitch-box p-5 d-flex align-items-center">
+                        <div class="d-flex flex-column align-items-end">
+                            <p class="mega-large-pitch-text">Starting £1.99</p>
+                            <p class="small-pitch-text clearMargin">/week</p>
+                        </div>
+                    </div>
+                    <div class="buy-box p-5 d-flex flex-column align-items-start">
+                        <p class="giga-large-pitch-text me-3">Convinced?</p>
+                        <button class="btn-primary" @click="registerNewAccount">Register now</button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <button class="btn btn-primary register-btn" @click="registerNewAccount">
-        Register
-      </button>
-      <div class="form-field go-to-login">
-        <span>Already have an account?</span>&nbsp;
-        <a href="#" @click="alreadyHaveAccount">Login</a>
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
 export default {
-  name: 'WelcomePage',
-  methods: {
-    registerNewAccount() {
-      this.$router.push('/register')
-    },
-    alreadyHaveAccount() {
-      this.$router.push('/login')
-    },
-  }
+    name: 'WelcomePage',
+    methods: {
+        registerNewAccount() {
+            this.$router.push('/register')
+        },
+        alreadyHaveAccount() {
+            this.$router.push('/login')
+        },
+    }
 }
 </script>
-  
+
 <style scoped>
+
+/* SM */
+@media screen and (max-width: 576px) {
+    .welcome-container {
+        background-image: url('../assets/render_square.jpg');
+    }
+
+    .direct-welcome {
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .app-name {
+        font-size: 4rem;
+    }
+
+    .pitch-container {
+        height: auto;   
+    }
+
+    .pitch-grid-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+    
+    .pitch-grid{
+        grid-template-rows: 1fr;
+        gap: 20px;
+    }
+
+}
+
+/* MD */
+@media screen and (max-width: 768px) and (min-width: 577px) {
+    .welcome-container {
+        background-image: url('../assets/render_square.jpg');
+    }
+
+    .direct-welcome {
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .app-name {
+        font-size: 4rem;
+    }
+
+    .pitch-container {
+        height: auto;   
+    }
+
+    .pitch-grid-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+    
+    .pitch-grid{
+        grid-template-rows: 1fr;
+        gap: 20px;
+    }
+}
+
+/* LG */
+@media screen and (max-width: 992px) and (min-width: 769px) {
+    .welcome-container {
+        background-image: url('../assets/render_square.jpg');
+    }
+
+    .direct-welcome {
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .app-name{
+        font-size: 4rem;
+    }
+
+    .pitch-container {
+        height: auto;   
+    }
+
+    .pitch-grid-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+    
+    .pitch-grid{
+        grid-template-rows: 1fr;
+        gap: 20px;
+    }
+    
+}
+
+/* XL */
+@media screen and (max-width: 1200px) and (min-width: 993px) {
+    .welcome-container {
+        background-image: url('../assets/render_blur.jpg');
+    }
+
+    .direct-welcome {
+        position: relative;
+        top: 50%;
+        left: 55%;
+    }
+
+    .app-name{
+        font-size: 5rem;
+    }
+
+    .pitch-container {
+        height: auto;   
+    }
+
+    .pitch-grid-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+    
+    .pitch-grid{
+        grid-template-rows: 1fr;
+        gap: 20px;
+    }
+}
+
+/* XXL */
+@media screen and (min-width: 1201px) {
+    .snap-container {
+        scroll-snap-type: y mandatory;
+    }
+
+    .welcome-container {
+        background-image: url('../assets/render_blur.jpg');
+    }
+
+    .direct-welcome {
+        position: relative;
+        top: 50%;
+        left: 55%;
+    }
+
+    .app-name{
+        font-size: 5rem;
+    }
+
+    .pitch-container {
+        height: 100vh;
+    }
+
+    .pitch-grid-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .pitch-grid{      
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+        gap: 20px;
+    }
+    
+}
+
+img {
+    height: 2rem;
+
+}
+
+.snap-container {
+    overflow-y: scroll;
+    height: 100vh;
+}
+
 .welcome-container {
-  background-image: url('../assets/brian-erickson-XFneC_rHR48-unsplash.jpg');
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    overflow: hidden;
+
+    scroll-snap-align: start;
+    scroll-snap-type: y mandatory;
 }
 
-.content {
-  text-align: center;
-  background-color: rgba(255, 255, 255);
-  border-radius: var(--border-radius);
-  padding: 20px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  position: relative;
-  z-index: 1;
-  max-width: 800px;
+.direct-welcome {
+    display: flex;
+    flex-direction: column;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
+.app-name {
+    color: #FFFFFF;
+    margin-bottom: 0;
 }
 
-.register-btn {
-    background-color: var(--app-green);
-    color: var(--l1-color);
-    padding: var(--button-padding-vertical) var(--button-padding-horizontal);
-    border: none;
+.app-name-sh {
+    color: #FFFFFF;
+}
+
+.pitch-grid-container {
+    height: 100%;
+}
+
+.pitch-container{
+    scroll-snap-align: start;
+    scroll-snap-type: y mandatory;
+    background-color: #000000;
+}
+
+.pitch-grid {
+    display: grid;
+}
+
+.pitch-box {
+    background-color: #FFFFFF;
     border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color var(--transition-speed) ease;
 }
 
-.register-btn:hover {
-    background-color: var(--app-green-hover);
+.buy-box {
+    background-color: #232323;
+    border-radius: var(--border-radius);
+    grid-column: 1 / -1;
 }
 
-.register-btn:active {
-    background-color: var(--app-green-pressed);
+.feature-name {
+    font-weight: bold;
+    margin: 0;
+    margin-left: 1rem;
 }
 
-.mb-4 {
-  margin-bottom: 1rem;
+.large-pitch-text {
+    font-weight: bold;
+    font-size:1.8rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
-.steps-container {
-  border-radius: var(--border-radius);
-  padding: 20px;
+.mega-large-pitch-text {
+    font-weight: bold;
+    font-size: 2rem;
+    color: #000000;
+    margin: 0;
 }
 
-.step {
-  padding: 10px;
-  text-align: center;
+.clearMargin {
+    margin: 0;
 }
 
-.step-icon {
-  max-width: 50px;
-  max-height: 50px;
+.giga-large-pitch-text {
+    font-weight: bold;
+    font-size: 2.5rem;
+    color: #FFFFFF;
+    margin: 0;
 }
-
-.logo {
-  max-width: 100px;
-  margin-right: 1rem;
-}
-
-.go-to-login {
-  margin-top: 1rem;
-}
-
-
 </style>
