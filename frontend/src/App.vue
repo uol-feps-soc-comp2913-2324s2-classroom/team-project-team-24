@@ -14,7 +14,7 @@ export default {
         return {
             showNav: false,
             contentStyle: {
-                height: '100vh',
+                height: "100vh",
             },
         }
     },
@@ -78,8 +78,12 @@ export default {
     mounted() {
         document.documentElement.setAttribute('lang', 'en')
         this.checkAuth()
-        if (window.innerWidth < 600) {
-            this.calculateContentHeight()
+    },
+    updated() {
+        if (window.innerWidth < 600 && this.showNav) {
+            this.$nextTick(() => {
+                this.calculateContentHeight()
+            })
         }
     },
 }
@@ -91,9 +95,14 @@ export default {
         <div class="navSpacer" v-if="showNav"></div>
         <div class="content" id="contentContainer" :style="contentStyle">
             <router-view />
+            <div class="mobileNavSpacer" v-if="showNav" id="mobileNavSpacerElement"></div>
         </div>
-        <div class="mobileNavSpacer" v-if="showNav" id="mobileNavSpacerElement"></div>
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.content {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+</style>
