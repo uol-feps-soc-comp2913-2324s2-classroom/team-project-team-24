@@ -127,7 +127,6 @@ export default {
             this.count++
         },
         handleClicked({ event, to }) {
-            console.log("We're going to tNR")
             this.$refs.topNavRailed.handleClicked({ event, to })
         },
     },

@@ -58,7 +58,6 @@ export default {
                     if (this.time == 0 || this.speed == 0) {
                         this.hasTimeData = false
                     }
-                    console.log('Trail data fetched')
                     this.$nextTick(() => {
                         this.$emit('trailDataChanged')
                     })

@@ -65,6 +65,7 @@ export default {
     data() {
         return {
             friendRequests: [],
+            friend: "",
             error: null,
             success: null,
             acceptButtonDict: {

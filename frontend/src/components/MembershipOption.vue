@@ -45,14 +45,11 @@ export default {
                     membershipID: this.membership.id,
                 })
                 .then((response) => {
-                    console.log('Response:', response)
                     window.location.href = response.data.url
                 })
         },
         async cancelMembership() {
-            await axiosAuth.get('/membership/cancel').catch((response) => {
-                console.log('Response:', response)
-            })
+            await axiosAuth.get('/membership/cancel').catch(() => {});
             this.$parent.getPageData()
         },
     },

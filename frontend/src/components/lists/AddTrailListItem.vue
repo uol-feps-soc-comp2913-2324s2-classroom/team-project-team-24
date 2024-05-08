@@ -38,9 +38,6 @@ export default {
         }
     },
     methods: {
-        getPageData() {
-            console.log('=================', this.trail)
-        },
         addTrailToGroup() {
             this.addingToGroup = true
             axiosAuth

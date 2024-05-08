@@ -72,11 +72,6 @@ export default {
     components: {
         ModalComponent,
     },
-    mounted() {
-        console.log(
-            'CreateGroupComponent mounted. Modal state: ' + this.modalState
-        )
-    },
 }
 </script>
 

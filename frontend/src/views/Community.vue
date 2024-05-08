@@ -97,6 +97,7 @@ export default {
             },
             loadingFriendsList: true,
             loadingGroupsList: true,
+            addFriendsIsShowing: false,
         }
     },
     methods: {
@@ -104,23 +105,18 @@ export default {
             id = parseInt(id)
             switch (id) {
                 case 0:
-                    console.log('Friends')
                     this.showFriends()
                     break
                 case 1:
-                    console.log('Groups')
                     this.showGroups()
                     break
                 case 3:
-                    console.log('Friend Requests')
                     this.showFriendRequests()
                     break
                 case 2:
-                    console.log('Add Friends')
                     this.showAddFriends()
                     break
                 default:
-                    console.log('Unknown')
                     break
             }
         },
