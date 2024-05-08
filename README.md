@@ -35,6 +35,7 @@ source .venv/Scripts/activate
 pip install -r requirements.txt
 flask --app app run -p 5001
 ```
+5. To then get membership payment working you need to use `stripe-cli`. To get that working follow the instructions in `/backend/stripe_api/README.md`.
 
 # Testing 
 ## The frontend with cypress (End-To-End Testing)
