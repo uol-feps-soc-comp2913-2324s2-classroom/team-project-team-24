@@ -25,8 +25,6 @@ export default {
             ).clientHeight
             this.contentStyle.height =
                 window.innerHeight - navSpacerHeightMobile + 'px'
-            
-            console.log("the fucking content height is: " + this.contentStyle.height);
         },
         checkAuth() {
             // Bypass login check if the environment variable is set
