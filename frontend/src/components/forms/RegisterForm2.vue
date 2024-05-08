@@ -1,30 +1,3 @@
-<script>
-import axiosAuth from "@/api/axios-auth.js";
-export default {
-    name: 'RegisterForm2Component',
-    components: {
-    },
-    data() {
-        return {
-            gender: "",
-            age: 0,
-        };
-    },
-    methods: {
-        async handleRegister() {
-            await axiosAuth.post('/account/set-details', {
-                gender: this.gender,
-                age: this.age,
-            });
-            this.$router.push('/activitycenter');
-        },
-        async alreadyHaveAccount() {
-            this.$router.push('/login');
-        },
-    },
-}
-</script>
-
 <template>
     <div class="registerbox-in">
         <form @submit.prevent="handleRegister">
@@ -35,11 +8,21 @@ export default {
 
             <div class="form-field">
                 <label for="Gender" class="input-label">Gender</label>
-                <input class="text-input" id="gender" type="text" v-model="gender">
+                <input
+                    class="text-input"
+                    id="gender"
+                    type="text"
+                    v-model="gender"
+                />
             </div>
             <div class="form-field">
                 <label for="age" class="input-label">Age</label>
-                <input class="text-input" id="age" type="number" v-model.number="age">
+                <input
+                    class="text-input"
+                    id="age"
+                    type="number"
+                    v-model.number="age"
+                />
             </div>
             <div class="submit-button-container">
                 <button class="btn-primary" type="submit">Register</button>
@@ -48,6 +31,31 @@ export default {
     </div>
 </template>
 
+<script>
+import axiosAuth from '@/api/axios-auth.js'
+export default {
+    name: 'RegisterForm2Component',
+    components: {},
+    data() {
+        return {
+            gender: '',
+            age: 0,
+        }
+    },
+    methods: {
+        async handleRegister() {
+            await axiosAuth.post('/account/set-details', {
+                gender: this.gender,
+                age: this.age,
+            })
+            this.$router.push('/activitycenter')
+        },
+        async alreadyHaveAccount() {
+            this.$router.push('/login')
+        },
+    },
+}
+</script>
 <style scoped>
 .registerbox-in {
     max-width: 500px; /* Adjust as needed for your design */
@@ -80,5 +88,4 @@ export default {
 .text-input {
     width: 100%;
 }
-
 </style>

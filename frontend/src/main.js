@@ -12,13 +12,6 @@ import '@/assets/css/nav.css'
 import '@/assets/css/pages.css'
 import '@/assets/css/form.css'
 
-// CSS
-import '@/assets/css/style.css'
-import '@/assets/css/button.css'
-import '@/assets/css/nav.css'
-import '@/assets/css/pages.css'
-import '@/assets/css/form.css'
+axios.defaults.baseURL = `${process.env.VUE_APP_BACKEND_URL}`
 
-axios.defaults.baseURL = `${process.env.VUE_APP_BACKEND_URL}`;
-
-createApp(App).use(router, CanvasJSChart).mount('#app');
+createApp(App).use(router, CanvasJSChart).mount('#app')

@@ -1,32 +1,34 @@
+<template>
+    <div class="myAccountPageContainer p-5 d-flex flex-column overflowScroll">
+        <h1>My Account</h1>
+        <span class="mt-sm-2 mt-1"
+            ><button class="btn-secondary" @click="accountLogout">
+                Logout
+            </button></span
+        >
+        <AccountDetailsComponent />
+    </div>
+</template>
+
 <script>
-import AccountDetailsComponent from "@/components/AccountDetails.vue";
+import AccountDetailsComponent from '@/components/AccountDetails.vue'
 
 export default {
-    name: "MyAccount",
+    name: 'MyAccount',
     data() {
-        return {
-
-        };
+        return {}
     },
     methods: {
         accountLogout() {
-            localStorage.removeItem('token');
-            this.$router.push("/login");
-        }
+            localStorage.removeItem('token')
+            this.$router.push('/login')
+        },
     },
     components: {
         AccountDetailsComponent,
     },
-};
+}
 </script>
-
-<template>
-    <div class="myAccountPageContainer p-5 d-flex flex-column overflowScroll">
-        <h1>My Account</h1>
-        <span class="mt-sm-2 mt-1"><button class="btn-secondary" @click="accountLogout">Logout</button></span>
-        <AccountDetailsComponent />
-    </div>
-</template>
 
 <style scoped>
 .myAccountPageContainer {

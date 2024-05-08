@@ -1,68 +1,66 @@
 <template>
     <div :class="'membership-option'" :style="{ backgroundColor: color }">
-      <h3>{{ membership.name }}</h3>
-      <ul>
-        <li v-for="(point) in membership.points" :key="point">{{ point }}</li>
-      </ul>
-      <div class="option-details">
-        <h4>£{{ membership.price.toFixed(2) }}<br>{{ membership.regularity }}</h4>
-  
-        <template v-if="currentPlan.id === membership.id">
-          <button class="btn-danger" @click="cancelMembership">Cancel Plan</button>
-        </template>
-        <template v-else>
-          <button class="btn-primary" @click="buyMembership">Buy Now</button>
-        </template>
-      </div>
+        <h3>{{ membership.name }}</h3>
+        <ul>
+            <li v-for="point in membership.points" :key="point">{{ point }}</li>
+        </ul>
+        <div class="option-details">
+            <h4>
+                £{{ membership.price.toFixed(2) }}<br />{{
+                    membership.regularity
+                }}
+            </h4>
+
+            <template v-if="currentPlan.id === membership.id">
+                <button class="btn-danger" @click="cancelMembership">
+                    Cancel Plan
+                </button>
+            </template>
+            <template v-else>
+                <button class="btn-primary" @click="buyMembership">
+                    Buy Now
+                </button>
+            </template>
+        </div>
     </div>
-  </template>
+</template>
 
 <script>
-import axiosAuth from '@/api/axios-auth.js';
+import axiosAuth from '@/api/axios-auth.js'
 
 export default {
-    name: "MembershipOptionComponent",
+    name: 'MembershipOptionComponent',
     props: {
         membership: {},
         color: String, // Ensure the color prop is of type String,
         currentPlan: {},
     },
     data() {
-        return {
-            
-        };
+        return {}
     },
     methods: {
         async buyMembership() {
-            await axiosAuth.post('/membership/get-checkout-session', {
-                membershipID: this.membership.id,
-            }).then(response => {
-                console.log("Response:", response);
-                window.location.href = response.data.url;
-            });
-            // await axiosAuth.post('/membership/purchase', {
-            //     membershipID: this.membership.id
-            // });
-            // this.$parent.getPageData();
+            await axiosAuth
+                .post('/membership/get-checkout-session', {
+                    membershipID: this.membership.id,
+                })
+                .then((response) => {
+                    window.location.href = response.data.url
+                })
         },
         async cancelMembership() {
-            await axiosAuth.get('/membership/cancel').catch(
-                response => {console.log("Response:", response)}
-            );
-            this.$parent.getPageData();
-        }
-
+            await axiosAuth.get('/membership/cancel').catch(() => {});
+            this.$parent.getPageData()
+        },
     },
-    components: {
-    }
-};
+    components: {},
+}
 </script>
 
 <style scoped>
 .membership-option {
-    text-align: center; /* Center align all the content */
-    padding: 20px; /* Add padding to the container */
-    
+    text-align: center;
+    padding: 20px;
 }
 
 .membership-option h3,
@@ -73,18 +71,18 @@ export default {
 }
 
 .membership-option button {
-    margin: 10px 0; /* Add margin between elements */
+    margin: 10px 0;
 }
 
 .option-details {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 4rem; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 4rem;
 }
 
 .option-details h4 {
-  margin: 0;
+    margin: 0;
 }
 
 .dummy-button {
@@ -106,28 +104,28 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .membership-option {
-    width: calc(50% - 10px);
-    padding: 10px;
-  }
-  .membership-options-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
+    .membership-option {
+        width: calc(50% - 10px);
+        padding: 10px;
+    }
+    .membership-options-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
 }
 
 @media (max-width: 480px) {
-  .membership-option {
-    width: calc(100% - 10px);
-  }
+    .membership-option {
+        width: calc(100% - 10px);
+    }
 
-  .option-details {
-    margin-top: 0rem;
-  }
+    .option-details {
+        margin-top: 0rem;
+    }
 
-  .option-details h4 {
-    font-size: 19px;
-  }
+    .option-details h4 {
+        font-size: 19px;
+    }
 }
 </style>

@@ -20,8 +20,6 @@ def get_groups():
     for group in user.groups:
         groups.append({"id": group.id, "name": group.name})
 
-    for x in Group.query.all():
-        print(x, x.members)
     return jsonify({
         "groups": groups
     })

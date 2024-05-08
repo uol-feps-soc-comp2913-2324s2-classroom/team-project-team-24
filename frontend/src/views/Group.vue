@@ -18,7 +18,7 @@ export default {
             trails: [],
             groupTrails: [],
             shareableTrails: [],
-            groupID: this.$route.query.groupID,
+            groupID: parseInt(this.$route.query.groupID),
             buttonDict: {
                 text: "Invite",
                 action: this.inviteFriend,
@@ -62,7 +62,6 @@ export default {
             this.friendsNonMembers = [];
             this.shareableTrails = [];
             this.groupTrails = [];
-
         },
         async getPageData() {
             this.loadingTrailList = true;
@@ -91,14 +90,12 @@ export default {
             const getAllFriendsPromise = axiosAuth.get('/friends/get-all').then(
                 response => {
                     this.friends = response.data.friends;
-                    // friendsRaw = response.data.friends;
                 }
             );
 
             const getAllTrailsPromise = axiosAuth.get('/trail/get-all').then(
                 response => {
                     this.trails = response.data.trails;
-                    // this.loadingTrailList = false;
                 }
             );
 
@@ -127,8 +124,6 @@ export default {
                     // Get map width and height
                     this.getMapDimensions();
 
-                    // this.groupTrailsIDOnly = response.data.trails.map(trail => trail.id);
-                    // console.log("Group trail IDs: ", this.groupTrailsIDOnly);
                     this.loadingGroupTrails = false;
                 }
             );
@@ -167,13 +162,6 @@ export default {
             this.mapWidth = element.getBoundingClientRect().width;
             this.mapHeight = element.getBoundingClientRect().height;
 
-            // const groupViewHeading = document.getElementById("gropViewHeadingContainer");
-            // this.mapWidth = groupViewHeading.getBoundingClientRect().width;
-            // this.mapHeight = window.innerHeight - groupViewHeading.getBoundingClientRect().height - 10;
-
-            console.log("Map width: ", this.mapWidth);
-            console.log("Map height: ", this.mapHeight);
-
         },
         toggle(bool) {
             if (bool) {
@@ -211,7 +199,6 @@ export default {
         },
         closeTrailsPopup() {
             this.showTrails = false;
-            console.log("Closing trails popup")
         },
         groupModalShowAddMembersHandle() {
             this.groupModalShowMembers = false;
@@ -223,8 +210,6 @@ export default {
         },
         handleNavElementClicked(id) {
             id = parseInt(id);
-            // Commented out because turns out user experience is better without it
-            // this.lastGroupMembersModalView = id;
             switch (id) {
                 case 0:
                     this.groupModalShowMembersHandle();
@@ -233,7 +218,6 @@ export default {
                     this.groupModalShowAddMembersHandle();
                     break;
                 default:
-                    console.log("Unknown");
                     break;
             }
         },
@@ -248,8 +232,6 @@ export default {
         },
         handleNavElementClickedTrails(id) {
             id = parseInt(id);
-            // Commented out because turns out user experience is better without it
-            // this.lastTrailsModalView = id;
             switch (id) {
                 case 0:
                     this.trailsModalShowSharedTrails = true;
@@ -260,7 +242,6 @@ export default {
                     this.trailsModalShowAddTrails = true;
                     break;
                 default:
-                    console.log("Unknown");
                     break;
             }
         },
@@ -418,7 +399,7 @@ export default {
         </div>
 
         <div class="groupMapView" id="mapViewComponent" :style="mapViewComponentStyleForce">
-            <MapViewerComponent :selected-trails="groupTrails.map( trail => trail.id )" :width="mapWidth" :height="mapHeight"/>
+            <MapViewerComponent v-bind:selected-trails="groupTrails.map( trail => trail.id )" :width="mapWidth" :height="mapHeight" :groupID="groupID"/>
         </div>
     </div>
 </template>

@@ -1,8 +1,8 @@
-:root{
-    --l0-color: #F2F2F7;
-    --l1-color: #FFFFFF;
+:root {
+    --l0-color: #f2f2f7;
+    --l1-color: #ffffff;
     --text-color: #000000;
-    --app-green: #00852E;
+    --app-green: #00852e;
     --app-green-hover: #1e8f44;
     --app-green-pressed: #1b7f3e;
     --action-blue: #0067d5;
@@ -11,7 +11,7 @@
     --action-blue-lighter: #0095ec;
     --action-blue-lighter-hover: #007ab8;
     --action-blue-ligther-pressed: #005f9e;
-    --tertiary-green: #00B03F;
+    --tertiary-green: #00b03f;
     --unselected-color: #757575;
     --selected-color: #000000;
     --border-color: #000000;
@@ -40,7 +40,7 @@
 
     --selectionRailColor: #dfdfdf;
     --selectionTrainColor: #000000;
-    --topNavElementUnselectedTextColor: #797979; 
+    --topNavElementUnselectedTextColor: #797979;
 
     --loud-text-input-border-color: #767676;
     --loud-text-input-border-color-hover: #3d3d3d;
@@ -50,19 +50,18 @@
     --backdrop-filter-blur: 3px;
 }
 
-
-.main{
+.main {
     display: flex;
 }
 
 /* Mobile screens */
-@media only screen and (max-width: 600px){
-    .main{
+@media only screen and (max-width: 600px) {
+    .main {
         flex-direction: column;
         height: 100%;
     }
 
-    .content{
+    .content {
         height: 100vh;
         width: 100vw;
         overflow-y: scroll;
@@ -70,25 +69,25 @@
 }
 
 /* Large screens */
-@media only screen and (min-width: 600px){
-    .main{
+@media only screen and (min-width: 600px) {
+    .main {
         flex-direction: row;
     }
-    
-    .content{
+
+    .content {
         height: 100vh;
         width: 100%;
         overflow-y: scroll;
     }
 }
 
-body{
+body {
     font-family: var(--font-family) !important;
     background-color: var(--l0-color) !important;
     color: var(--text-color) !important;
 }
 
-.overflowScroll{
+.overflowScroll {
     overflow-y: scroll !important;
 }
 
@@ -99,7 +98,7 @@ body{
     transition: background-color 0.2s;
 }
 
-.greyText{
+.greyText {
     color: var(--grey-font-color);
 }
 

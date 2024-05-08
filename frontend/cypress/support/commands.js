@@ -4,7 +4,7 @@ Cypress.Commands.add('setUserToken', () => {
   // Extract token from the response and set it in Cypress environment
   cy.request({
     method: 'POST',
-    url: 'http://localhost:3000/login', // Replace with your login endpoint
+    url: 'http://localhost:3000/login',
     body: {
       username: Cypress.env('username'),
       password: Cypress.env('password')
@@ -35,10 +35,10 @@ Cypress.Commands.add('register', () => {
 
 Cypress.Commands.add('login', () => {
   // Make a login call to the endpoint and set token in Cypress environment
-  cy.visit('http://localhost:3000/login'); // Assuming '/login' is your login page URL
+  cy.visit('http://localhost:3000/login');
   cy.contains('label', 'Username').siblings('input').type(Cypress.env('username'));
   cy.contains('label', 'Password').siblings('input').type(Cypress.env('password'));
-  cy.contains('button', 'Login').click(); // Click the login button
+  cy.contains('button', 'Login').click();
   cy.setUserToken(); // Set user token after successful login
 });   
 

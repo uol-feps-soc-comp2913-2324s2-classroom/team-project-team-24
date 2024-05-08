@@ -1,3 +1,24 @@
+<template>
+    <div>
+        <div class="header" style="display: flex">
+            <h4>Admin</h4>
+            <button class="btn-secondary logout-btn" @click="accountLogout">
+                Logout
+            </button>
+        </div>
+        <topNavRailedAdmin
+            @NavElementClicked="handleNavChange"
+            class="mt-2 ms-4"
+        />
+        <div v-if="userInfoIsShowing">
+            <UserInfo :numberOfUsers="numberOfUsers" />
+        </div>
+        <div v-if="revenueIsShowing">
+            <RevenueComponent />
+        </div>
+    </div>
+</template>
+
 <script>
 import UserInfo from '@/components/UserInfo.vue'
 import RevenueComponent from '@/components/RevenueComponent.vue'
@@ -15,11 +36,11 @@ export default {
 
     methods: {
         getPageData() {
-            axiosAuth.get('/owner/get-owner-membership-data').then(
-                response => {
-                    this.numberOfUsers = response.data.numUsers;
-                }
-            )
+            axiosAuth
+                .get('/owner/get-owner-membership-data')
+                .then((response) => {
+                    this.numberOfUsers = response.data.numUsers
+                })
         },
         showUsers() {
             this.userInfoIsShowing = true
@@ -30,20 +51,20 @@ export default {
             this.userInfoIsShowing = false
         },
         accountLogout() {
-            localStorage.removeItem('token');
-            this.$router.push("/login");
+            localStorage.removeItem('token')
+            this.$router.push('/login')
         },
         handleNavChange(id) {
-            const id_val = parseInt(id);
-            switch(id_val) {
+            const id_val = parseInt(id)
+            switch (id_val) {
                 case 0:
-                    this.showUsers();
-                    break;
+                    this.showUsers()
+                    break
                 case 1:
-                    this.showRevenue();
-                    break;
+                    this.showRevenue()
+                    break
             }
-        }
+        },
     },
     mounted() {
         this.getPageData()
@@ -56,25 +77,7 @@ export default {
 }
 </script>
 
-<template>
-    <div>
-        <div class="header" style="display: flex">
-            <h4>Admin</h4>
-            <button class="btn-secondary logout-btn"  @click="accountLogout">logout</button>
-        </div>
-        <topNavRailedAdmin @NavElementClicked="handleNavChange" class="mt-2 ms-4"/>
-        <div v-if="userInfoIsShowing">
-            <UserInfo :numberOfUsers="numberOfUsers" />
-        </div>
-        <div v-if="revenueIsShowing">
-            <RevenueComponent />
-        </div>
-    </div>
-</template>
-
-
 <style>
-/* Your existing styles */
 .header {
     background-color: black;
     color: white;
@@ -99,7 +102,6 @@ export default {
 }
 
 .logout-btn {
-    /* float: right; */
     margin-left: auto;
 }
 </style>

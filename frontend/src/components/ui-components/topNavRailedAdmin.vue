@@ -127,8 +127,8 @@ export default {
 <template>
     <div class="top-nav-railed">
         <div class="navElements mb-2">
-            <div @click="handleClicked" id="0" class="topNavElement" :style="navStyles[0]">User Info</div>
-            <div @click="handleClicked" id="1" class="topNavElement" :style="navStyles[1]">Revenue</div>
+            <button @click="handleClicked" id="0" class="topNavElement" :style="navStyles[0]">User Info</button>
+            <button @click="handleClicked" id="1" class="topNavElement" :style="navStyles[1]">Revenue</button>
         </div>
         <div id="selection-rail" class="selectionRail" :style="railStyle"></div>
         <div id="selection-train" class="selectorTrain" :style="selectionTrainStyle"></div>
@@ -159,5 +159,10 @@ export default {
 .topNavElement{
     text-decoration: none;
     cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
 }
 </style>

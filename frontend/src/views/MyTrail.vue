@@ -21,9 +21,6 @@ export default {
             const mapContainer = document.getElementById("mapContainer");
             const myTrailContainer = document.getElementById("myTrailContainer");
             const trailStats = document.getElementById("trailStats");
-            console.log("My Trail Container Height: " + myTrailContainer.getBoundingClientRect().height);
-            console.log("Trail Stats Height: " + trailStats.getBoundingClientRect().height);
-            // console.log("Predicted height: " + mapContainer.getBoundingClientRect().height);
             
             if (myTrailContainer && trailStats){
                 this.mapWidth = mapContainer.getBoundingClientRect().width;
@@ -31,11 +28,6 @@ export default {
             }  else {
                 console.error("Error calculating map size");
             }
-            // console.log("Window Height: " + window.innerHeight);
-            // this.mapWidth = mapContainer.clientWidth;
-            // this.mapHeight = window.innerHeight - trailStats.clientHeight - 10;
-            console.log("Width: " + this.mapWidth + " Height: " + this.mapHeight);
-            console.log("final map container height: " + mapContainer.getBoundingClientRect().height);
         },
         initializeMap() {
             this.loadingTrailStats = false;
@@ -60,7 +52,7 @@ export default {
 <template>
     <div class="my-trail-container d-flex flex-column" id="myTrailContainer">
         <div class="map-container" id="mapContainer" v-if="!loadingTrailStats">
-            <MapViewerComponent v-if="mapHeight && mapWidth" :trailID="trailID" :selectedTrails="[trailID]" :height="mapHeight" :width="mapWidth"/>
+            <MapViewerComponent v-if="mapHeight && mapWidth" :selectedTrails="[trailID]" :height="mapHeight" :width="mapWidth"/>
         </div>
         <TrailInfoComponent v-show="!loadingTrailStats" @trailDataChanged="initializeMap" :trailID="trailID" class="trail-stats px-3 py-2" id="trailStats"/>
         <div v-if="loadingTrailStats" class="loading-container">

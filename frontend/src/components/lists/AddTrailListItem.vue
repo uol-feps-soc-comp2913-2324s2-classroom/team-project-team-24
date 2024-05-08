@@ -1,11 +1,21 @@
 <template>
     <div class="trailListItem">
-        <div class="d-flex flex-row align-items-center justify-content-between my-2 px-2">
-            <div class="d-flex flex-row align-items-center justify-content-between nameAndDate me-5">
-                <p class="my-0">{{ trail.name }}</p> 
+        <div
+            class="d-flex flex-row align-items-center justify-content-between my-2 px-2"
+        >
+            <div
+                class="d-flex flex-row align-items-center justify-content-between nameAndDate me-5"
+            >
+                <p class="my-0">{{ trail.name }}</p>
                 <p class="my-0">{{ trail.date }}</p>
             </div>
-            <button v-if="!addingToGroup" @click.stop="addTrailToGroup" class="btn-tertiary">Add</button>
+            <button
+                v-if="!addingToGroup"
+                @click.stop="addTrailToGroup"
+                class="btn-tertiary"
+            >
+                Add
+            </button>
             <button v-else class="btn-tertiary-disabled">Adding...</button>
         </div>
         <div class="horizontalLine"></div>
@@ -13,46 +23,40 @@
 </template>
 
 <script>
-import axiosAuth from "@/api/axios-auth.js";
+import axiosAuth from '@/api/axios-auth.js'
 export default {
-    name: "AddTrailListItemComponent",
+    name: 'AddTrailListItemComponent',
     props: {
         trail: {},
         groupID: {
-            type: Number
-        }
+            type: Number,
+        },
     },
     data() {
         return {
-            addingToGroup: false
-        };
+            addingToGroup: false,
+        }
     },
     methods: {
-        getPageData() {
-            console.log("=================", this.trail);
-        },
         addTrailToGroup() {
-            // this.addedToGroup = true
             this.addingToGroup = true
-            axiosAuth.post('/groups/add-route', {
-                groupID: this.groupID,
-                routeID: this.trail.id,
-            }).then( () => {
-                this.$emit('trailAddedToGroup')
-            })
-
-            // this.$emit('trailAddedToGroup')
-        }
-        
+            axiosAuth
+                .post('/groups/add-route', {
+                    groupID: this.groupID,
+                    routeID: this.trail.id,
+                })
+                .then(() => {
+                    this.$emit('trailAddedToGroup')
+                })
+        },
     },
     created() {
         this.$emit('trailItemDataUpdated')
     },
-};
+}
 </script>
 
 <style>
-
 .btn-tertiary-disabled {
     background-color: var(--tertiary-button-grey);
     border-style: solid;
@@ -64,7 +68,6 @@ export default {
     padding-bottom: var(--button-padding-vertical);
     padding-left: var(--button-padding-horizontal);
     padding-right: var(--button-padding-horizontal);
-    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -73,15 +76,13 @@ export default {
     border-radius: 99999px;
 }
 
-
-.nameAndDate{
+.nameAndDate {
     width: 100%;
 }
 .trailListItem {
     width: 100%;
     display: flex;
     flex-direction: column;
-    /* justify-items: flex-start; */
     box-shadow: 0 0 0 var(--selectionRailColor);
     transition: box-shadow 5s;
     transition: background-color 0.2s;

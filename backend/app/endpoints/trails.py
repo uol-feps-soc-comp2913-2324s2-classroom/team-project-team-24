@@ -3,7 +3,7 @@ from flask import Blueprint, Response, request, jsonify
 from flask_jwt_extended import get_current_user, jwt_required
 from app import db, app
 from app.db_functions import get_routes_by_user_id
-from app.models import User, Route
+from app.models import User, Route, Group
 from app.gpx import GPX
 import gpxpy
 from app.decorators import *
@@ -198,6 +198,17 @@ def get_trail_map():
 @membership_required
 def get_selected_trails_map():
     user_id = get_current_user().id
+    group_id = request.get_json().get("groupID")
+    user_ids = [user_id]
+    
+    if group_id:
+        group = Group.query.filter_by(id=group_id).first()
+        if group:
+            user_ids = [x.id for x in group.members]
+        else:
+            return jsonify({"error": "Invalid group ID"}), 400 
+    
+
     
     # Get the trail IDs from the request
     trail_ids = request.get_json().get("trailIDs")
@@ -213,7 +224,7 @@ def get_selected_trails_map():
     
     if trail_ids:
         # Get the routes for the trail IDs
-        routes = Route.query.filter(Route.id.in_(trail_ids), Route.user_id == user_id).all()
+        routes = Route.query.filter(Route.id.in_(trail_ids), Route.user_id.in_(user_ids)).all()
         
         if routes:
             bounds = []

@@ -3,8 +3,8 @@
     font-family: var(--font-family);
     transition: all var(--transition-speed) ease-in-out;
     border-radius: var(--border-radius);
-    width: 100%; /* Full width */
-    max-width: 400px; /* Limit width to 400px */
+    width: 100%;
+    max-width: 400px;
     padding: 10px 20px;
     cursor: pointer;
 }
@@ -19,7 +19,6 @@
     padding-bottom: var(--button-padding-vertical);
     padding-left: var(--button-padding-horizontal);
     padding-right: var(--button-padding-horizontal);
-    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
     display: inline;
@@ -47,7 +46,6 @@
     padding-bottom: var(--button-padding-vertical);
     padding-left: var(--button-padding-horizontal);
     padding-right: var(--button-padding-horizontal);
-    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
     display: inline;
@@ -78,7 +76,6 @@
     padding-bottom: var(--button-padding-vertical);
     padding-left: var(--button-padding-horizontal);
     padding-right: var(--button-padding-horizontal);
-    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -140,7 +137,6 @@
     padding-bottom: var(--button-padding-vertical);
     padding-left: var(--button-padding-horizontal);
     padding-right: var(--button-padding-horizontal);
-    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -170,7 +166,6 @@
     padding-bottom: var(--button-padding-vertical);
     padding-left: var(--button-padding-horizontal);
     padding-right: var(--button-padding-horizontal);
-    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -200,7 +195,6 @@
     padding-bottom: var(--button-padding-vertical);
     padding-left: var(--button-padding-horizontal);
     padding-right: var(--button-padding-horizontal);
-    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -230,7 +224,6 @@
     padding-bottom: var(--button-padding-vertical);
     padding-left: var(--button-padding-horizontal);
     padding-right: var(--button-padding-horizontal);
-    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -261,7 +254,6 @@
     padding-bottom: var(--button-padding-vertical);
     padding-left: var(--button-padding-horizontal);
     padding-right: var(--button-padding-horizontal);
-    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -291,7 +283,6 @@
     padding-bottom: var(--button-padding-vertical);
     padding-left: var(--button-padding-horizontal);
     padding-right: var(--button-padding-horizontal);
-    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -321,7 +312,6 @@
     padding-bottom: var(--button-padding-vertical);
     padding-left: var(--button-padding-horizontal);
     padding-right: var(--button-padding-horizontal);
-    /* padding: 0.4rem 1.5rem; */
     text-align: center;
     text-decoration: none;
     display: inline-block;

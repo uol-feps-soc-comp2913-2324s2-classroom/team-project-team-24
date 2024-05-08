@@ -1,16 +1,15 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
-            <div class="login-container">
-            <h2 class="title"><b>Login</b></h2>
-            <LoginFormComponent />
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="login-container">
+                    <h2 class="title"><b>Login</b></h2>
+                    <LoginFormComponent />
+                </div>
             </div>
-        </div>
         </div>
     </div>
 </template>
-
 
 <script>
 import LoginFormComponent from '@/components/forms/LoginForm.vue'
@@ -23,28 +22,34 @@ export default {
     },
     methods: {
         async autoLogin() {
-            let token = localStorage.getItem('token');
+            let token = localStorage.getItem('token')
             if (token) {
-                axiosAuth.post('/auth/verify-token').then(() => {
-                    axiosAuth.get('/owner/current-is-owner').then(
-                        response => {
-                            if (response.status == 200) {
-                                this.$router.push('/owner');
-                            } else {
-                                this.$router.push('/activitycenter');
-                            }
-                        }
-                    ).catch(() => {this.$router.push('/activitycenter')});
-                }).catch(() => {});
+                axiosAuth
+                    .post('/auth/verify-token')
+                    .then(() => {
+                        axiosAuth
+                            .get('/owner/current-is-owner')
+                            .then((response) => {
+                                if (response.status == 200) {
+                                    this.$router.push('/owner')
+                                } else {
+                                    this.$router.push('/activitycenter')
+                                }
+                            })
+                            .catch(() => {
+                                this.$router.push('/activitycenter')
+                            })
+                    })
+                    .catch(() => {})
             }
-        }
+        },
     },
     components: {
         LoginFormComponent,
     },
     created() {
-        this.autoLogin();
-    }
+        this.autoLogin()
+    },
 }
 </script>
 
@@ -67,15 +72,15 @@ export default {
 }
 
 @media (max-width: 576px) {
-  .title {
-    margin-top: 20px;
-    margin-left: 18px;
-    text-align: left;
-  }
+    .title {
+        margin-top: 20px;
+        margin-left: 18px;
+        text-align: left;
+    }
 
-  .login-container {
-    margin-top: 20px;
-    border-radius: 0;
-  }
+    .login-container {
+        margin-top: 20px;
+        border-radius: 0;
+    }
 }
 </style>
