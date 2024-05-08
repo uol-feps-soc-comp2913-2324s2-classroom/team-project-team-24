@@ -35,7 +35,7 @@ export default {
             // adjust the colours of each col
             membershipColors: [
                 '#073617',
-                '#699933',
+                '#0C5A26',
                 '#0A481F',
                 // Add more colors as needed
             ],
