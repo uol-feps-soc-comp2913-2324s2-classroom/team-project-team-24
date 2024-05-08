@@ -101,8 +101,11 @@ export default {
 </template>
 
 <style scoped>
-.content {
-    overflow-y: hidden;
-    overflow-x: hidden;
+@media (max-width: 480px) {
+    .content {
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
 }
+
 </style>
