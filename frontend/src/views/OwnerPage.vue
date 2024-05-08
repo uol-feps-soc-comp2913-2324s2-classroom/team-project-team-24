@@ -3,7 +3,7 @@
         <div class="header" style="display: flex">
             <h4>Admin</h4>
             <button class="btn-secondary logout-btn" @click="accountLogout">
-                logout
+                Logout
             </button>
         </div>
         <topNavRailedAdmin

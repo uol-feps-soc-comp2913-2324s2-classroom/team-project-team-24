@@ -42,7 +42,7 @@
                 "
                 class="greyText"
             >
-                You haven't add anyone as friends yet...
+                You haven't added anyone as a friend yet.
             </p>
             <p v-if="friendsIsShowing && loadingFriendsList" class="greyText">
                 Loading friends...
